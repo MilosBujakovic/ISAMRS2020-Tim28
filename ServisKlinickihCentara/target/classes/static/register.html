@@ -2,22 +2,15 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Login page</title>
+    <title>Register</title>
 
-
-    <script type="text/javascript" src="jquery-3.4.1.js"></script>
-    <script src="bootstrap.min.js"></script>
-    <link rel="stylesheet" href="bootstrap.min.css">
-
-    <script type="text/javascript" src="login.js"></script>
-
-
+    <script type="text/javascript" src="jquery.min.js"></script>
 
     <style>
 
-.login-page {
+.register-page {
   width: 360px;
-  padding: 8% 0 0;
+  padding: 3% 0 0;
   margin: auto;
 }
 .form {
@@ -36,7 +29,7 @@
   background: #f2f2f2;
   width: 100%;
   border: 0;
-  margin: 0 0 15px;
+  margin: 0 0 3px;
   padding: 15px;
   box-sizing: border-box;
   font-size: 14px;
@@ -110,20 +103,26 @@ body {
 </style>
 
 
+    <script type="text/javascript" src="register.js"></script>
 
 </head>
-
-
 <body>
 
-<div class="login-page">
+<div class="register-page">
     <div class="form">
-        <form class="login-form">
-            <input type="text" id="username" placeholder="Username" />
-            <input type="password" id="password" placeholder="Password" />
-            <button>Login</button>
+        <form class="register-form">
+            <input type="text" id="email" placeholder="Email" required/>
+            <input type="password" id="password1" placeholder="Password" required/>
+            <input type="password" id="password2" placeholder="Repeat password" required/>
+            <input type="text" id="name" placeholder="Name" required/>
+            <input type="text" id="surname" placeholder="Surname" required/>
+            <input type="text" id="adress" placeholder="Adress" required/>
+            <input type="text" id="city" placeholder="City" required/>
+            <input type="text" id="phone" placeholder="Phone number" required/>
+            <input type="text" id="insunu" placeholder="Insuarance number" required/>
+            <button>Register</button>
             <p class="message">
-                Don't have an account? <a href="register.html">Create an account</a>
+                <a href="index.html">Back to login page </a>
             </p>
         </form>
     </div>
