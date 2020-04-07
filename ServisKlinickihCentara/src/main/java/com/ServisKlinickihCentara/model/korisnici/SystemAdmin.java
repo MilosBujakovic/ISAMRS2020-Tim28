@@ -1,6 +1,4 @@
-package com.ServisKlinickihCentara.modeli.korisnici;
-
-import com.ServisKlinickihCentara.modeli.enumeracije.TipKorisnika;
+package com.ServisKlinickihCentara.model.korisnici;
 
 public class SystemAdmin extends Korisnik
 {
@@ -22,7 +20,7 @@ public class SystemAdmin extends Korisnik
 		this.setEmail("admin");
 		this.setLozinka("admin");
 		this.setIme("Admin");
-		this.setTipKorisnika(TipKorisnika.Admin);
+		//this.setTipKorisnika(TipKorisnika.Admin);
 		this.setAktivan(true);
 		
 	}

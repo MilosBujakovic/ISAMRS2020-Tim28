@@ -1,4 +1,4 @@
-package com.ServisKlinickihCentara.modeli.enumeracije;
+package com.ServisKlinickihCentara.model.enumeracije;
 
 public enum TipKorisnika 
 {

@@ -1,4 +1,4 @@
-package com.ServisKlinickihCentara.modeli;
+package com.ServisKlinickihCentara.model;
 
 public class Dijagnoza 
 {

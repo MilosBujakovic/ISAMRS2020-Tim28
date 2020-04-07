@@ -1,18 +1,48 @@
-package com.ServisKlinickihCentara.modeli.korisnici;
+package com.ServisKlinickihCentara.model.korisnici;
 
-import com.ServisKlinickihCentara.modeli.enumeracije.TipKorisnika;
+import javax.persistence.*;
 
-public class Korisnik 
+
+@Entity
+@Inheritance
+public class Korisnik
 {
+
+	@Id
+	@GeneratedValue(strategy= GenerationType.IDENTITY)
+	private Long id;
+
+
+	@Column(unique = true)
 	private String email;
+
+	@Column
 	private String lozinka;
+
+	@Column
 	private String ime;
+
+	@Column
 	private String prezime;
-	private TipKorisnika tipKorisnika;
+	//private TipKorisnika tipKorisnika;
+
+	@Column
 	private boolean aktivan;
-	
-	
-	public String getEmail() 
+
+	public Korisnik(){
+
+	}
+
+	public Korisnik(Long id, String email, String lozinka, String ime, String prezime, boolean aktivan) {
+		this.id = id;
+		this.email = email;
+		this.lozinka = lozinka;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.aktivan = aktivan;
+	}
+
+	public String getEmail()
 	{
 		return email;
 	}
@@ -55,7 +85,7 @@ public class Korisnik
 		this.aktivan = aktivan;
 	}
 	
-	public TipKorisnika getTipKorisnika()
+	/*public TipKorisnika getTipKorisnika()
 	{
 		return this.tipKorisnika;
 	}
@@ -63,5 +93,5 @@ public class Korisnik
 	public void setTipKorisnika(TipKorisnika tipKorisnika)
 	{
 		this.tipKorisnika = tipKorisnika;
-	}
+	}*/
 };
