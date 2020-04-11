@@ -21,6 +21,7 @@ public class User implements UserDetails {
 
 
     @Id
+    @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -171,4 +172,8 @@ public class User implements UserDetails {
         return enabled;
     }
 
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 }

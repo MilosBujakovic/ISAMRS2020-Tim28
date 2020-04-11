@@ -19,24 +19,23 @@ public class Patient extends User{
     private String country;
 
     @Column
-    private String phone_number;
+    private String phoneNumber;
 
     @Column
-    private String insurance_number;
+    private String insuranceNumber;
 
     public Patient(){
         super();
     }
 
-    public Patient(Long id, String email, String password, String name, String surname, boolean enabled, Timestamp lastPasswordResetDate, String address, String city, String country, String phone_number, String insurance_number) {
+    public Patient(Long id, String email, String password, String name, String surname, boolean enabled, Timestamp lastPasswordResetDate, String address, String city, String country, String phoneNumber, String insuranceNumber) {
         super(id, email, password, name, surname, enabled, lastPasswordResetDate);
         this.address = address;
         this.city = city;
         this.country = country;
-        this.phone_number = phone_number;
-        this.insurance_number = insurance_number;
+        this.phoneNumber = phoneNumber;
+        this.insuranceNumber = insuranceNumber;
     }
-
 
     public String getAddress() {
         return address;
@@ -62,19 +61,19 @@ public class Patient extends User{
         this.country = country;
     }
 
-    public String getPhone_number() {
-        return phone_number;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setPhone_number(String phone_number) {
-        this.phone_number = phone_number;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public String getInsurance_number() {
-        return insurance_number;
+    public String getInsuranceNumber() {
+        return insuranceNumber;
     }
 
-    public void setInsurance_number(String insurance_number) {
-        this.insurance_number = insurance_number;
+    public void setInsuranceNumber(String insuranceNumber) {
+        this.insuranceNumber = insuranceNumber;
     }
 }

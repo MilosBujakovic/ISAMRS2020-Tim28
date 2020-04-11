@@ -29,4 +29,12 @@ public class MessageDTO {
     public void setSuccess(boolean success) {
         this.success = success;
     }
+
+    @Override
+    public String toString() {
+        return "MessageDTO{" +
+                "message='" + message + '\'' +
+                ", success=" + success +
+                '}';
+    }
 }

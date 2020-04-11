@@ -70,9 +70,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint( restAuthenticationEntryPoint ).and()
                 .authorizeRequests()
                 //svim korisnicima dopusti da pristupe putanjama /auth/**
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/**").permitAll()
-
+                //.antMatchers("/auth/**").permitAll()
+                //.antMatchers("/user/register").permitAll()
+                    .antMatchers("/user/acceptPatient/**").hasAuthority("SYSTEM_ADMIN")
+                    .antMatchers("/user/rejectPatient/**").hasAuthority("SYSTEM_ADMIN")
                 //svaki zahtev mora biti autorizovan
                 .anyRequest().authenticated().and()
                 //presretni svaki zahtev filterom
@@ -91,6 +92,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/auth/login"
         );
         web.ignoring().antMatchers(
+                HttpMethod.POST,
+                "/user/register"
+        );
+        web.ignoring().antMatchers(
                 HttpMethod.GET,
                 "/",
                 "/webjars/**",
@@ -98,7 +103,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/favicon.ico",
                 "/**/*.html",
                 "/**/*.css",
-                "/**/*.js"
+                "/**/*.js",
+                "/**/*.jpg"
         );
 
     }
