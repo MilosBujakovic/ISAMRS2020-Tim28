@@ -2,6 +2,7 @@ package com.ServisKlinickihCentara.service;
 
 import com.ServisKlinickihCentara.dto.MessageDTO;
 import com.ServisKlinickihCentara.dto.PatientDTO;
+import com.ServisKlinickihCentara.dto.UnregisteredPatientDTO;
 import com.ServisKlinickihCentara.model.Patient;
 import com.ServisKlinickihCentara.model.User;
 import com.ServisKlinickihCentara.repository.PatientRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -25,13 +27,17 @@ public class UserService {
     @Autowired
     private PatientRepository patientRepository;
 
+    @Autowired
+    private  EmailService emailService;
+
+
     public MessageDTO registratePatient(PatientDTO patientDTO){
 
-        if (patientDTO.getAddress().trim() == "" || patientDTO.getCity().trim() == "" ||
-                patientDTO.getCountry().trim() == "" || patientDTO.getEmail().trim() == "" ||
-                patientDTO.getName().trim() == "" || patientDTO.getSurname().trim() == "" ||
-                patientDTO.getPassword1().trim() == "" || patientDTO.getPassword2().trim() == "" ||
-                patientDTO.getInsurance_number().trim() == "" || patientDTO.getPhone_number().trim() == ""){
+        if (patientDTO.getAddress().trim().equals("") || patientDTO.getCity().trim().equals("") ||
+                patientDTO.getCountry().trim().equals("") || patientDTO.getEmail().trim().equals("") ||
+                patientDTO.getName().trim().equals("") || patientDTO.getSurname().trim().equals("") ||
+                patientDTO.getPassword1().trim().equals("") || patientDTO.getPassword2().trim().equals("") ||
+                patientDTO.getInsurance_number().trim().equals("") || patientDTO.getPhone_number().trim().equals("")){
             return new MessageDTO("All fields must be filled!!!", false);
         }
 
@@ -71,13 +77,37 @@ public class UserService {
         patient.setPhoneNumber(patientDTO.getPhone_number());
         patient.setInsuranceNumber(patientDTO.getInsurance_number());
         patient.setEnabled(false);
+        patient.setUuid(UUID.randomUUID().toString());
 
         patientRepository.save(patient);
         return new MessageDTO("Request for registration has been successfully sent :)", true);
     }
 
-    public void setPatientActive(String email ) throws UsernameNotFoundException {
+
+    public ArrayList<UnregisteredPatientDTO> getUnregisteredPatients() {
+        List<Patient> patients = patientRepository.findAll();
+
+        ArrayList<UnregisteredPatientDTO> unregisteredPatients = new ArrayList<UnregisteredPatientDTO>();
+
+        for(Patient patient: patients){
+            if(!patient.isEnabled()){
+                unregisteredPatients.add(new UnregisteredPatientDTO(patient));
+            }
+        }
+
+        return unregisteredPatients;
+
+    }
+
+    public void sendActivationLink(String email){
         Patient patient = patientRepository.findByEmail(email);
+        this.emailService.sendMail(email,"Activation link for registration","Please click below to activate your account \nhttp://localhost:8080/user/activatePatient/" + patient.getUuid());
+    }
+
+
+    public void setPatientActive(String uuid) throws UsernameNotFoundException {
+        User user = userRepository.findByuuid(uuid);
+        Patient patient = (Patient) user;
         patient.setEnabled(true);
         patientRepository.save(patient);
     }

@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Inheritance
@@ -47,6 +48,9 @@ public class User implements UserDetails {
     private boolean enabled;
 
 
+    private String uuid;
+
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
@@ -72,6 +76,17 @@ public class User implements UserDetails {
         this.surname = surname;
         this.lastPasswordResetDate = lastPasswordResetDate;
         this.enabled = enabled;
+        this.uuid = UUID.randomUUID().toString();
+    }
+
+    public User(String email, String password, String name, String surname, boolean enabled, Timestamp lastPasswordResetDate) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.lastPasswordResetDate = lastPasswordResetDate;
+        this.enabled = enabled;
+        this.uuid = UUID.randomUUID().toString();
     }
 
     public Long getId() {
@@ -120,6 +135,14 @@ public class User implements UserDetails {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     /*public boolean isActive() {

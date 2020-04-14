@@ -74,6 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.antMatchers("/user/register").permitAll()
                     .antMatchers("/user/acceptPatient/**").hasAuthority("SYSTEM_ADMIN")
                     .antMatchers("/user/rejectPatient/**").hasAuthority("SYSTEM_ADMIN")
+                    .antMatchers("/user/getUnregisteredPatients").hasAuthority("SYSTEM_ADMIN")
+                    .antMatchers("/auth/logout").permitAll()
+
                 //svaki zahtev mora biti autorizovan
                 .anyRequest().authenticated().and()
                 //presretni svaki zahtev filterom
@@ -94,6 +97,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 HttpMethod.POST,
                 "/user/register"
+        );
+        web.ignoring().antMatchers(
+                HttpMethod.GET,
+                "/user/activatePatient/**"
         );
         web.ignoring().antMatchers(
                 HttpMethod.GET,

@@ -1,12 +1,15 @@
 package com.ServisKlinickihCentara.controller;
 
 
+import com.ServisKlinickihCentara.dto.MessageDTO;
+import com.ServisKlinickihCentara.model.Authority;
 import com.ServisKlinickihCentara.model.User;
 import com.ServisKlinickihCentara.model.UserTokenState;
 import com.ServisKlinickihCentara.security.TokenHelper;
 import com.ServisKlinickihCentara.security.auth.JwtAuthenticationRequest;
 import com.ServisKlinickihCentara.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,6 +20,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,8 +30,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping( value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE )
@@ -76,8 +82,10 @@ public class AuthenticationController  {
         String jws = tokenHelper.generateToken(user.getEmail());
         int expiresIn = tokenHelper.getExpiredIn();
 
+        ArrayList<Authority> authorities = user.getAuthorities().stream().map(authority->(Authority) authority).collect(Collectors.toCollection(ArrayList::new));
+
         // Vrati token kao odgovor na uspesno autentifikaciju
-        return ResponseEntity.ok(new UserTokenState(jws, expiresIn));
+        return ResponseEntity.ok(new UserTokenState(jws, expiresIn, authorities.get(0).getAuthority()));
     }
 
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
@@ -110,6 +118,16 @@ public class AuthenticationController  {
         Map<String, String> result = new HashMap<>();
         result.put( "result", "success" );
         return ResponseEntity.accepted().body(result);
+    }
+
+    @RequestMapping(value="/logout", method = RequestMethod.GET)
+    public ResponseEntity<MessageDTO> logout (HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("logout");
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return new ResponseEntity<MessageDTO>(new MessageDTO("You have been logout.",true), HttpStatus.OK);
     }
 
     static class PasswordChanger {

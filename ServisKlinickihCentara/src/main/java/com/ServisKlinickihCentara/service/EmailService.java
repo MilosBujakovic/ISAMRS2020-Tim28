@@ -9,6 +9,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class EmailService {
 
@@ -28,6 +30,11 @@ public class EmailService {
         mail.setText(text);
         javaMailSender.send(mail);
 
+    }
+
+    public static void main(String[] args) {
+        final String uuid = UUID.randomUUID().toString();
+        System.out.println("uuid = " + uuid);
     }
 
 }

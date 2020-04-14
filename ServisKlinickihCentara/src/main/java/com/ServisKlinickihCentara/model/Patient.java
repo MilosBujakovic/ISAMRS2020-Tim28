@@ -1,8 +1,13 @@
 package com.ServisKlinickihCentara.model;
 
+import com.ServisKlinickihCentara.dto.PatientDTO;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity

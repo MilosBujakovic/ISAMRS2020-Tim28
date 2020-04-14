@@ -3,6 +3,7 @@ package com.ServisKlinickihCentara.controller;
 
 import com.ServisKlinickihCentara.dto.MessageDTO;
 import com.ServisKlinickihCentara.dto.PatientDTO;
+import com.ServisKlinickihCentara.dto.UnregisteredPatientDTO;
 import com.ServisKlinickihCentara.model.Authority;
 import com.ServisKlinickihCentara.model.Patient;
 import com.ServisKlinickihCentara.model.User;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.jws.soap.SOAPBinding;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -42,8 +44,8 @@ public class UserController {
 
     @RequestMapping(value = "/acceptPatient/{email}", method = RequestMethod.PUT)
     public ResponseEntity acceptPatient(@PathVariable String email){
-        userService.setPatientActive(email);
-        emailService.sendMail(email,"Registration on system.","Your request for registration has been accepted :)");
+        System.out.println(email);
+        userService.sendActivationLink(email);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -52,6 +54,18 @@ public class UserController {
         userService.deletePatient(email);
         emailService.sendMail(email,"Your request for registration has been denied!!!",message);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getUnregisteredPatients", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ArrayList<UnregisteredPatientDTO>> getUnregisteredPatients(){
+        ArrayList<UnregisteredPatientDTO> unregisteredPatients = userService.getUnregisteredPatients();
+        return new ResponseEntity<ArrayList<UnregisteredPatientDTO>>(unregisteredPatients,HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/activatePatient/{uuid}", method = RequestMethod.GET)
+    public ResponseEntity<String> activatePatient(@PathVariable("uuid") String uuid){
+        userService.setPatientActive(uuid);
+        return new ResponseEntity<String>("Your profile has been activated, click <a href=\'http://localhost:8080\'> here </a> to login on system.",HttpStatus.OK);
     }
 
 }
