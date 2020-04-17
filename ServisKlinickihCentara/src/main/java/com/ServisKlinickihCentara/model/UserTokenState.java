@@ -45,4 +45,10 @@ public class UserTokenState {
     public void setAuthority(String authority) {
         this.authority = authority;
     }
+
+    public UserTokenState(String access_token, Long expires_in, String authority) {
+        this.access_token = access_token;
+        this.expires_in = expires_in;
+        this.authority = authority;
+    }
 }

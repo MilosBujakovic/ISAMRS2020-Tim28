@@ -3,6 +3,7 @@ package com.ServisKlinickihCentara.controller;
 
 import com.ServisKlinickihCentara.dto.MessageDTO;
 import com.ServisKlinickihCentara.dto.PatientDTO;
+import com.ServisKlinickihCentara.dto.PatientUpdateDTO;
 import com.ServisKlinickihCentara.dto.UnregisteredPatientDTO;
 import com.ServisKlinickihCentara.model.Authority;
 import com.ServisKlinickihCentara.model.Patient;
@@ -25,7 +26,6 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping(value = "/user")
-//@CrossOrigin("*")
 public class UserController {
 
     @Autowired
@@ -68,4 +68,10 @@ public class UserController {
         return new ResponseEntity<String>("Your profile has been activated, click <a href=\'http://localhost:8080\'> here </a> to login on system.",HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/updatePatient", method = RequestMethod.PUT)
+    public ResponseEntity<MessageDTO> updatePatient(@RequestBody PatientUpdateDTO patientUpdateDTO){
+        System.out.println(patientUpdateDTO);
+        MessageDTO messageDTO = userService.updatePatient(patientUpdateDTO);
+        return new ResponseEntity<MessageDTO>(messageDTO,HttpStatus.OK);
+    }
 }

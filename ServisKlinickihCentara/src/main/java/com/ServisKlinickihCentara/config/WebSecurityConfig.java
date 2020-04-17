@@ -71,12 +71,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //svim korisnicima dopusti da pristupe putanjama /auth/**
                 //.antMatchers("/auth/**").permitAll()
-                //.antMatchers("/user/register").permitAll()
+                    .antMatchers("/auth/change-password").permitAll()
                     .antMatchers("/user/acceptPatient/**").hasAuthority("SYSTEM_ADMIN")
                     .antMatchers("/user/rejectPatient/**").hasAuthority("SYSTEM_ADMIN")
                     .antMatchers("/user/getUnregisteredPatients").hasAuthority("SYSTEM_ADMIN")
+                    .antMatchers("/user/updatePatient").hasAuthority("PATIENT")
+                    .antMatchers("/auth/getLoggedPatient").hasAuthority("PATIENT")
                     .antMatchers("/auth/logout").permitAll()
-
+                    .antMatchers("/auth/refresh").permitAll()
                 //svaki zahtev mora biti autorizovan
                 .anyRequest().authenticated().and()
                 //presretni svaki zahtev filterom
@@ -102,6 +104,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 HttpMethod.GET,
                 "/user/activatePatient/**"
         );
+        /*web.ignoring().antMatchers(
+                HttpMethod.POST,
+                "/auth/change-password"
+        );*/
         web.ignoring().antMatchers(
                 HttpMethod.GET,
                 "/",

@@ -2,6 +2,7 @@ package com.ServisKlinickihCentara.service;
 
 import com.ServisKlinickihCentara.dto.MessageDTO;
 import com.ServisKlinickihCentara.dto.PatientDTO;
+import com.ServisKlinickihCentara.dto.PatientUpdateDTO;
 import com.ServisKlinickihCentara.dto.UnregisteredPatientDTO;
 import com.ServisKlinickihCentara.model.Patient;
 import com.ServisKlinickihCentara.model.User;
@@ -81,6 +82,52 @@ public class UserService {
 
         patientRepository.save(patient);
         return new MessageDTO("Request for registration has been successfully sent :)", true);
+    }
+
+    public MessageDTO updatePatient(PatientUpdateDTO patientUpdateDTO){
+
+        if (patientUpdateDTO.getAddress().trim().equals("") || patientUpdateDTO.getCity().trim().equals("") ||
+                patientUpdateDTO.getCountry().trim().equals("") || patientUpdateDTO.getEmail().trim().equals("") ||
+                patientUpdateDTO.getName().trim().equals("") || patientUpdateDTO.getSurname().trim().equals("") ||
+                patientUpdateDTO.getPhone().trim().equals("")){
+            return new MessageDTO("All attributes fields must be filled!!!", false);
+        }
+
+        Patient patient = patientRepository.findByEmail(patientUpdateDTO.getEmail());
+
+
+        if(patient == null){
+            return new MessageDTO("Something is wrong, patient with this email doesn't exist!",false);
+        }
+
+
+        patient.setName(patientUpdateDTO.getName());
+        patient.setSurname(patientUpdateDTO.getSurname());
+        patient.setCity(patientUpdateDTO.getCity());
+        patient.setAddress(patientUpdateDTO.getAddress());
+        patient.setCountry(patientUpdateDTO.getCountry());
+
+
+
+
+        if(!patient.getPhoneNumber().equalsIgnoreCase(patientUpdateDTO.getPhone())){
+            Patient p = patientRepository.findByPhoneNumber(patientUpdateDTO.getPhone());
+            if(p != null){
+                return new MessageDTO("Other patient has phone number that you entered!", false);
+            }
+        }
+
+        try {
+            Integer.parseInt(patientUpdateDTO.getPhone());
+        } catch (NumberFormatException e){
+            return new MessageDTO("Phone number must contains only numbers!", false);
+        }
+
+        patient.setPhoneNumber(patientUpdateDTO.getPhone());
+
+
+        patientRepository.save(patient);
+        return new MessageDTO("Data was successfully changed :)",true);
     }
 
 

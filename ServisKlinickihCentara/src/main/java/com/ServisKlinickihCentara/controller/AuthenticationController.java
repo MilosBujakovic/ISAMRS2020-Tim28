@@ -2,12 +2,15 @@ package com.ServisKlinickihCentara.controller;
 
 
 import com.ServisKlinickihCentara.dto.MessageDTO;
+import com.ServisKlinickihCentara.dto.PatientUpdateDTO;
 import com.ServisKlinickihCentara.model.Authority;
+import com.ServisKlinickihCentara.model.Patient;
 import com.ServisKlinickihCentara.model.User;
 import com.ServisKlinickihCentara.model.UserTokenState;
 import com.ServisKlinickihCentara.security.TokenHelper;
 import com.ServisKlinickihCentara.security.auth.JwtAuthenticationRequest;
 import com.ServisKlinickihCentara.service.CustomUserDetailsService;
+import com.ServisKlinickihCentara.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,16 +24,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,6 +48,9 @@ public class AuthenticationController  {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private UserService userService;
 
 
     //Ukoliko je aplikacija podignuta lokalno => localhost:8080/api/login
@@ -103,7 +107,6 @@ public class AuthenticationController  {
             // TODO check user password last update
             String refreshedToken = tokenHelper.refreshToken(authToken);
             int expiresIn = tokenHelper.getExpiredIn();
-
             return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
         } else {
             UserTokenState userTokenState = new UserTokenState();
@@ -111,14 +114,36 @@ public class AuthenticationController  {
         }
     }
 
+    @RequestMapping(value = "/getLoggedPatient", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<PatientUpdateDTO> currentUserName(Authentication authentication) {
+        Patient patient = (Patient) userService.findByUsername(authentication.getName());
+        PatientUpdateDTO patientUpdateDTO = new PatientUpdateDTO(patient);
+        return new ResponseEntity<PatientUpdateDTO>(patientUpdateDTO,HttpStatus.OK);
+    }
+
+
     @RequestMapping(value = "/change-password", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('USER')")
+    //@PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
+        System.out.println("changing password");
         userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
         Map<String, String> result = new HashMap<>();
         result.put( "result", "success" );
-        return ResponseEntity.accepted().body(result);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(authentication.getName());
+        String jwt = tokenHelper.generateToken(authentication.getName());
+        int expiresIn = tokenHelper.getExpiredIn();
+       //authority authority = authentication.getAuthorities().stream().map(a->(Authority) a).collect(Collectors.toCollection(ArrayList::new)).get(0);
+        return new ResponseEntity<>(new UserTokenState(jwt, expiresIn), HttpStatus.OK);
+
+        //return ResponseEntity.accepted().body(result);
+
     }
+
+
+
+
 
     @RequestMapping(value="/logout", method = RequestMethod.GET)
     public ResponseEntity<MessageDTO> logout (HttpServletRequest request, HttpServletResponse response) {
