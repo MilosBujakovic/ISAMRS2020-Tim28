@@ -1,7 +1,8 @@
-package com.ServisKlinickihCentara.model;
+package com.ServisKlinickihCentara.model.users;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+
 import java.sql.Timestamp;
 
 

@@ -1,6 +1,6 @@
 package com.ServisKlinickihCentara.dto;
 
-import com.ServisKlinickihCentara.model.Patient;
+import com.ServisKlinickihCentara.model.patients.Patient;
 
 public class PatientUpdateDTO {
     private String email;

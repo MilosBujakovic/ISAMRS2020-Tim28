@@ -1,13 +1,14 @@
 package com.ServisKlinickihCentara.service;
 
 
-import com.ServisKlinickihCentara.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import com.ServisKlinickihCentara.model.users.User;
 
 import java.util.UUID;
 

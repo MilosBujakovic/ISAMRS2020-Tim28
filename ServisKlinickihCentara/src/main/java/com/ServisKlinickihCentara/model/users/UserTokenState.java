@@ -1,4 +1,4 @@
-package com.ServisKlinickihCentara.model;
+package com.ServisKlinickihCentara.model.users;
 
 public class UserTokenState {
     private String access_token;

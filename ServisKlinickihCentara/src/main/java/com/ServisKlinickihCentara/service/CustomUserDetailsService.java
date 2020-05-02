@@ -1,6 +1,6 @@
 package com.ServisKlinickihCentara.service;
 
-import com.ServisKlinickihCentara.model.User;
+import com.ServisKlinickihCentara.model.users.User;
 import com.ServisKlinickihCentara.repository.UserRepository;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;

@@ -13,7 +13,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import com.ServisKlinickihCentara.common.TimeProvider;
-import com.ServisKlinickihCentara.model.User;
+import com.ServisKlinickihCentara.model.users.User;
 
 @Component
 public class TokenHelper {

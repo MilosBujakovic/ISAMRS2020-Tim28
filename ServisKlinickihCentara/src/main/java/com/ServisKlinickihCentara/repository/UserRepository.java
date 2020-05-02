@@ -1,8 +1,9 @@
 package com.ServisKlinickihCentara.repository;
 
 
-import com.ServisKlinickihCentara.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.ServisKlinickihCentara.model.users.User;
 
 import java.util.List;
 

@@ -3,10 +3,10 @@ package com.ServisKlinickihCentara.controller;
 
 import com.ServisKlinickihCentara.dto.MessageDTO;
 import com.ServisKlinickihCentara.dto.PatientUpdateDTO;
-import com.ServisKlinickihCentara.model.Authority;
-import com.ServisKlinickihCentara.model.Patient;
-import com.ServisKlinickihCentara.model.User;
-import com.ServisKlinickihCentara.model.UserTokenState;
+import com.ServisKlinickihCentara.model.patients.Patient;
+import com.ServisKlinickihCentara.model.users.Authority;
+import com.ServisKlinickihCentara.model.users.User;
+import com.ServisKlinickihCentara.model.users.UserTokenState;
 import com.ServisKlinickihCentara.security.TokenHelper;
 import com.ServisKlinickihCentara.security.auth.JwtAuthenticationRequest;
 import com.ServisKlinickihCentara.service.CustomUserDetailsService;

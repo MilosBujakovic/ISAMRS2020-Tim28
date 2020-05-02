@@ -1,4 +1,4 @@
-package com.ServisKlinickihCentara.model;
+package com.ServisKlinickihCentara.model.users;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
