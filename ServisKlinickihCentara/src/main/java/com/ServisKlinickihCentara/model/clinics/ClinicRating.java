@@ -1,12 +1,9 @@
 package com.ServisKlinickihCentara.model.clinics;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.patients.Patient;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class ClinicRating 
@@ -15,11 +12,13 @@ public class ClinicRating
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column
+
+	@ManyToOne
+	@JsonManagedReference
 	private Clinic clinic;
-	
-	@Column 
+
+	@ManyToOne
+	@JsonManagedReference
 	private Patient patient;
 	
 	@Column

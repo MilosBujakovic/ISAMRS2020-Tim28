@@ -1,15 +1,13 @@
 package com.ServisKlinickihCentara.model.patients;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.clinics.Term;
 import com.ServisKlinickihCentara.model.employees.Doctor;
+import com.ServisKlinickihCentara.model.employees.Employee;
 import com.ServisKlinickihCentara.model.enums.AppointmentType;
 import com.ServisKlinickihCentara.model.enums.Specialty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Appointment 
@@ -18,15 +16,23 @@ public class Appointment
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column
+
+	@ManyToOne
+	@JsonManagedReference
 	private Patient patient;
 	
-	@Column
+	@OneToOne
 	private Term term;
-	
-	@Column
-	private Doctor doctor;
+
+	/*@ManyToOne
+	@JsonManagedReference
+	private Doctor doctor;*/
+
+
+	@ManyToOne
+	@JsonManagedReference
+	private Employee employee;
+
 	
 	@Column
 	private Specialty category;
@@ -34,7 +40,7 @@ public class Appointment
 	@Column
 	private AppointmentType type;
 	
-	@Column
+	@OneToOne
 	private AppointmentReport report;
 	
 	@Column
@@ -46,13 +52,17 @@ public class Appointment
 	@Column
 	private boolean cancelled;
 
-	public Appointment(Long id, Patient patient, Term term, Doctor doctor, Specialty category, AppointmentType type,
+	public Appointment(){
+		super();
+	}
+
+	public Appointment(Long id, Patient patient, Term term, Employee employee, Specialty category, AppointmentType type,
 			AppointmentReport report, boolean predefined, boolean active, boolean cancelled) {
 		super();
 		this.id = id;
 		this.patient = patient;
 		this.term = term;
-		this.doctor = doctor;
+		this.employee = employee;
 		this.category = category;
 		this.type = type;
 		this.report = report;
@@ -61,12 +71,12 @@ public class Appointment
 		this.cancelled = cancelled;
 	}
 
-	public Appointment(Patient patient, Term term, Doctor doctor, Specialty category, AppointmentType type,
+	public Appointment(Patient patient, Term term, Employee employee, Specialty category, AppointmentType type,
 			AppointmentReport report, boolean predefined, boolean active, boolean cancelled) {
 		super();
 		this.patient = patient;
 		this.term = term;
-		this.doctor = doctor;
+		this.employee = employee;
 		this.category = category;
 		this.type = type;
 		this.report = report;
@@ -75,12 +85,12 @@ public class Appointment
 		this.cancelled = cancelled;
 	}
 
-	public Appointment(Patient patient, Term term, Doctor doctor, Specialty category, AppointmentType type,
+	public Appointment(Patient patient, Term term, Employee employee, Specialty category, AppointmentType type,
 			AppointmentReport report, boolean predefined) {
 		super();
 		this.patient = patient;
 		this.term = term;
-		this.doctor = doctor;
+		this.employee = employee;
 		this.category = category;
 		this.type = type;
 		this.report = report;
@@ -89,12 +99,12 @@ public class Appointment
 		this.cancelled = false;
 	}
 
-	public Appointment(Patient patient, Term term, Doctor doctor, Specialty category, AppointmentType type,
+	public Appointment(Patient patient, Term term, Employee employee, Specialty category, AppointmentType type,
 			AppointmentReport report) {
 		super();
 		this.patient = patient;
 		this.term = term;
-		this.doctor = doctor;
+		this.employee = employee;
 		this.category = category;
 		this.type = type;
 		this.report = report;
@@ -127,12 +137,20 @@ public class Appointment
 		this.term = term;
 	}
 
-	public Doctor getDoctor() {
+	/*public Doctor getDoctor() {
 		return doctor;
 	}
 
 	public void setDoctor(Doctor doctor) {
 		this.doctor = doctor;
+	}*/
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
 	}
 
 	public Specialty getCategory() {

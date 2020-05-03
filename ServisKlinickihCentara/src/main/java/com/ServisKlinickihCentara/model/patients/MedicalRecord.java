@@ -2,14 +2,12 @@ package com.ServisKlinickihCentara.model.patients;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.enums.BloodType;
 import com.ServisKlinickihCentara.model.enums.RhType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class MedicalRecord 
@@ -19,7 +17,8 @@ public class MedicalRecord
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column
+	@OneToOne
+	@JsonManagedReference
 	private Patient patient;
 	
 	@Column
@@ -36,8 +35,9 @@ public class MedicalRecord
 	
 	@Column
 	private RhType rhfactor;
-	
-	@Column
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "medicalRecord")
+	@JsonBackReference
 	private List<AppointmentReport> reports;
 	
 	public MedicalRecord() {}

@@ -3,12 +3,11 @@ package com.ServisKlinickihCentara.model.employees;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.enums.Specialty;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @DiscriminatorValue("DOCTOR")
@@ -16,9 +15,12 @@ public class Doctor extends Employee
 {
 	@Column
 	private Specialty specialty;
-	
-	@Column
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "doctor")
+	@JsonBackReference
 	private List<DoctorRating> ratings;
+
+
 
 	public Doctor () { super(); }
 	

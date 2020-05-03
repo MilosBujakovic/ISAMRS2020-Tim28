@@ -5,9 +5,13 @@ import com.ServisKlinickihCentara.dto.MessageDTO;
 import com.ServisKlinickihCentara.dto.PatientDTO;
 import com.ServisKlinickihCentara.dto.PatientUpdateDTO;
 import com.ServisKlinickihCentara.dto.UnregisteredPatientDTO;
+import com.ServisKlinickihCentara.model.clinics.Clinic;
+import com.ServisKlinickihCentara.model.patients.MedicalRecord;
 import com.ServisKlinickihCentara.model.patients.Patient;
 import com.ServisKlinickihCentara.model.users.Authority;
 import com.ServisKlinickihCentara.model.users.User;
+import com.ServisKlinickihCentara.repository.ClinicRepository;
+import com.ServisKlinickihCentara.repository.RoomRepository;
 import com.ServisKlinickihCentara.service.EmailService;
 import com.ServisKlinickihCentara.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,4 +78,5 @@ public class UserController {
         MessageDTO messageDTO = userService.updatePatient(patientUpdateDTO);
         return new ResponseEntity<MessageDTO>(messageDTO,HttpStatus.OK);
     }
+
 }

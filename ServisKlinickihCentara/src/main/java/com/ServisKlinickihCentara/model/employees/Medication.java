@@ -1,10 +1,9 @@
 package com.ServisKlinickihCentara.model.employees;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+
+@Entity
 public class Medication 
 {
 
@@ -21,7 +20,7 @@ public class Medication
 	
 	@Column
 	private String manufacturer;
-	
+
 	public Medication() {}
 
 	public Medication(String name, String description, String manufacturer) {

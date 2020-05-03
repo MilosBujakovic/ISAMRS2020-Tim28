@@ -2,13 +2,10 @@ package com.ServisKlinickihCentara.model.employees;
 
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.enums.RequestStatus;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class LeaveFormRequest 
@@ -23,8 +20,9 @@ public class LeaveFormRequest
 	
 	@Column 
 	private Timestamp endTime;
-	
-	@Column
+
+	@OneToOne
+	@JsonManagedReference
 	private Employee employee;
 	
 	@Column 

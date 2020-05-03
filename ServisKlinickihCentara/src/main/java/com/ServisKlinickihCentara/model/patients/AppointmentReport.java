@@ -1,15 +1,13 @@
 package com.ServisKlinickihCentara.model.patients;
 
+import java.awt.*;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.clinics.Diagnosis;
 import com.ServisKlinickihCentara.model.employees.Prescription;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class AppointmentReport 
@@ -19,15 +17,20 @@ public class AppointmentReport
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column
+	@OneToOne
 	private Diagnosis diagnosis;
 	
 	@Column
 	private String description;
 	
-	@Column
+	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	private List<Prescription> prescriptions;
-	
+
+
+	@ManyToOne
+	@JsonManagedReference
+	private MedicalRecord medicalRecord;
+
 	public AppointmentReport() {}
 
 	public AppointmentReport(Long id, Diagnosis diagnosis, String report, List<Prescription> prescriptions) {
@@ -43,6 +46,15 @@ public class AppointmentReport
 		this.diagnosis = diagnosis;
 		this.description = report;
 		this.prescriptions = prescriptions;
+	}
+
+
+	public AppointmentReport(Long id, Diagnosis diagnosis, String description, List<Prescription> prescriptions, MedicalRecord medicalRecord) {
+		this.id = id;
+		this.diagnosis = diagnosis;
+		this.description = description;
+		this.prescriptions = prescriptions;
+		this.medicalRecord = medicalRecord;
 	}
 
 	public Long getId() {
@@ -76,5 +88,21 @@ public class AppointmentReport
 	public void setPrescriptions(List<Prescription> prescriptions) {
 		this.prescriptions = prescriptions;
 	}
-	
+
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public MedicalRecord getMedicalRecord() {
+		return medicalRecord;
+	}
+
+	public void setMedicalRecord(MedicalRecord medicalRecord) {
+		this.medicalRecord = medicalRecord;
+	}
 }

@@ -1,12 +1,10 @@
 package com.ServisKlinickihCentara.model.employees;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class LeaveForm 
@@ -21,14 +19,15 @@ public class LeaveForm
 	
 	@Column 
 	private Timestamp endTime;
-	
-	@Column
+
+	@ManyToOne
+	@JsonManagedReference
 	private Employee employee;
 	
 	@Column
 	private boolean active;
 	
-	@Column 
+	@OneToOne
 	private LeaveFormRequest request;
 	
 	@Column

@@ -104,10 +104,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 HttpMethod.GET,
                 "/user/activatePatient/**"
         );
-        /*web.ignoring().antMatchers(
-                HttpMethod.POST,
-                "/auth/change-password"
-        );*/
         web.ignoring().antMatchers(
                 HttpMethod.GET,
                 "/",

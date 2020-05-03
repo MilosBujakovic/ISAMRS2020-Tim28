@@ -1,8 +1,6 @@
 package com.ServisKlinickihCentara.model.clinics;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Diagnosis //TODO: finish later 
@@ -10,26 +8,31 @@ public class Diagnosis //TODO: finish later
 
 	@Id
 	@Column
-	private String id; //TODO: ne generisati automatski jer treba da ih koristimo u sifrarnicima (?)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id; //TODO: ne generisati automatski jer treba da ih koristimo u sifrarnicima (?)
+
+	@Column
 	private String name;
+
+	@Column
 	private String medication;
 	
 	
 	public Diagnosis() {};		
 	
-	public Diagnosis(String id, String name, String medication) 
+	public Diagnosis(long id, String name, String medication)
 	{
 		this.id = id;
 		this.name = name;
 		this.medication = medication;
 	}
 
-	public String getId() 
+	public Long getId()
 	{
 		return id;
 	}
 
-	public void setId(String id) 
+	public void setId(long id)
 	{
 		this.id = id;
 	}

@@ -1,16 +1,13 @@
 package com.ServisKlinickihCentara.model.patients;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.clinics.Term;
 import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.enums.AppointmentType;
 import com.ServisKlinickihCentara.model.enums.RequestStatus;
 import com.ServisKlinickihCentara.model.enums.Specialty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class AppointmentRequest 
@@ -19,14 +16,15 @@ public class AppointmentRequest
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@Column
+
+	@ManyToOne
+	@JsonManagedReference
 	private Patient patient;
 	
-	@Column
+	@ManyToOne
 	private Term term;
 	
-	@Column
+	@ManyToOne
 	private Doctor doctor;
 	
 	@Column

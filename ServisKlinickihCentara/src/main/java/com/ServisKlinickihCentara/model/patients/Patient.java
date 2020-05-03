@@ -3,14 +3,13 @@ package com.ServisKlinickihCentara.model.patients;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.clinics.ClinicRating;
 import com.ServisKlinickihCentara.model.employees.DoctorRating;
 import com.ServisKlinickihCentara.model.employees.Medication;
 import com.ServisKlinickihCentara.model.users.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @DiscriminatorValue("PATIENT")
@@ -30,23 +29,28 @@ public class Patient extends User{
 
     @Column
     private String insuranceNumber;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "patient")
+	@JsonBackReference
+    private List<Appointment> apointments;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "patient")
+	@JsonBackReference
+    private List<AppointmentRequest> requests;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "patient")
+	@JsonBackReference
+    private List<DoctorRating> doctorRatings;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "patient")
+	@JsonBackReference
+    private List<ClinicRating> clinicRatings;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Medication> medsList;
     
-    @Column 
-    private List<Appointment> apointments; //TODO: Can be empty
-    
-    @Column
-    private List<AppointmentRequest> requests; //TODO: Can be empty
-    
-    @Column 
-    private List<DoctorRating> doctorRatings; //TODO: Can be empty
-    
-    @Column
-    private List<ClinicRating> clinicRatings; //TODO: Can be empty
-    
-    @Column
-    private List<Medication> medsList; //TODO: Can be empty
-    
-    @Column
+    @OneToOne(fetch = FetchType.EAGER)
+	@JsonBackReference
     private MedicalRecord medicalRecord;
     
 
@@ -158,7 +162,91 @@ public class Patient extends User{
 		// TODO Auto-generated constructor stub
 	}
 
- 
-    
+	public String getAddress() {
+		return address;
+	}
 
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getInsuranceNumber() {
+		return insuranceNumber;
+	}
+
+	public void setInsuranceNumber(String insuranceNumber) {
+		this.insuranceNumber = insuranceNumber;
+	}
+
+	public List<Appointment> getApointments() {
+		return apointments;
+	}
+
+	public void setApointments(List<Appointment> apointments) {
+		this.apointments = apointments;
+	}
+
+	public List<AppointmentRequest> getRequests() {
+		return requests;
+	}
+
+	public void setRequests(List<AppointmentRequest> requests) {
+		this.requests = requests;
+	}
+
+	public List<DoctorRating> getDoctorRatings() {
+		return doctorRatings;
+	}
+
+	public void setDoctorRatings(List<DoctorRating> doctorRatings) {
+		this.doctorRatings = doctorRatings;
+	}
+
+	public List<ClinicRating> getClinicRatings() {
+		return clinicRatings;
+	}
+
+	public void setClinicRatings(List<ClinicRating> clinicRatings) {
+		this.clinicRatings = clinicRatings;
+	}
+
+	public List<Medication> getMedsList() {
+		return medsList;
+	}
+
+	public void setMedsList(List<Medication> medsList) {
+		this.medsList = medsList;
+	}
+
+	public MedicalRecord getMedicalRecord() {
+		return medicalRecord;
+	}
+
+	public void setMedicalRecord(MedicalRecord medicalRecord) {
+		this.medicalRecord = medicalRecord;
+	}
 }

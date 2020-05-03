@@ -3,13 +3,13 @@ package com.ServisKlinickihCentara.model.employees;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.patients.Appointment;
 import com.ServisKlinickihCentara.model.users.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @DiscriminatorValue("EMPLOYEE")
@@ -20,8 +20,9 @@ public class Employee extends User
 	
 	@Column
 	private Timestamp returnDate;
-	
-	@Column
+
+	@ManyToOne
+	@JsonManagedReference
 	private Clinic clinic;
 	
 	@Column
@@ -29,14 +30,18 @@ public class Employee extends User
 	
 	@Column
 	private Timestamp shiftEnd;
-	
-	@Column
+
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "employee")
+	@JsonBackReference
 	private List<LeaveForm> vacations;
-	
-	@Column 
-	private LeaveFormRequest pendingRequest; //TODO: Edit later
-	
-	@Column
+
+	@OneToOne(fetch = FetchType.EAGER)
+	@JsonBackReference
+	private LeaveFormRequest pendingRequest;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "employee")
+	@JsonBackReference
 	private List<Appointment> workingCalendar;
 	
 	public Employee() { super(); }

@@ -2,15 +2,12 @@ package com.ServisKlinickihCentara.model.clinics;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.employees.Nurse;
 import com.ServisKlinickihCentara.model.users.ClinicAdmin;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Clinic 
@@ -26,23 +23,31 @@ public class Clinic
 	@Column
 	private String address;
 	
-	@Column
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
+	@JsonBackReference
 	private List<Doctor> staff;
-	
-	@Column 
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
+	@JsonBackReference
 	private List<Nurse> assistingStaff;
-	
-	@Column 
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
+	@JsonBackReference
 	private List<Room> rooms;
-	
-	@Column
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<PriceItem> pricelist;
-	
-	@Column
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Term> freeTerms;
-	
-	@Column 
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
+	@JsonBackReference
 	private List<ClinicAdmin> admins;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
+	@JsonBackReference
+	private List<ClinicRating> clinicRatings;
 	
 	
 	public Clinic() {};
