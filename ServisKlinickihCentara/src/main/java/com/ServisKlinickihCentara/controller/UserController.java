@@ -6,6 +6,8 @@ import com.ServisKlinickihCentara.dto.PatientDTO;
 import com.ServisKlinickihCentara.dto.PatientUpdateDTO;
 import com.ServisKlinickihCentara.dto.UnregisteredPatientDTO;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
+import com.ServisKlinickihCentara.model.employees.Doctor;
+import com.ServisKlinickihCentara.model.employees.Medication;
 import com.ServisKlinickihCentara.model.patients.MedicalRecord;
 import com.ServisKlinickihCentara.model.patients.Patient;
 import com.ServisKlinickihCentara.model.users.Authority;
@@ -77,6 +79,16 @@ public class UserController {
         System.out.println(patientUpdateDTO);
         MessageDTO messageDTO = userService.updatePatient(patientUpdateDTO);
         return new ResponseEntity<MessageDTO>(messageDTO,HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public ResponseEntity<MessageDTO> updatePatient(){
+        Doctor doctor = (Doctor) userService.findByUsername("milanmilanovic@gmail.com");
+
+        System.out.println(doctor.getShiftStart());
+        System.out.println(doctor.getShiftEnd());
+
+        return new ResponseEntity<MessageDTO>(new MessageDTO("odgovor", true),HttpStatus.OK);
     }
 
 }

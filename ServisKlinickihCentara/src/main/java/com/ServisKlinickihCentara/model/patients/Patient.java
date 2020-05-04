@@ -46,8 +46,9 @@ public class Patient extends User{
 	@JsonBackReference
     private List<ClinicRating> clinicRatings;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Medication> medsList;
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinTable(name = "patient_medications", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"))
+    private List<Medication> medications;
     
     @OneToOne(fetch = FetchType.EAGER)
 	@JsonBackReference
@@ -61,7 +62,7 @@ public class Patient extends User{
     
 	public Patient(String address, String city, String country, String phoneNumber, String insuranceNumber,
 			List<Appointment> apointments, List<AppointmentRequest> requests, List<DoctorRating> doctorRatings,
-			List<ClinicRating> clinicRatings, List<Medication> medsList, MedicalRecord medicalRecord) {
+			List<ClinicRating> clinicRatings, List<Medication> medications, MedicalRecord medicalRecord) {
 		super();
 		this.address = address;
 		this.city = city;
@@ -72,7 +73,7 @@ public class Patient extends User{
 		this.requests = requests;
 		this.doctorRatings = doctorRatings;
 		this.clinicRatings = clinicRatings;
-		this.medsList = medsList;
+		this.medications = medications;
 		this.medicalRecord = medicalRecord;
 	}
 
@@ -118,7 +119,7 @@ public class Patient extends User{
 	public Patient(Long id, String email, String password, String name, String surname, boolean enabled,
 			Timestamp lastPasswordResetDate, String address, String city, String country, String phoneNumber, String insuranceNumber,
 			List<Appointment> apointments, List<AppointmentRequest> requests, List<DoctorRating> doctorRatings,
-			List<ClinicRating> clinicRatings, List<Medication> medsList, MedicalRecord medicalRecord) 
+			List<ClinicRating> clinicRatings, List<Medication> medications, MedicalRecord medicalRecord)
 	{
 		super(id, email, password, name, surname, enabled, lastPasswordResetDate);
 		// TODO Auto-generated constructor stub
@@ -131,7 +132,7 @@ public class Patient extends User{
 		this.requests = requests;
 		this.doctorRatings = doctorRatings;
 		this.clinicRatings = clinicRatings;
-		this.medsList = medsList;
+		this.medications = medications;
 		this.medicalRecord = medicalRecord;
 	}
 
@@ -139,7 +140,7 @@ public class Patient extends User{
 	public Patient(String email, String password, String name, String surname, boolean enabled,
 			Timestamp lastPasswordResetDate, String address, String city, String country, String phoneNumber, String insuranceNumber,
 			List<Appointment> apointments, List<AppointmentRequest> requests, List<DoctorRating> doctorRatings,
-			List<ClinicRating> clinicRatings, List<Medication> medsList, MedicalRecord medicalRecord) 
+			List<ClinicRating> clinicRatings, List<Medication> medications, MedicalRecord medicalRecord)
 	{
 		super(email, password, name, surname, enabled, lastPasswordResetDate);
 		// TODO Auto-generated constructor stub
@@ -152,7 +153,7 @@ public class Patient extends User{
 		this.requests = requests;
 		this.doctorRatings = doctorRatings;
 		this.clinicRatings = clinicRatings;
-		this.medsList = medsList;
+		this.medications = medications;
 		this.medicalRecord = medicalRecord;
 	}
 
@@ -234,12 +235,13 @@ public class Patient extends User{
 		this.clinicRatings = clinicRatings;
 	}
 
-	public List<Medication> getMedsList() {
-		return medsList;
+
+	public List<Medication> getMedications() {
+		return medications;
 	}
 
-	public void setMedsList(List<Medication> medsList) {
-		this.medsList = medsList;
+	public void setMedications(List<Medication> medications) {
+		this.medications = medications;
 	}
 
 	public MedicalRecord getMedicalRecord() {

@@ -2,7 +2,6 @@ package com.ServisKlinickihCentara.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ServisKlinickihCentara.model.users.User;
 
+import java.sql.Time;
 import java.util.UUID;
 
 @Service
@@ -36,6 +36,11 @@ public class EmailService {
     public static void main(String[] args) {
         final String uuid = UUID.randomUUID().toString();
         System.out.println("uuid = " + uuid);
+
+        Time time = new Time(12,44,0);
+
+        System.out.println(time);
+
     }
 
 }

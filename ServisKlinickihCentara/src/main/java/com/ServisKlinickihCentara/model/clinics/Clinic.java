@@ -6,6 +6,8 @@ import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.employees.Nurse;
+import com.ServisKlinickihCentara.model.enums.Specialty;
+import com.ServisKlinickihCentara.model.patients.Appointment;
 import com.ServisKlinickihCentara.model.users.ClinicAdmin;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -22,6 +24,9 @@ public class Clinic
 	
 	@Column
 	private String address;
+
+	@Column
+	private Specialty specialty;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
 	@JsonBackReference
@@ -48,21 +53,27 @@ public class Clinic
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
 	@JsonBackReference
 	private List<ClinicRating> clinicRatings;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
+	@JsonBackReference
+	private List<Appointment> appointments;
 	
 	
 	public Clinic() {};
 	
-	public Clinic(String name, String address)
+	public Clinic(String name, String address, Specialty specialty)
 	{
 		this.name = name;
 		this.address = address;
+		this.specialty = specialty;
 	}
 
-	public Clinic(String name, String address, List<Doctor> staff, List<Nurse> assistingStaff, List<Room> rooms,
+	public Clinic(String name, String address, Specialty specialty, List<Doctor> staff, List<Nurse> assistingStaff, List<Room> rooms,
 			List<PriceItem> pricelist, List<Term> freeTerms, List<ClinicAdmin> admins) {
 		super();
 		this.name = name;
 		this.address = address;
+		this.specialty = specialty;
 		this.staff = staff;
 		this.assistingStaff = assistingStaff;
 		this.rooms = rooms;
@@ -142,8 +153,28 @@ public class Clinic
 	public void setAdmins(List<ClinicAdmin> admins) {
 		this.admins = admins;
 	}
-	
-	
-	
-	
+
+	public Specialty getSpecialty() {
+		return specialty;
+	}
+
+	public void setSpecialty(Specialty specialty) {
+		this.specialty = specialty;
+	}
+
+	public List<ClinicRating> getClinicRatings() {
+		return clinicRatings;
+	}
+
+	public void setClinicRatings(List<ClinicRating> clinicRatings) {
+		this.clinicRatings = clinicRatings;
+	}
+
+	public List<Appointment> getAppointments() {
+		return appointments;
+	}
+
+	public void setAppointments(List<Appointment> appointments) {
+		this.appointments = appointments;
+	}
 }

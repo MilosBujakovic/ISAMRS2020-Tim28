@@ -77,6 +77,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/user/getUnregisteredPatients").hasAuthority("SYSTEM_ADMIN")
                     .antMatchers("/user/updatePatient").hasAuthority("PATIENT")
                     .antMatchers("/auth/getLoggedPatient").hasAuthority("PATIENT")
+                    .antMatchers("/clinic/getClinicsForBasicView").hasAuthority("PATIENT")
+                    .antMatchers("/clinic/basicFilterSortingClinics/**").hasAuthority("PATIENT")
+                    .antMatchers("/clinic/getSpecialities").hasAuthority("PATIENT")
                     .antMatchers("/auth/logout").permitAll()
                     .antMatchers("/auth/refresh").permitAll()
                 //svaki zahtev mora biti autorizovan
@@ -103,6 +106,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 HttpMethod.GET,
                 "/user/activatePatient/**"
+        );
+        web.ignoring().antMatchers(
+                HttpMethod.GET,
+                "/user/test"
         );
         web.ignoring().antMatchers(
                 HttpMethod.GET,

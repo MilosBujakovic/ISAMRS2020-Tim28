@@ -2,6 +2,7 @@ package com.ServisKlinickihCentara.model.patients;
 
 import javax.persistence.*;
 
+import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.clinics.Term;
 import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.employees.Employee;
@@ -27,6 +28,10 @@ public class Appointment
 	/*@ManyToOne
 	@JsonManagedReference
 	private Doctor doctor;*/
+
+	@ManyToOne
+	@JsonManagedReference
+	private Clinic clinic;
 
 
 	@ManyToOne
@@ -57,22 +62,24 @@ public class Appointment
 	}
 
 	public Appointment(Long id, Patient patient, Term term, Employee employee, Specialty category, AppointmentType type,
-			AppointmentReport report, boolean predefined, boolean active, boolean cancelled) {
+			AppointmentReport report, Clinic clinic, boolean predefined, boolean active, boolean cancelled) {
 		super();
 		this.id = id;
 		this.patient = patient;
 		this.term = term;
+		//this.doctor = doctor;
 		this.employee = employee;
 		this.category = category;
 		this.type = type;
 		this.report = report;
+		this.clinic = clinic;
 		this.predefined = predefined;
 		this.active = active;
 		this.cancelled = cancelled;
 	}
 
-	public Appointment(Patient patient, Term term, Employee employee, Specialty category, AppointmentType type,
-			AppointmentReport report, boolean predefined, boolean active, boolean cancelled) {
+	public Appointment(Patient patient, Term term,Employee employee, Specialty category, AppointmentType type,
+			AppointmentReport report,Clinic clinic, boolean predefined, boolean active, boolean cancelled) {
 		super();
 		this.patient = patient;
 		this.term = term;
@@ -80,13 +87,14 @@ public class Appointment
 		this.category = category;
 		this.type = type;
 		this.report = report;
+		this.clinic = clinic;
 		this.predefined = predefined;
 		this.active = active;
 		this.cancelled = cancelled;
 	}
 
 	public Appointment(Patient patient, Term term, Employee employee, Specialty category, AppointmentType type,
-			AppointmentReport report, boolean predefined) {
+			AppointmentReport report,Clinic clinic, boolean predefined) {
 		super();
 		this.patient = patient;
 		this.term = term;
@@ -94,13 +102,14 @@ public class Appointment
 		this.category = category;
 		this.type = type;
 		this.report = report;
+		this.clinic = clinic;
 		this.predefined = predefined;
 		this.active = true;
 		this.cancelled = false;
 	}
 
 	public Appointment(Patient patient, Term term, Employee employee, Specialty category, AppointmentType type,
-			AppointmentReport report) {
+			AppointmentReport report, Clinic clinic) {
 		super();
 		this.patient = patient;
 		this.term = term;
@@ -108,10 +117,13 @@ public class Appointment
 		this.category = category;
 		this.type = type;
 		this.report = report;
+		this.clinic = clinic;
 		this.predefined = false;
 		this.active = true;
 		this.cancelled = false;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -200,8 +212,13 @@ public class Appointment
 	public void setCancelled(boolean cancelled) {
 		this.cancelled = cancelled;
 	}
-	
-	
-	
-	
+
+
+	public Clinic getClinic() {
+		return clinic;
+	}
+
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
+	}
 }

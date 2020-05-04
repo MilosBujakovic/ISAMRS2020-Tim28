@@ -13,6 +13,7 @@ if (token == null){
 
 
 getLoggedPatient();
+getClinicsForBasicView();
 
 function getLoggedPatient() {
 	$.ajax({
@@ -45,6 +46,137 @@ function getLoggedPatient() {
     });
 }
 
+
+
+function getSpecialities(){
+	$.ajax({
+    		type : 'GET',
+    		url : "/clinic/getSpecialities",
+    		cache: false,
+    		dataType: "json",
+            headers: { "Authorization": "Bearer " + token},
+    		success : function(specialities) {
+    			$("#typeOfSpeciality").find('optionl:gt(0)').remove();
+    			$.each(
+    					specialities,
+    					function(index,speciality){
+    						$("#typeOfSpeciality").append('<option value=\"' + speciality + '\">' + speciality + '</option>');
+    					}
+    			)
+    		},
+    		error : function(errorThrown) {
+    			alert(errorThrown);
+    		}
+    	});
+}
+
+
+function getClinicsForBasicView(){
+	$.ajax({
+    		type : 'GET',
+    		url : "/clinic/getClinicsForBasicView",
+    		cache: false,
+    		dataType: "json",
+            headers: { "Authorization": "Bearer " + token},
+    		success : function(clinics) {
+    			$("#clinicsForBasicViewFilter").find("tr:not(:first)").remove();
+    			$.each(
+    					clinics,
+    					function(index,clinic){
+    						var tr = $('<tr></tr>');
+    						var rating = "No rating";
+                            console.log(clinic.rating);
+    						if(clinic.rating !== '0.0'){
+    							rating = clinic.average_rating;
+    						}
+
+    						tr.append(
+    						        "<td>" + clinic.id+"</td>" +
+    								"<td>" + clinic.name+"</td>" +
+    								"<td>" + clinic.address+"</td>" +
+    								"<td>" + clinic.speciality+"</td>" +
+    								"<td>" + rating+"</td>" +
+    								"<td><button name=\"" + clinic.id + "\" id=\"appointments\" class=\"btn btn-default\" background-color=\"#555555\">" + 'Predefined appointments'+"</button></td>"
+
+    						);
+    						$("#clinicsForBasicViewFilter").append(tr);
+    					}
+    			)
+    		},
+    		error : function(errorThrown) {
+    			alert(errorThrown);
+    		}
+    	});
+}
+
+
+
+function basicFilterSortingClinics(){
+	var typeOfSpeciality = document.getElementById("typeOfSpeciality").value;
+	var clinicsSortingType = document.getElementById("clinicsSortingType").value;
+    console.log(clinicsSortingType);
+	$.ajax({
+		type : 'POST',
+		url : "/clinic/basicFilterSortingClinics",
+		dataType : "json",
+		cache: false,
+		contentType : 'application/json',
+		data: JSON.stringify({"nameAddressSorting": clinicsSortingType,"speciality": typeOfSpeciality}),
+		headers: { "Authorization": "Bearer " + token},
+		success : function(clinics) {
+
+			$("#clinicsForBasicViewFilter").find("tr:not(:first)").remove();
+
+			if(clinics.length === 0){
+				$("#messageClinicsForFilterFound").show();
+			}else{
+				$("#messageClinicsForFilterFound").hide();
+
+				$.each(
+						clinics,
+						function(index,clinic){
+							var tr = $('<tr></tr>');
+                            var rating = "No rating";
+
+                            if(clinic.rating !== '0.0'){
+                                rating = clinic.average_rating;
+                            }
+							tr.append(
+                                "<td>" + clinic.id+"</td>" +
+                                "<td>" + clinic.name+"</td>" +
+       							"<td>" + clinic.address+"</td>" +                    								"<td>" + clinic.speciality+"</td>" +
+                                "<td>" + rating+"</td>" +
+                                "<td><button name=\"" + clinic.id + "\" id=\"appointments\" class=\"btn btn-default\" background-color=\"#555555\">" + 'Predefined appointments'+"</button></td>"
+                            );
+                            $("#clinicsForBasicViewFilter").append(tr);
+						}
+				)
+			}
+		},
+		error : function(errorThrown) {
+			alert(errorThrown);
+		}
+	});
+}
+
+
+$(document).ready(function(){
+	$('#typeOfSpeciality').on('change',function() {
+		basicFilterSortingClinics();
+	});
+
+});
+
+$(document).ready(function(){
+	$('#clinicsSortingType').on('change',function() {
+		basicFilterSortingClinics();
+	});
+
+});
+
+$(document).ready(function(){
+    getSpecialities();
+});
 
 
 

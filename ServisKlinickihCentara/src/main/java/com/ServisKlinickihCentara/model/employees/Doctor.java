@@ -1,5 +1,6 @@
 package com.ServisKlinickihCentara.model.employees;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Doctor extends Employee
 	
 
 	public Doctor(Long id, String email, String password, String name, String surname, boolean enabled,
-			Timestamp lastPasswordResetDate, Clinic clinic, Timestamp shiftStart, Timestamp shiftEnd, Specialty specialty) {
+				  Timestamp lastPasswordResetDate, Clinic clinic, Time shiftStart, Time shiftEnd, Specialty specialty) {
 		super(id, email, password, name, surname, enabled, lastPasswordResetDate, clinic, shiftStart, shiftEnd);
 		// TODO Auto-generated constructor stub
 		this.specialty = specialty;
@@ -36,7 +37,7 @@ public class Doctor extends Employee
 
 
 	public Doctor(String email, String password, String name, String surname, boolean enabled,
-			Timestamp lastPasswordResetDate, Clinic clinic, Timestamp shiftStart, Timestamp shiftEnd, Specialty specialty) {
+			Timestamp lastPasswordResetDate, Clinic clinic, Time shiftStart, Time shiftEnd, Specialty specialty) {
 		super(email, password, name, surname, enabled, lastPasswordResetDate, clinic, shiftStart, shiftEnd);
 		// TODO Auto-generated constructor stub
 		this.specialty = specialty;

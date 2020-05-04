@@ -1,5 +1,6 @@
 package com.ServisKlinickihCentara.model.employees;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -26,10 +27,10 @@ public class Employee extends User
 	private Clinic clinic;
 	
 	@Column
-	private Timestamp shiftStart;
+	private Time shiftStart;
 	
 	@Column
-	private Timestamp shiftEnd;
+	private Time shiftEnd;
 
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "employee")
@@ -49,7 +50,7 @@ public class Employee extends User
 	
 
 	public Employee(Long id, String email, String password, String name, String surname, boolean enabled,
-			Timestamp lastPasswordResetDate, Clinic clinic, Timestamp shiftStart, Timestamp shiftEnd) {
+			Timestamp lastPasswordResetDate, Clinic clinic, Time shiftStart, Time shiftEnd) {
 		super(id, email, password, name, surname, enabled, lastPasswordResetDate);
 		// TODO Auto-generated constructor stub
 		this.onVacation = false;
@@ -62,7 +63,7 @@ public class Employee extends User
 
 
 	public Employee(String email, String password, String name, String surname, boolean enabled,
-			Timestamp lastPasswordResetDate, Clinic clinic, Timestamp shiftStart, Timestamp shiftEnd) {
+			Timestamp lastPasswordResetDate, Clinic clinic, Time shiftStart, Time shiftEnd) {
 		super(email, password, name, surname, enabled, lastPasswordResetDate);
 		// TODO Auto-generated constructor stub
 		this.onVacation = false;
@@ -96,19 +97,19 @@ public class Employee extends User
 		this.clinic = clinic;
 	}
 
-	public Timestamp getShiftStart() {
+	public Time getShiftStart() {
 		return shiftStart;
 	}
 
-	public void setShiftStart(Timestamp shiftStart) {
+	public void setShiftStart(Time shiftStart) {
 		this.shiftStart = shiftStart;
 	}
 
-	public Timestamp getShiftEnd() {
+	public Time getShiftEnd() {
 		return shiftEnd;
 	}
 
-	public void setShiftEnd(Timestamp shiftEnd) {
+	public void setShiftEnd(Time shiftEnd) {
 		this.shiftEnd = shiftEnd;
 	}
 

@@ -25,7 +25,7 @@ public class Term
     private Timestamp endTime;
     
     @Column
-    private Timestamp duration;//TODO: update later
+    private int duration;//in minutes
     
     @Column
     private double price;
@@ -34,7 +34,7 @@ public class Term
     
     
 
-	public Term(Long id, Room room, Timestamp startTime, Timestamp endTime, Timestamp duration, double price) 
+	public Term(Long id, Room room, Timestamp startTime, Timestamp endTime, int duration, double price)
 	{
 		super();
 		this.id = id;
@@ -86,12 +86,12 @@ public class Term
 		this.endTime = endTime;
 	}
 
-	public Timestamp getDuration() 
+	public int getDuration()
 	{
 		return duration;
 	}
 
-	public void setDuration(Timestamp duration) 
+	public void setDuration(int duration)
 	{
 		this.duration = duration;
 	}
