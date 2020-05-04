@@ -82,7 +82,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ResponseEntity<MessageDTO> updatePatient(){
+    public ResponseEntity<MessageDTO> test(){
         Doctor doctor = (Doctor) userService.findByUsername("milanmilanovic@gmail.com");
 
         System.out.println(doctor.getShiftStart());

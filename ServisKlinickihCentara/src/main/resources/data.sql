@@ -63,3 +63,6 @@ insert into servisklinickihcentara.term (id, room_id, start_time,end_time, durat
 
 insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, category, type, predefined, active, cancelled) values (1, 1, 1, 4, 6,1, true, true, false);
 insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, category, type, predefined, active, cancelled) values (2, 2, 1, 4, 6, 1, true, true, false);
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, category, type, predefined, active, cancelled) values (3, 3, 1, 4, 6,1, true, true, false);
+
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, category, type, predefined, active, cancelled) values (4, 4, 2, 5, 4, 1, true, true, false);

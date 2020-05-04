@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ServisKlinickihCentara.model.users.User;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Service
@@ -37,9 +38,9 @@ public class EmailService {
         final String uuid = UUID.randomUUID().toString();
         System.out.println("uuid = " + uuid);
 
-        Time time = new Time(12,44,0);
+        Timestamp timestamp1 = new Timestamp(System.currentTimeMillis() - 24*60*60*1000);
+        System.out.println(timestamp1);
 
-        System.out.println(time);
 
     }
 

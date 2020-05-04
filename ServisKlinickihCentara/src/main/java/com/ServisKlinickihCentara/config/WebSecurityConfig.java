@@ -80,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/clinic/getClinicsForBasicView").hasAuthority("PATIENT")
                     .antMatchers("/clinic/basicFilterSortingClinics/**").hasAuthority("PATIENT")
                     .antMatchers("/clinic/getSpecialities").hasAuthority("PATIENT")
+                    .antMatchers("/appointment/getPredefinedAppointments/**").hasAuthority("PATIENT")
                     .antMatchers("/auth/logout").permitAll()
                     .antMatchers("/auth/refresh").permitAll()
                 //svaki zahtev mora biti autorizovan
