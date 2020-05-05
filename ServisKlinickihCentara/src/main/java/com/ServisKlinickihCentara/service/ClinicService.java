@@ -86,7 +86,7 @@ public class ClinicService {
                 }
             }
             clinicBasicFrontendDTOS.add(new ClinicBasicFrontendDTO(c.getId().toString(),c.getName(),
-                    c.getAddress(),String.valueOf(rating)));
+                    c.getAddress(),c.getSpecialty().toString(), String.valueOf(rating)));
         }
 
 

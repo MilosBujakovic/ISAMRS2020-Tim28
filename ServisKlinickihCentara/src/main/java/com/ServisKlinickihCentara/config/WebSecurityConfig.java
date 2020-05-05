@@ -81,6 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/clinic/basicFilterSortingClinics/**").hasAuthority("PATIENT")
                     .antMatchers("/clinic/getSpecialities").hasAuthority("PATIENT")
                     .antMatchers("/appointment/getPredefinedAppointments/**").hasAuthority("PATIENT")
+                    .antMatchers("/appointment/quickAppointmentReservation").hasAuthority("PATIENT")
                     .antMatchers("/auth/logout").permitAll()
                     .antMatchers("/auth/refresh").permitAll()
                 //svaki zahtev mora biti autorizovan
@@ -107,6 +108,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 HttpMethod.GET,
                 "/user/activatePatient/**"
+        );
+        web.ignoring().antMatchers(
+                HttpMethod.GET,
+                "/appointment/acceptQuickAppointment/**"
+        );
+        web.ignoring().antMatchers(
+                HttpMethod.GET,
+                "/appointment/declineQuickAppointment/**"
         );
         web.ignoring().antMatchers(
                 HttpMethod.GET,

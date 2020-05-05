@@ -22,6 +22,7 @@ $(document).on("submit", ".login-form", function(e) {
 		    localStorage.setItem("token", results.access_token);
             localStorage.setItem("expires_in", results.expires_in);
             localStorage.setItem("authority", results.authority);
+            localStorage.setItem("email",username);
 
             if(results.authority == "PATIENT"){
                 window.location.href = "patient.html";

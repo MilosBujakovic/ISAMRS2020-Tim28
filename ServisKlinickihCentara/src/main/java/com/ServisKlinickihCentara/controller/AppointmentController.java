@@ -1,6 +1,8 @@
 package com.ServisKlinickihCentara.controller;
 
 
+import com.ServisKlinickihCentara.dto.MessageDTO;
+import com.ServisKlinickihCentara.dto.appointmentsDTO.AppointmentPreDTO;
 import com.ServisKlinickihCentara.dto.appointmentsDTO.PredefinedAppointmenViewtDTO;
 import com.ServisKlinickihCentara.model.enums.Specialty;
 import com.ServisKlinickihCentara.model.patients.Appointment;
@@ -10,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,5 +33,32 @@ public class AppointmentController {
         List<PredefinedAppointmenViewtDTO> appointments = appointmentService.getPredefinedAppointments(clinicId);
         return new ResponseEntity<List<PredefinedAppointmenViewtDTO>>(appointments, HttpStatus.OK);
     }
+
+
+    @RequestMapping(value = "/quickAppointmentReservation", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageDTO> quickAppointmentReservation(@RequestBody AppointmentPreDTO appointmentPreDTO){
+        System.out.println("quickAppointmentReservation");
+        MessageDTO messageDTO = appointmentService.quickAppointmentReservation(appointmentPreDTO.getEmail(),appointmentPreDTO.getAppointmentId());
+        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/acceptQuickAppointment/{uuid}/{appointmentId}/{appointmentRequestId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageDTO> acceptQuickAppointment(@PathVariable("uuid") String uuid,
+                                                             @PathVariable("appointmentId") String appointmentId,
+                                                             @PathVariable("appointmentRequestId") String appointmentRequestId){
+        System.out.println("acceptQuickAppointment");
+        MessageDTO messageDTO = appointmentService.acceptQuickAppointment(uuid,appointmentId,appointmentRequestId);
+        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/declineQuickAppointment/{uuid}/{appointmentRequestId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageDTO> declineQuickAppointment(@PathVariable("uuid") String uuid,
+                                                             @PathVariable("appointmentRequestId") String appointmentRequestId){
+        System.out.println("declineQuickAppointment");
+        MessageDTO messageDTO = appointmentService.declineQuickAppointment(uuid,appointmentRequestId);
+        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+    }
+
 
 }

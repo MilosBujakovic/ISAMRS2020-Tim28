@@ -12,12 +12,12 @@ insert into servisklinickihcentara.user (dtype,id,email, password, name, surname
 
 
 
-insert into servisklinickihcentara.clinic (id, name, address, specialty) values(1, 'Tirsova','Beogradska 33',6);
+insert into servisklinickihcentara.clinic (id, name, address, specialty) values(1, 'Tirsova','Beogradska 33',5);
 insert into servisklinickihcentara.clinic (id, name, address, specialty) values(2, 'Klinika 1','Vojvodjanska 13',4);
 insert into servisklinickihcentara.clinic (id, name, address, specialty) values(3, 'Klinika 2','Safarikova 33',3);
 insert into servisklinickihcentara.clinic (id, name, address, specialty) values(4, 'Klinika 3','Temerinska 67',8);
 
-insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',4,'milanmilanovic@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Milan', 'Milanovic', true, '2019-10-01 21:58:58.508',false,1,'09:00:00','17:00:00', 6);
+insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',4,'milanmilanovic@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Milan', 'Milanovic', true, '2019-10-01 21:58:58.508',false,1,'09:00:00','17:00:00', 5);
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',5,'stevanstevanovic@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Stevan', 'Stevanovic', true, '2019-10-01 21:58:58.508',false,2,'09:00:00','17:00:00', 4);
 
 
@@ -61,8 +61,8 @@ insert into servisklinickihcentara.term (id, room_id, start_time,end_time, durat
 
 
 
-insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, category, type, predefined, active, cancelled) values (1, 1, 1, 4, 6,1, true, true, false);
-insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, category, type, predefined, active, cancelled) values (2, 2, 1, 4, 6, 1, true, true, false);
-insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, category, type, predefined, active, cancelled) values (3, 3, 1, 4, 6,1, true, true, false);
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, category, type, predefined, active, cancelled) values (1, 1, 1, 4, 5,1, true, true, false);
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, category, type, predefined, active, cancelled) values (2, 2, 1, 4, 5, 1, true, true, false);
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, category, type, predefined, active, cancelled) values (3, 3, 1, 4, 5,1, true, true, false);
 
 insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, category, type, predefined, active, cancelled) values (4, 4, 2, 5, 4, 1, true, true, false);

@@ -175,6 +175,11 @@ public class UserService {
         return u;
     }
 
+    public User findByUuid(String uuid ) {
+        User u = userRepository.findByuuid(uuid);
+        return u;
+    }
+
     public List<User> findAll() throws AccessDeniedException {
         List<User> result = userRepository.findAll();
         return result;

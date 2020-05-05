@@ -118,7 +118,6 @@ $(document).on('click', '#clinic', function(e) {
         console.log(clinicId);
 
         var win = window.open('http://localhost:8080/clinicForPatient.html', '_blank');
-        win.focus();
 
 
 
@@ -160,9 +159,10 @@ function basicFilterSortingClinics(){
 							tr.append(
                                 "<td>" + clinic.id+"</td>" +
                                 "<td>" + clinic.name+"</td>" +
-       							"<td>" + clinic.address+"</td>" +                    								"<td>" + clinic.speciality+"</td>" +
+       							"<td>" + clinic.address+"</td>" +
+       							"<td>" + clinic.speciality+"</td>" +
                                 "<td>" + rating+"</td>" +
-                                "<td><button name=\"" + clinic.id + "\" id=\"appointments\" class=\"btn btn-default\" background-color=\"#555555\">" + 'Predefined appointments'+"</button></td>"
+                                "<td><button name=\"" + clinic.id + "\" id=\"clinic\" class=\"clinicButton\" background-color=\"#555555\">" + 'Predefined appointments'+"</button></td>"
                             );
                             $("#clinicsForBasicViewFilter").append(tr);
 						}
