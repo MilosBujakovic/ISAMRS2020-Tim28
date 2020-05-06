@@ -1,6 +1,8 @@
 package com.ServisKlinickihCentara.controller;
 
 
+import com.ServisKlinickihCentara.dto.clinicsDTO.AdvancedSearchClinicDTO;
+import com.ServisKlinickihCentara.dto.clinicsDTO.AdvancedSearchItem;
 import com.ServisKlinickihCentara.dto.clinicsDTO.ClinicBasicFrontendDTO;
 import com.ServisKlinickihCentara.dto.clinicsDTO.FilterClinicBasicDTO;
 import com.ServisKlinickihCentara.model.enums.Specialty;
@@ -11,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +52,11 @@ public class ClinicController {
 
 
 
+        @RequestMapping(value = "/getClinicsByAdvancedSearch", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<ArrayList<AdvancedSearchItem>> getClinicsByAdvancedSearch(@RequestBody AdvancedSearchClinicDTO advancedSearchClinicDTO){
+            ArrayList<AdvancedSearchItem> advancedSearchItems = clinicService.getClinicsByAdvancedSearch(advancedSearchClinicDTO);
+            return new ResponseEntity<ArrayList<AdvancedSearchItem>>(advancedSearchItems, HttpStatus.OK);
+        }
 
 
 }

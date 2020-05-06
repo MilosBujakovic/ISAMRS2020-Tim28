@@ -16,7 +16,7 @@ getPredefinedAppointments();
 
 function getPredefinedAppointments(){
     var clinicId = localStorage.getItem("clickedClinicId");
-
+    var token = localStorage.getItem("token");
     $.ajax({
             type : 'GET',
             dataType : "json",
@@ -61,7 +61,7 @@ $(document).on('click', '#appointmentReserve', function(e) {
 	    var email = localStorage.getItem("email")
 		var appointmentId = $(this).attr("name");
         console.log(appointmentId);
-
+        var token = localStorage.getItem("token");
         $.ajax({
         		type : 'POST',
         		url : "/appointment/quickAppointmentReservation",

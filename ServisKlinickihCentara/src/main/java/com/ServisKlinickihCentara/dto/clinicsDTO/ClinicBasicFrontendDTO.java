@@ -28,6 +28,7 @@ public class ClinicBasicFrontendDTO {
         this.average_rating = average_rating;
     }
 
+
     public String getId() {
         return id;
     }

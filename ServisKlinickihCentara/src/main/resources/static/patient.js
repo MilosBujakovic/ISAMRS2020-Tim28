@@ -20,6 +20,8 @@ $(document).ready(function(){
 });
 
 function getLoggedPatient() {
+    var token = localStorage.getItem("token");
+
 	$.ajax({
 		type : 'GET',
 		url : "/auth/getLoggedPatient",
@@ -53,6 +55,7 @@ function getLoggedPatient() {
 
 
 function getSpecialities(){
+    var token = localStorage.getItem("token");
 	$.ajax({
     		type : 'GET',
     		url : "/clinic/getSpecialities",
@@ -76,6 +79,7 @@ function getSpecialities(){
 
 
 function getClinicsForBasicView(){
+    var token = localStorage.getItem("token");
 	$.ajax({
     		type : 'GET',
     		url : "/clinic/getClinicsForBasicView",
@@ -117,14 +121,16 @@ function getClinicsForBasicView(){
 
 $(document).on('click', '#clinic', function(e) {
 	e.preventDefault();
+
 		var clinicId = $(this).attr("name");
         localStorage.setItem("clickedClinicId", clinicId);
         console.log(clinicId);
-
         var win = window.open('http://localhost:8080/clinicForPatient.html', '_blank');
+})
 
-
-
+$(document).on('click', '#advancedClinicsSearch', function(e) {
+	e.preventDefault();
+        var win = window.open('http://localhost:8080/advancedClinicSearch.html', '_blank');
 })
 
 
@@ -134,6 +140,7 @@ function basicFilterSortingClinics(){
 	var typeOfSpeciality = document.getElementById("typeOfSpeciality").value;
 	var clinicsSortingType = document.getElementById("clinicsSortingType").value;
     console.log(clinicsSortingType);
+    var token = localStorage.getItem("token");
 	$.ajax({
 		type : 'POST',
 		url : "/clinic/basicFilterSortingClinics",
@@ -184,6 +191,7 @@ function basicFilterSortingClinics(){
 function getPatientsAppointments(){
 	var email = localStorage.getItem("email");
     console.log(email);
+    var token = localStorage.getItem("token");
 	$.ajax({
 		type : 'POST',
 		url : "/appointment/getPatientsAppointments",
@@ -240,6 +248,7 @@ $(document).on('click',"#cancelAppointment",function(e){
 	e.preventDefault();
     var appointmentId = $(this).attr("name");
     console.log(appointmentId);
+    var token = localStorage.getItem("token");
     $.ajax({
 		type : 'PUT',
 		url : "/appointment/cancelAppointment/" + appointmentId,
@@ -279,6 +288,9 @@ $(document).ready(function(){
 $(document).ready(function(){
     getSpecialities();
 });
+
+
+
 
 
 
@@ -339,8 +351,7 @@ $(document).on("submit", "#changePassword", function(e){
     }
 
 
-
-
+    var token = localStorage.getItem("token");
 	$.ajax({
 		type : 'POST',
 		contentType : 'application/json',

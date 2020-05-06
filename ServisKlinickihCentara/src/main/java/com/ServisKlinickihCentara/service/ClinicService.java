@@ -1,14 +1,24 @@
 package com.ServisKlinickihCentara.service;
 
 
+import com.ServisKlinickihCentara.dto.clinicsDTO.AdvancedSearchClinicDTO;
+import com.ServisKlinickihCentara.dto.clinicsDTO.AdvancedSearchItem;
 import com.ServisKlinickihCentara.dto.clinicsDTO.ClinicBasicFrontendDTO;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.clinics.ClinicRating;
+import com.ServisKlinickihCentara.model.employees.Doctor;
+import com.ServisKlinickihCentara.model.employees.LeaveForm;
 import com.ServisKlinickihCentara.repository.ClinicRatingRepository;
 import com.ServisKlinickihCentara.repository.ClinicRepository;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,5 +103,82 @@ public class ClinicService {
         return clinicBasicFrontendDTOS;
     }
 
+    public ArrayList<AdvancedSearchItem> getClinicsByAdvancedSearch(AdvancedSearchClinicDTO advancedSearchClinicDTO) {
+        ArrayList<AdvancedSearchItem> advancedSearchItems = new ArrayList<>();
+        ArrayList<Clinic> clinics = clinicRepository.findAll();
 
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        System.out.println(timestamp.toLocalDateTime().toLocalDate());
+
+        LocalDate localDate = LocalDate.parse(advancedSearchClinicDTO.getDate());
+
+        for (Clinic clinic : clinics) {
+
+            if (!clinic.getAddress().toLowerCase().contains(advancedSearchClinicDTO.getAddress().toLowerCase()) &&
+                    !clinic.getAddress().equalsIgnoreCase("")) {
+                continue;
+            }
+
+            if (!clinic.getSpecialty().toString().equalsIgnoreCase(advancedSearchClinicDTO.getSpeciality()) &&
+                    !advancedSearchClinicDTO.getSpeciality().equalsIgnoreCase("")) {
+                continue;
+            }
+
+            double rating = 0;
+            rating = clinic.getClinicRatings().stream().collect(Collectors.averagingDouble(cr -> cr.getGrade()));
+
+
+            if(!advancedSearchClinicDTO.getRating().equalsIgnoreCase("")){
+                if ((int) rating != Integer.parseInt(advancedSearchClinicDTO.getRating())) {
+                    continue;
+                }
+            }
+
+            List<Doctor> doctors = clinic.getStaff();
+            //doctors = doctors.stream().filter(doctor -> doctor.getSpecialty().toString().equalsIgnoreCase(advancedSearchClinicDTO.getSpeciality())).collect(Collectors.toCollection(ArrayList::new));
+
+            boolean doctorIsFree = false;
+            for (Doctor doctor : doctors) {
+
+                List<LeaveForm> vacations = doctor.getVacations();
+                if (vacations.size() > 0) {
+                    for (LeaveForm vacation : vacations) {
+                        LocalDate vacationStartDate = vacation.getStartTime().toLocalDateTime().toLocalDate();
+                        LocalDate vacationEndDate = vacation.getEndTime().toLocalDateTime().toLocalDate();
+
+                        boolean isBetween = this.dateIsBetween(localDate, vacationStartDate, vacationEndDate);
+
+                        if (!isBetween) {
+                            doctorIsFree = true;
+                            break;
+                        }
+
+                    }
+                } else {
+                    doctorIsFree = true;
+                    break;
+                }
+            }
+            if (doctorIsFree) {
+                String ratingDto = "";
+                if (rating == 0) {
+                    ratingDto = "No rating";
+                } else {
+                    ratingDto = String.valueOf(rating);
+                }
+                AdvancedSearchItem a = new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), ratingDto, clinic.getAddress(), "price");
+                advancedSearchItems.add(a);
+            }
+
+        }
+        return advancedSearchItems;
+    }
+
+    public boolean dateIsBetween(LocalDate date, LocalDate startDate, LocalDate endDate){
+        if(date.isAfter(startDate) && date.isBefore(endDate)){
+            return true;
+        }
+        return false;
+    }
 }
