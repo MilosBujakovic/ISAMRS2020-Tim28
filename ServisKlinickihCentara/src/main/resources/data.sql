@@ -52,7 +52,7 @@ insert into servisklinickihcentara.room (id, number, clinic_id) values (5, 'sala
 insert into servisklinickihcentara.room (id, number, clinic_id) values (6, 'sala 3',2);
 
 
-insert into servisklinickihcentara.term (id, room_id, start_time,end_time, duration, price) values (1, 1, '2020-07-03 14:30:00.000', '2020-07-03 14:45:00.000',15,500);
+insert into servisklinickihcentara.term (id, room_id, start_time,end_time, duration, price) values (1, 1, '2020-07-06 14:30:00.000', '2020-07-03 14:45:00.000',15,500);
 insert into servisklinickihcentara.term (id, room_id, start_time,end_time, duration, price) values (2, 2, '2020-07-01 11:10:00.000', '2020-07-01 11:25:00.000',15,600);
 insert into servisklinickihcentara.term (id, room_id, start_time,end_time, duration, price) values (3, 3, '2020-07-02 09:30:00.000', '2020-07-03 09:45:00.000',15,550);
 insert into servisklinickihcentara.term (id, room_id, start_time,end_time, duration, price) values (4, 4, '2020-07-03 14:30:00.000', '2020-07-03 14:45:00.000',15,500);

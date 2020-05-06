@@ -3,6 +3,7 @@ package com.ServisKlinickihCentara.service;
 
 import com.ServisKlinickihCentara.dto.MessageDTO;
 import com.ServisKlinickihCentara.dto.appointmentsDTO.PredefinedAppointmenViewtDTO;
+import com.ServisKlinickihCentara.dto.appointmentsDTO.ReservedAppointmentDTO;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.clinics.Term;
 import com.ServisKlinickihCentara.model.employees.Doctor;
@@ -192,6 +193,103 @@ public class AppointmentService {
         appointmentRequest.setStatus(RequestStatus.DECLINED);
         appointmentRequestRepository.save(appointmentRequest);
         return new MessageDTO("You declined successfully appointment!!!", true);
+    }
+
+    public ArrayList<ReservedAppointmentDTO> getPatientsAppointments(String email){
+        Patient patient = (Patient) userService.findByUsername(email);
+        ArrayList<ReservedAppointmentDTO> reservedAppointmentDTOS = new ArrayList<>();
+
+        List<Appointment> appointments = patient.getApointments();
+        List<AppointmentRequest> appointmentRequests = patient.getRequests();
+
+        System.out.println(appointments.size());
+
+        for(Appointment a: appointments){
+            System.out.println(a.getTerm().getStartTime());
+            Timestamp today = new Timestamp(System.currentTimeMillis());
+            if(today.after(a.getTerm().getStartTime())){
+                System.out.println("if");
+                continue;
+            }
+            System.out.println("ovde");
+            ReservedAppointmentDTO reservedAppointmentDTO = new ReservedAppointmentDTO(a.getId().toString(),
+                    a.getTerm().getStartTime().toString(),a.getTerm().getRoom().getNumber(),
+                    a.getEmployee().getName() + " " + a.getEmployee().getSurname(), a.getCategory().toString(),
+                    String.valueOf(a.getTerm().getPrice()),RequestStatus.ACCEPTED.toString());
+            reservedAppointmentDTOS.add(reservedAppointmentDTO);
+
+        }
+
+        for(AppointmentRequest ar: appointmentRequests){
+            if(ar.getStatus() == RequestStatus.ACCEPTED){
+                continue;
+            }
+
+            Timestamp today = new Timestamp(System.currentTimeMillis());
+            if(today.after(ar.getTerm().getStartTime())){
+                continue;
+            }
+            Appointment a = this.findAppointmentByDoctorAndStartTime(ar.getDoctor().getId(),ar.getTerm().getStartTime());
+            ReservedAppointmentDTO reservedAppointmentDTO = new ReservedAppointmentDTO(a.getId().toString(),
+                    ar.getTerm().getStartTime().toString(),ar.getTerm().getRoom().getNumber(),
+                    ar.getDoctor().getName() + " " + ar.getDoctor().getSurname(), ar.getCategory().toString(),
+                    String.valueOf(ar.getTerm().getPrice()),ar.getStatus().toString());
+            reservedAppointmentDTOS.add(reservedAppointmentDTO);
+
+
+        }
+
+        return reservedAppointmentDTOS;
+    }
+
+
+    public MessageDTO cancelAppointment(String appointmentId){
+
+        Appointment appointment = appointmentRepository.findById(Long.parseLong(appointmentId));
+        Timestamp dayForward = new Timestamp(System.currentTimeMillis() + 24*60*60*1000);
+
+        Timestamp appointmentStartTime = appointment.getTerm().getStartTime();
+
+        if(!dayForward.before(appointmentStartTime)){
+            return new MessageDTO("The appointment is less than 24 hours, you cannot cancel them!",false);
+        }
+
+        AppointmentRequest appointmentRequest = this.findAppointmentRequestByDoctorAndStartTime(appointment.getEmployee().getId(),
+                appointmentStartTime);
+
+        appointmentRequest.setStatus(RequestStatus.DECLINED);
+        appointmentRequestRepository.save(appointmentRequest);
+        appointment.setCancelled(true);
+        //appointment.getPatient().getApointments().removeIf(appointment1 -> appointment.getId() == appointment.getId());
+        appointment.setPatient(null);
+        appointmentRepository.save(appointment);
+
+
+        return new MessageDTO("You successfully cancelled appointment!",true);
+    }
+
+
+
+    public Appointment findAppointmentByDoctorAndStartTime(long doctorId, Timestamp startTime){
+        List<Appointment> appointments = appointmentRepository.findAll();
+
+        for(Appointment appointment: appointments){
+            if(appointment.getEmployee().getId() == doctorId && appointment.getTerm().getStartTime().equals(startTime)){
+                return appointment;
+            }
+        }
+        return null;
+    }
+
+    public AppointmentRequest findAppointmentRequestByDoctorAndStartTime(long doctorId, Timestamp startTime){
+        List<AppointmentRequest> appointmentRequests = appointmentRequestRepository.findAll();
+
+        for(AppointmentRequest appointmentRequest: appointmentRequests){
+            if(appointmentRequest.getDoctor().getId() == doctorId && appointmentRequest.getTerm().getStartTime().equals(startTime)){
+                return appointmentRequest;
+            }
+        }
+        return null;
     }
 
 }

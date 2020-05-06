@@ -82,6 +82,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/clinic/getSpecialities").hasAuthority("PATIENT")
                     .antMatchers("/appointment/getPredefinedAppointments/**").hasAuthority("PATIENT")
                     .antMatchers("/appointment/quickAppointmentReservation").hasAuthority("PATIENT")
+                    .antMatchers("/appointment/getPatientsAppointments").hasAuthority("PATIENT")
+                    .antMatchers("/appointment/cancelAppointment/**").hasAuthority("PATIENT")
                     .antMatchers("/auth/logout").permitAll()
                     .antMatchers("/auth/refresh").permitAll()
                 //svaki zahtev mora biti autorizovan

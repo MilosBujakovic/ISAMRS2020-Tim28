@@ -80,6 +80,7 @@ input[type=checkbox] {
 <div class="tab">
     <button class="tablinks" onclick="openCity(event, 'clinics')">Clinics</button>
     <button class="tablinks" onclick="openCity(event, 'history')">History of visits</button>
+    <button class="tablinks" onclick="openCity(event, 'reservedAppointments')">Reserved appointments</button>
     <button class="tablinks" onclick="openCity(event, 'medicalRecord')">Medical record</button>
     <button class="tablinks" onclick="openCity(event, 'profile')">Profile</button>
     <button class="tablinks" onclick="openCity(event, 'logout')" id="logout">Log out</button>
@@ -120,6 +121,34 @@ input[type=checkbox] {
 </div>
 
 <div id="history" class="tabcontent">
+
+</div>
+
+<div id="reservedAppointments" class="tabcontent">
+
+    <form id="reservedAppointmentsForm">
+
+        <table id="reservedAppointmentsTable" class="table table-bordered table-hover" bgcolor="#d9d9d9">
+            <thead>
+            <th>id</th>
+            <th>date and time</th>
+            <th>room</th>
+            <th>doctor</th>
+            <th>type of checkup</th>
+            <th>price</th>
+            <th>status</th>
+            <th></th>
+            <th></th>
+            </thead>
+            <tbody>
+            </tbody>
+
+        </table>
+
+    </form>
+
+    <h3 id="messageReservedAppointmentsFound" style="display: none">No appointments!</h3>
+
 
 </div>
 

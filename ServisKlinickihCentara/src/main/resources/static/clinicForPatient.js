@@ -11,10 +11,6 @@ if (token == null){
 }
 
 
-
-
-
-
 getPredefinedAppointments();
 
 

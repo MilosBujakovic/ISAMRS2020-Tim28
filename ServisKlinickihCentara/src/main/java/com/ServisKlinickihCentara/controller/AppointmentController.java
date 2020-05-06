@@ -1,9 +1,11 @@
 package com.ServisKlinickihCentara.controller;
 
 
+import com.ServisKlinickihCentara.dto.EmailDTO;
 import com.ServisKlinickihCentara.dto.MessageDTO;
 import com.ServisKlinickihCentara.dto.appointmentsDTO.AppointmentPreDTO;
 import com.ServisKlinickihCentara.dto.appointmentsDTO.PredefinedAppointmenViewtDTO;
+import com.ServisKlinickihCentara.dto.appointmentsDTO.ReservedAppointmentDTO;
 import com.ServisKlinickihCentara.model.enums.Specialty;
 import com.ServisKlinickihCentara.model.patients.Appointment;
 import com.ServisKlinickihCentara.service.AppointmentService;
@@ -59,6 +61,24 @@ public class AppointmentController {
         MessageDTO messageDTO = appointmentService.declineQuickAppointment(uuid,appointmentRequestId);
         return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
     }
+
+
+    @RequestMapping(value = "/getPatientsAppointments", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ArrayList<ReservedAppointmentDTO>> getPatientsAppointments(@RequestBody EmailDTO emailDTO){
+        System.out.println("getPatientsAppointments");
+        ArrayList<ReservedAppointmentDTO> reservedAppointmentDTOS = appointmentService.getPatientsAppointments(emailDTO.getEmail());
+        return new ResponseEntity<ArrayList<ReservedAppointmentDTO>>(reservedAppointmentDTOS, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/cancelAppointment/{appointmentId}", method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageDTO> cancelAppointment(@PathVariable("appointmentId") String appointmentId){
+        System.out.println("cancelAppointment");
+        MessageDTO messageDTO = appointmentService.cancelAppointment(appointmentId);
+        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+    }
+
 
 
 }

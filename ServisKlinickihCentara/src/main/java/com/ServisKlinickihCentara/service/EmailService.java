@@ -38,7 +38,7 @@ public class EmailService {
         final String uuid = UUID.randomUUID().toString();
         System.out.println("uuid = " + uuid);
 
-        Timestamp timestamp1 = new Timestamp(System.currentTimeMillis() - 24*60*60*1000);
+        Timestamp timestamp1 = new Timestamp(System.currentTimeMillis() + 24*60*60*1000);
         System.out.println(timestamp1);
 
 

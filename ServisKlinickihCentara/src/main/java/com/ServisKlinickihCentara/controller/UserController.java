@@ -58,7 +58,7 @@ public class UserController {
     @RequestMapping(value = "/rejectPatient/{email}/{message}", method = RequestMethod.PUT)
     public ResponseEntity rejectPatient(@PathVariable String email,@PathVariable String message){
         userService.deletePatient(email);
-        emailService.sendMail(email,"Your request for registration has been denied!!!",message);
+        emailService.sendMail("slavengaric@gmail.com","Your request for registration has been denied!!!",message);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

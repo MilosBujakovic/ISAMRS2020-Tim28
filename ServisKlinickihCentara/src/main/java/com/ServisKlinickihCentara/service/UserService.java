@@ -5,7 +5,9 @@ import com.ServisKlinickihCentara.dto.PatientDTO;
 import com.ServisKlinickihCentara.dto.PatientUpdateDTO;
 import com.ServisKlinickihCentara.dto.UnregisteredPatientDTO;
 import com.ServisKlinickihCentara.model.patients.Patient;
+import com.ServisKlinickihCentara.model.users.Authority;
 import com.ServisKlinickihCentara.model.users.User;
+import com.ServisKlinickihCentara.repository.AuthorityRepository;
 import com.ServisKlinickihCentara.repository.PatientRepository;
 import com.ServisKlinickihCentara.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class UserService {
 
     @Autowired
     private PatientRepository patientRepository;
+
+    @Autowired
+    private AuthorityRepository authorityRepository;
 
     @Autowired
     private  EmailService emailService;
@@ -75,6 +80,13 @@ public class UserService {
         patient.setCity(patientDTO.getCity());
         patient.setAddress(patientDTO.getAddress());
         patient.setCountry(patientDTO.getCountry());
+
+        try {
+            Integer.parseInt(patientDTO.getPhone_number());
+        } catch (NumberFormatException e){
+            return new MessageDTO("Phone number must contains only numbers!", false);
+        }
+
         patient.setPhoneNumber(patientDTO.getPhone_number());
         patient.setInsuranceNumber(patientDTO.getInsurance_number());
         patient.setEnabled(false);
@@ -106,8 +118,6 @@ public class UserService {
         patient.setCity(patientUpdateDTO.getCity());
         patient.setAddress(patientUpdateDTO.getAddress());
         patient.setCountry(patientUpdateDTO.getCountry());
-
-
 
 
         if(!patient.getPhoneNumber().equalsIgnoreCase(patientUpdateDTO.getPhone())){
@@ -148,13 +158,17 @@ public class UserService {
 
     public void sendActivationLink(String email){
         Patient patient = patientRepository.findByEmail(email);
-        this.emailService.sendMail(email,"Activation link for registration","Please click below to activate your account \nhttp://localhost:8080/user/activatePatient/" + patient.getUuid());
+        this.emailService.sendMail("slavengaric@gmail.com","Activation link for registration","Please click below to activate your account \nhttp://localhost:8080/user/activatePatient/" + patient.getUuid());
     }
 
 
     public void setPatientActive(String uuid) throws UsernameNotFoundException {
         User user = userRepository.findByuuid(uuid);
         Patient patient = (Patient) user;
+        Authority authority = authorityRepository.findByName("PATIENT");
+        ArrayList<Authority> authorities = new ArrayList<>();
+        authorities.add(authority);
+        patient.setAuthorities(authorities);
         patient.setEnabled(true);
         patientRepository.save(patient);
     }

@@ -12,8 +12,12 @@ if (token == null){
 }
 
 
-getLoggedPatient();
-getClinicsForBasicView();
+
+$(document).ready(function(){
+    getLoggedPatient();
+    getClinicsForBasicView();
+    getPatientsAppointments();
+});
 
 function getLoggedPatient() {
 	$.ajax({
@@ -174,6 +178,88 @@ function basicFilterSortingClinics(){
 		}
 	});
 }
+
+
+
+function getPatientsAppointments(){
+	var email = localStorage.getItem("email");
+    console.log(email);
+	$.ajax({
+		type : 'POST',
+		url : "/appointment/getPatientsAppointments",
+		dataType : "json",
+		cache: false,
+		contentType : 'application/json',
+		data: JSON.stringify({"email": email}),
+		headers: { "Authorization": "Bearer " + token},
+		success : function(appointments) {
+            console.log(appointments.length);
+			$("#reservedAppointmentsTable").find("tr:not(:first)").remove();
+
+			if(appointments.length === 0){
+				$("#reservedAppointmentsTable").hide();
+                $("#messageReservedAppointmentsFound").show();
+			}else{
+				$("#reservedAppointmentsTable").show();
+                $("#messageReservedAppointmentsFound").hide();
+				$.each(
+						appointments,
+						function(index,appointment){
+							var tr = $('<tr></tr>');
+                            var button = "";
+                            console.log(appointment.status);
+                            if(appointment.status == 'ACCEPTED'){
+                                button = "<button name=\"" + appointment.id + "\" id=\"cancelAppointment\"  background-color=\"#f44336\">" + 'Cancel'+"</button>";
+                            }
+
+
+							tr.append(
+                                "<td>" + appointment.id+"</td>" +
+                                "<td>" + appointment.timestamp+"</td>" +
+       							"<td>" + appointment.room+"</td>" +
+       							"<td>" + appointment.doctor+"</td>" +
+                                "<td>" + appointment.typeSpeciality+"</td>" +
+                                "<td>" + appointment.price+"</td>" +
+                                "<td>" + appointment.status+"</td>" +
+                                "<td>" + button + "</td>"
+                            );
+                            $("#reservedAppointmentsTable").append(tr);
+						}
+				)
+			}
+		},
+		error : function(errorThrown) {
+			alert(errorThrown);
+		}
+	});
+}
+
+
+
+$(document).on('click',"#cancelAppointment",function(e){
+	e.preventDefault();
+    var appointmentId = $(this).attr("name");
+    console.log(appointmentId);
+    $.ajax({
+		type : 'PUT',
+		url : "/appointment/cancelAppointment/" + appointmentId,
+		dataType: "json",
+		cache: false,
+		headers: { "Authorization": "Bearer " + token},
+		success : function(message) {
+            if(message.success == true){
+                getPatientsAppointments();
+            }
+            alert(message.message);
+	    },
+		error : function(errorThrown) {
+			alert(errorThrown);
+		}
+	});
+})
+
+
+
 
 
 $(document).ready(function(){
