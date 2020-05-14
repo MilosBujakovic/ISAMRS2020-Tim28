@@ -69,6 +69,19 @@ input[type=checkbox] {
 .clinicButton {background-color: #f44336;}
 
 
+.sansserif {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+.two { width: 10em; max-width: 50%; }
+.two p { display: inline-block; max-width: 10%; }
+.two p:nth-child(1) { float:left; }
+.two p:nth-child(2) { float:right; }
+
+
+
 </style>
 
 </head>
@@ -154,6 +167,47 @@ input[type=checkbox] {
 </div>
 
 <div id="medicalRecord" class="tabcontent">
+
+
+    <h3 id="noMedicalRecordMessage">No medical record!</h3>
+
+    <div id="medicalRecordData" style="display: none">
+
+        <table>
+            <tr>
+                <td><p class="sanserif">age:&nbsp;</p></td>
+                <td><p class="sanserif" id="age"></p></td>
+            </tr>
+            <tr>
+                <td><p class="sanserif">height:</p></td>
+                <td><p class="sanserif" id="height">&nbsp;</p></td>
+            </tr>
+            <tr>
+                <td><p class="sanserif">weight:</p></td>
+                <td><p class="sanserif" id="weight">&nbsp;</p></td>
+            </tr>
+            <tr>
+                <td><p class="sanserif">diopter:</p></td>
+                <td><p class="sanserif" id="diopter">&nbsp;</p></td>
+            </tr>
+            <tr>
+                <td><p class="sanserif">blood type:</p></td>
+                <td><p class="sanserif" id="bloodType">&nbsp;</p></td>
+            </tr>
+            <tr>
+                <td><p class="sanserif">rh factor:</p></td>
+                <td><p class="sanserif" id="rhFactor">&nbsp;</p></td>
+            </tr>
+            <tr>
+                <td><p class="sanserif">alergies:</p></td>
+                <td><textarea id="alergies"></textarea></td>
+            </tr>
+        </table>
+
+        <h5 id="diseaseHistoryFound">Disease history:</h5>
+        <ul id="diseases"></ul>
+
+    </div>
 
 </div>
 

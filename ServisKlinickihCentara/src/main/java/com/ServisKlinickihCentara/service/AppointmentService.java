@@ -208,10 +208,8 @@ public class AppointmentService {
             System.out.println(a.getTerm().getStartTime());
             Timestamp today = new Timestamp(System.currentTimeMillis());
             if(today.after(a.getTerm().getStartTime())){
-                System.out.println("if");
                 continue;
             }
-            System.out.println("ovde");
             ReservedAppointmentDTO reservedAppointmentDTO = new ReservedAppointmentDTO(a.getId().toString(),
                     a.getTerm().getStartTime().toString(),a.getTerm().getRoom().getNumber(),
                     a.getEmployee().getName() + " " + a.getEmployee().getSurname(), a.getCategory().toString(),

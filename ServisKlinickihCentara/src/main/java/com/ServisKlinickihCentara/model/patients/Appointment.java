@@ -8,6 +8,7 @@ import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.employees.Employee;
 import com.ServisKlinickihCentara.model.enums.AppointmentType;
 import com.ServisKlinickihCentara.model.enums.Specialty;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -44,8 +45,9 @@ public class Appointment
 	
 	@Column
 	private AppointmentType type;
-	
-	@OneToOne
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "report_id", referencedColumnName = "id")
 	private AppointmentReport report;
 	
 	@Column
@@ -221,4 +223,6 @@ public class Appointment
 	public void setClinic(Clinic clinic) {
 		this.clinic = clinic;
 	}
+
+
 }

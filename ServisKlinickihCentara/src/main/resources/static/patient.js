@@ -17,7 +17,15 @@ $(document).ready(function(){
     getLoggedPatient();
     getClinicsForBasicView();
     getPatientsAppointments();
+
 });
+
+
+$(document).ready(function(){
+    getMedicalRecord();
+});
+
+
 
 function getLoggedPatient() {
     var token = localStorage.getItem("token");
@@ -45,6 +53,83 @@ function getLoggedPatient() {
 					$("#phone").attr('value',patient.phone);
 				});
 			}
+		},
+	    error : function(errorThrown) {
+		    alert(errorThrown);
+	    }
+    });
+}
+
+
+
+function getMedicalRecord() {
+    var token = localStorage.getItem("token");
+    var email = localStorage.getItem("email");
+
+	$.ajax({
+		type : 'POST',
+		url : "/medicalRecord/getMedicalRecord",
+		cache: false,
+		contentType : 'application/json',
+		dataType: "json",
+		data: JSON.stringify({"email": email}),
+		headers: { "Authorization": "Bearer " + token},
+		success : function(medicalRecord) {
+
+            if(medicalRecord.age != null){
+                $("#medicalRecordData").show();
+                $("#noMedicalRecordMessage").hide();
+                $("#age").text(medicalRecord.age);
+                $("#height").text(medicalRecord.height);
+                $("#weight").text(medicalRecord.weight);
+                $("#diopter").text(medicalRecord.diopter);
+                $("#bloodType").text(medicalRecord.bloodtype);
+                $("#rhFactor").text(medicalRecord.rhfactor);
+                $("#alergies").text(medicalRecord.alergies);
+                console.log(medicalRecord.diseaseHistoryDTOS.length);
+                if (medicalRecord.diseaseHistoryDTOS.length > 0){
+                    $("#diseaseHistoryFound").show();
+                    $("#diseases").show();
+
+                    $.each(
+                        medicalRecord.diseaseHistoryDTOS,
+                        function(index,disease){
+                            var table = $("<table></table>");
+                            table.append(
+                                "<tr><td>" + 'Desease: ' + disease.desease + "</td></tr>" +
+                                "<tr><td>" +  'Treatment: ' + disease.treatment + "</td></tr>" +
+                                "<tr><td>" +  'Description: ' + disease.description + "</td></tr>"
+                            )
+                            $("#diseases").append("<li>" + disease.date + "</li>");
+                            $("#diseases").append(table);
+                            console.log(disease.prescriptionMrDTOS.length);
+                            if (disease.prescriptionMrDTOS.length > 0){
+                                $("#diseases").append("<p>" + 'Prescriptions:' + "</p>");
+                                var prescriptionTable = $("<table class=\"table table-bordered table-hover\" style=\"width:350px\" bgcolor=\"#d9d9d9\"><thead><th>medication</th><th>amount per day</th></thead></table>");
+                                $.each(
+                                   disease.prescriptionMrDTOS,
+                                   function(index,prescription){
+                                        console.log(prescription.name);
+                                        prescriptionTable.append(
+                                            "<tr><td>"  + prescription.name + "</td><td>" + prescription.amount + "</td></tr>"
+                                        )
+                                   }
+                                )
+                                 $("#diseases").append(prescriptionTable);
+                            }
+                        }
+                    )
+                }else{
+                    $("#diseaseHistoryFound").hide();
+                    $("#diseases").hide();
+                }
+
+
+            }else{
+                $("#medicalRecordData").hide();
+                $("#noMedicalRecordMessage").show();
+            }
+
 		},
 	    error : function(errorThrown) {
 		    alert(errorThrown);
@@ -93,7 +178,6 @@ function getClinicsForBasicView(){
     					function(index,clinic){
     						var tr = $('<tr></tr>');
     						var rating = "No rating";
-                            console.log(clinic.rating);
     						if(clinic.rating !== '0.0'){
     							rating = clinic.average_rating;
     						}
@@ -124,7 +208,6 @@ $(document).on('click', '#clinic', function(e) {
 
 		var clinicId = $(this).attr("name");
         localStorage.setItem("clickedClinicId", clinicId);
-        console.log(clinicId);
         var win = window.open('http://localhost:8080/clinicForPatient.html', '_blank');
 })
 
@@ -139,7 +222,7 @@ $(document).on('click', '#advancedClinicsSearch', function(e) {
 function basicFilterSortingClinics(){
 	var typeOfSpeciality = document.getElementById("typeOfSpeciality").value;
 	var clinicsSortingType = document.getElementById("clinicsSortingType").value;
-    console.log(clinicsSortingType);
+
     var token = localStorage.getItem("token");
 	$.ajax({
 		type : 'POST',
@@ -190,7 +273,6 @@ function basicFilterSortingClinics(){
 
 function getPatientsAppointments(){
 	var email = localStorage.getItem("email");
-    console.log(email);
     var token = localStorage.getItem("token");
 	$.ajax({
 		type : 'POST',
@@ -201,7 +283,6 @@ function getPatientsAppointments(){
 		data: JSON.stringify({"email": email}),
 		headers: { "Authorization": "Bearer " + token},
 		success : function(appointments) {
-            console.log(appointments.length);
 			$("#reservedAppointmentsTable").find("tr:not(:first)").remove();
 
 			if(appointments.length === 0){
@@ -215,11 +296,10 @@ function getPatientsAppointments(){
 						function(index,appointment){
 							var tr = $('<tr></tr>');
                             var button = "";
-                            console.log(appointment.status);
+
                             if(appointment.status == 'ACCEPTED'){
                                 button = "<button name=\"" + appointment.id + "\" id=\"cancelAppointment\"  background-color=\"#f44336\">" + 'Cancel'+"</button>";
                             }
-
 
 							tr.append(
                                 "<td>" + appointment.id+"</td>" +
@@ -247,7 +327,7 @@ function getPatientsAppointments(){
 $(document).on('click',"#cancelAppointment",function(e){
 	e.preventDefault();
     var appointmentId = $(this).attr("name");
-    console.log(appointmentId);
+
     var token = localStorage.getItem("token");
     $.ajax({
 		type : 'PUT',

@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.clinics.Diagnosis;
 import com.ServisKlinickihCentara.model.employees.Prescription;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -22,8 +23,12 @@ public class AppointmentReport
 	
 	@Column
 	private String description;
+
+	@OneToOne(mappedBy = "report")
+	private Appointment appointment;
 	
-	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinTable(name = "appointment_report_prescription", joinColumns = @JoinColumn(name = "appointment_report_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "prescription_id", referencedColumnName = "id"))
 	private List<Prescription> prescriptions;
 
 
@@ -53,6 +58,15 @@ public class AppointmentReport
 		this.id = id;
 		this.diagnosis = diagnosis;
 		this.description = description;
+		this.prescriptions = prescriptions;
+		this.medicalRecord = medicalRecord;
+	}
+
+	public AppointmentReport(Long id, Diagnosis diagnosis, String description, Appointment appointment, List<Prescription> prescriptions, MedicalRecord medicalRecord) {
+		this.id = id;
+		this.diagnosis = diagnosis;
+		this.description = description;
+		this.appointment = appointment;
 		this.prescriptions = prescriptions;
 		this.medicalRecord = medicalRecord;
 	}
@@ -104,5 +118,13 @@ public class AppointmentReport
 
 	public void setMedicalRecord(MedicalRecord medicalRecord) {
 		this.medicalRecord = medicalRecord;
+	}
+
+	public Appointment getAppointment() {
+		return appointment;
+	}
+
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
 	}
 }

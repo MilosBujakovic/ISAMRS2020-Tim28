@@ -22,13 +22,19 @@ public class MedicalRecord
 	private Patient patient;
 	
 	@Column
-	private Long age;
+	private int age;
 	
 	@Column
 	private double height;
 	
 	@Column 
 	private double weight;
+
+	@Column
+	private String diopter;
+
+	@Column
+	private String alergies;
 	
 	@Column 
 	private BloodType bloodtype;
@@ -42,7 +48,7 @@ public class MedicalRecord
 	
 	public MedicalRecord() {}
 
-	public MedicalRecord(Long id, Patient patient, Long age, double height, double weight, BloodType bloodtype,
+	public MedicalRecord(Long id, Patient patient, int age, double height, double weight, BloodType bloodtype,
 			RhType rhfactor, List<AppointmentReport> reports) {
 		super();
 		this.id = id;
@@ -55,13 +61,26 @@ public class MedicalRecord
 		this.reports = reports;
 	}
 
-	public MedicalRecord(Patient patient, Long age, double height, double weight, BloodType bloodtype, RhType rhfactor,
+	public MedicalRecord(Patient patient, int age, double height, double weight, BloodType bloodtype, RhType rhfactor,
 			List<AppointmentReport> reports) {
 		super();
 		this.patient = patient;
 		this.age = age;
 		this.height = height;
 		this.weight = weight;
+		this.bloodtype = bloodtype;
+		this.rhfactor = rhfactor;
+		this.reports = reports;
+	}
+
+	public MedicalRecord(Long id, Patient patient, int age, double height, double weight, String diopter, String alergies, BloodType bloodtype, RhType rhfactor, List<AppointmentReport> reports) {
+		this.id = id;
+		this.patient = patient;
+		this.age = age;
+		this.height = height;
+		this.weight = weight;
+		this.diopter = diopter;
+		this.alergies = alergies;
 		this.bloodtype = bloodtype;
 		this.rhfactor = rhfactor;
 		this.reports = reports;
@@ -83,11 +102,11 @@ public class MedicalRecord
 		this.patient = patient;
 	}
 
-	public Long getAge() {
+	public int getAge() {
 		return age;
 	}
 
-	public void setAge(Long age) {
+	public void setAge(int age) {
 		this.age = age;
 	}
 
@@ -130,7 +149,20 @@ public class MedicalRecord
 	public void setReports(List<AppointmentReport> reports) {
 		this.reports = reports;
 	}
-	
-		
-	
+
+	public String getDiopter() {
+		return diopter;
+	}
+
+	public void setDiopter(String diopter) {
+		this.diopter = diopter;
+	}
+
+	public String getAlergies() {
+		return alergies;
+	}
+
+	public void setAlergies(String alergies) {
+		this.alergies = alergies;
+	}
 }

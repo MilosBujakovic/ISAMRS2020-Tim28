@@ -10,18 +10,18 @@ public class Prescription
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@OneToOne
+	@ManyToOne
 	private Medication medication;
 	
 	@Column
-	private Long amountPerDay;
+	private int amountPerDay;
 	
 	@Column
 	private boolean verified;
 	
 	public Prescription() {}
 
-	public Prescription(Long id, Medication medication, Long amountPerDay, boolean verified) {
+	public Prescription(Long id, Medication medication, int amountPerDay, boolean verified) {
 		super();
 		this.id = id;
 		this.medication = medication;
@@ -29,7 +29,7 @@ public class Prescription
 		this.verified = verified;
 	}
 
-	public Prescription(Medication medication, Long amountPerDay, boolean verified) {
+	public Prescription(Medication medication, int amountPerDay, boolean verified) {
 		super();
 		this.medication = medication;
 		this.amountPerDay = amountPerDay;
@@ -52,11 +52,11 @@ public class Prescription
 		this.medication = medication;
 	}
 
-	public Long getAmountPerDay() {
+	public int getAmountPerDay() {
 		return amountPerDay;
 	}
 
-	public void setAmountPerDay(Long amountPerDay) {
+	public void setAmountPerDay(int amountPerDay) {
 		this.amountPerDay = amountPerDay;
 	}
 
