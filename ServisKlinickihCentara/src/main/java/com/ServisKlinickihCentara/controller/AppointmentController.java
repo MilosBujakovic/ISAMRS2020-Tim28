@@ -3,9 +3,7 @@ package com.ServisKlinickihCentara.controller;
 
 import com.ServisKlinickihCentara.dto.EmailDTO;
 import com.ServisKlinickihCentara.dto.MessageDTO;
-import com.ServisKlinickihCentara.dto.appointmentsDTO.AppointmentPreDTO;
-import com.ServisKlinickihCentara.dto.appointmentsDTO.PredefinedAppointmenViewtDTO;
-import com.ServisKlinickihCentara.dto.appointmentsDTO.ReservedAppointmentDTO;
+import com.ServisKlinickihCentara.dto.appointmentsDTO.*;
 import com.ServisKlinickihCentara.model.enums.Specialty;
 import com.ServisKlinickihCentara.model.patients.Appointment;
 import com.ServisKlinickihCentara.service.AppointmentService;
@@ -79,6 +77,21 @@ public class AppointmentController {
         return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/getPatientsHistory", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ArrayList<HistoryVisitDTO>> getPatientsHistory(@RequestBody EmailDTO emailDTO){
+        System.out.println("getPatientsHistory");
+        ArrayList<HistoryVisitDTO> historyVisitDTOS = appointmentService.getPatientsHistory(emailDTO.getEmail());
+        return new ResponseEntity<ArrayList<HistoryVisitDTO>>(historyVisitDTOS, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/filterSortingPatientsHistory", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ArrayList<HistoryVisitDTO>> filterSortingPatientsHistory(@RequestBody HistoryVisitFilterSortDTO historyVisitFilterSortDTO){
+        System.out.println("filterSortingPatientsHistory");
+        ArrayList<HistoryVisitDTO> historyVisitDTOS = appointmentService.filterSortingPatientsHistory(historyVisitFilterSortDTO);
+        return new ResponseEntity<ArrayList<HistoryVisitDTO>>(historyVisitDTOS, HttpStatus.OK);
+    }
 
 
 }

@@ -17,6 +17,7 @@ $(document).ready(function(){
     getLoggedPatient();
     getClinicsForBasicView();
     getPatientsAppointments();
+    getPatientsHistory();
 
 });
 
@@ -153,6 +154,7 @@ function getSpecialities(){
     					specialities,
     					function(index,speciality){
     						$("#typeOfSpeciality").append('<option value=\"' + speciality + '\">' + speciality + '</option>');
+    						$("#specialityOfCheckup").append('<option value=\"' + speciality + '\">' + speciality + '</option>');
     					}
     			)
     		},
@@ -270,6 +272,98 @@ function basicFilterSortingClinics(){
 }
 
 
+function getPatientsHistory(){
+    var token = localStorage.getItem("token");
+    var email = localStorage.getItem("email");
+	$.ajax({
+    		type : 'POST',
+    		url : "/appointment/getPatientsHistory",
+    		cache: false,
+    		dataType: "json",
+    		contentType : 'application/json',
+    		data: JSON.stringify({"email": email}),
+            headers: { "Authorization": "Bearer " + token},
+    		success : function(visits) {
+    			writeVisitsData(visits);
+    		},
+    		error : function(errorThrown) {
+    			alert(errorThrown);
+    		}
+    	});
+}
+
+
+function writeVisitsData(visits){
+    $("#historyAppointmentsView").find("tr:not(:first)").remove();
+
+    if(visits.length === 0){
+        //$("#historyAppointmentsView").hide();
+        $("#messageHistoryAppointmentsFound").show();
+    }else{
+       // $("#historyAppointmentsView").show();
+        $("#messageHistoryAppointmentsFound").hide();
+        $.each(
+             visits,
+             function(index,visit){
+                var tr = $('<tr></tr>');
+
+                tr.append(
+                    "<td>" + visit.date+"</td>" +
+                    "<td>" + visit.clinic+"</td>" +
+                    "<td>" + visit.doctor+"</td>" +
+                    "<td>" + visit.visitType+"</td>" +
+                    "<td>" + visit.speciality+"</td>" +
+                    "<td>" + visit.price+"</td>"
+                );
+                $("#historyAppointmentsView").append(tr);
+             }
+        )
+    }
+
+}
+
+function filterSortingPatientsHistory(){
+    var token = localStorage.getItem("token");
+    var email = localStorage.getItem("email");
+    var visitType = document.getElementById("visitType").value;
+    var speciality = document.getElementById("specialityOfCheckup").value;
+    var sortingType = document.getElementById("historySortingType").value;
+
+	$.ajax({
+    		type : 'POST',
+    		url : "/appointment/filterSortingPatientsHistory",
+    		cache: false,
+    		dataType: "json",
+    		contentType : 'application/json',
+    		data: JSON.stringify({"email": email,"visitType": visitType,"speciality": speciality,"sortingType": sortingType}),
+            headers: { "Authorization": "Bearer " + token},
+    		success : function(visits) {
+    			writeVisitsData(visits);
+    		},
+    		error : function(errorThrown) {
+    			alert(errorThrown);
+    		}
+    	});
+}
+
+$(document).ready(function(){
+	$('#visitType').on('change',function() {
+		filterSortingPatientsHistory();
+	});
+});
+
+$(document).ready(function(){
+	$('#specialityOfCheckup').on('change',function() {
+		filterSortingPatientsHistory();
+	});
+});
+
+$(document).ready(function(){
+	$('#historySortingType').on('change',function() {
+		filterSortingPatientsHistory();
+	});
+});
+
 
 function getPatientsAppointments(){
 	var email = localStorage.getItem("email");
@@ -355,7 +449,6 @@ $(document).ready(function(){
 	$('#typeOfSpeciality').on('change',function() {
 		basicFilterSortingClinics();
 	});
-
 });
 
 $(document).ready(function(){

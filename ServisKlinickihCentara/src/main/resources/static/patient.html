@@ -136,6 +136,40 @@ input[type=checkbox] {
 
 <div id="history" class="tabcontent">
 
+    <form id="historyAppointmentsForm">
+
+        <table id="historyAppointmentsView" class="table table-bordered table-hover" bgcolor="#d9d9d9">
+            <thead>
+            <th>date</th>
+            <th>clinic</th>
+            <th>doctor</th>
+            <th>visit type<select id="visitType" class="form-control">
+                <option value="" selected></option>
+                <option value="CHECKUP">CHECKUP</option>
+                <option value="OPERATION">OPERATION</option>
+            </select></th>
+            <th>speciality<select id="specialityOfCheckup" class="form-control">
+                <option value="" selected></option>
+            </select></th>
+            <th>price</th>
+            <th><label>Sort by:</label><select id="historySortingType" class="form-control">
+                <option value="" selected></option>
+                <option value="date">date</option>
+                <option value="typeSpeciality">type of speciality</option>
+                <option value="price">price</option>
+            </select></th>
+            <th></th>
+            </thead>
+            <tbody>
+            </tbody>
+
+        </table>
+
+    </form>
+
+    <h3 id="messageHistoryAppointmentsFound" style="display: none">No appointments in past!</h3>
+
+
 </div>
 
 <div id="reservedAppointments" class="tabcontent">

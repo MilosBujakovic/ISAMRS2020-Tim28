@@ -2,6 +2,8 @@ package com.ServisKlinickihCentara.service;
 
 
 import com.ServisKlinickihCentara.dto.MessageDTO;
+import com.ServisKlinickihCentara.dto.appointmentsDTO.HistoryVisitDTO;
+import com.ServisKlinickihCentara.dto.appointmentsDTO.HistoryVisitFilterSortDTO;
 import com.ServisKlinickihCentara.dto.appointmentsDTO.PredefinedAppointmenViewtDTO;
 import com.ServisKlinickihCentara.dto.appointmentsDTO.ReservedAppointmentDTO;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
@@ -21,7 +23,10 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -267,6 +272,51 @@ public class AppointmentService {
     }
 
 
+    public ArrayList<HistoryVisitDTO> getPatientsHistory(String email){
+        ArrayList<HistoryVisitDTO> historyVisitDTOS = new ArrayList<>();
+
+        LocalDateTime today = LocalDateTime.now();
+        historyVisitDTOS = this.getPatientsAppointmentsFromPast(email).stream().map(a -> new HistoryVisitDTO(a.getTerm().getStartTime().toLocalDateTime().toLocalDate().toString(),
+                a.getClinic().getName(),a.getEmployee().getName() + ' ' + a.getEmployee().getSurname(),
+                a.getType().toString(),a.getCategory().toString(),String.valueOf(a.getTerm().getPrice()))).collect(Collectors.toCollection(ArrayList::new));
+
+        return historyVisitDTOS;
+    }
+
+    public ArrayList<HistoryVisitDTO> filterSortingPatientsHistory(HistoryVisitFilterSortDTO hv){
+        ArrayList<HistoryVisitDTO> historyVisitDTOS = this.getPatientsHistory(hv.getEmail());
+        ArrayList<HistoryVisitDTO> filteredSortedvisits = new ArrayList<>();
+        ArrayList<Appointment> appointments = this.getPatientsAppointmentsFromPast(hv.getEmail());
+
+        if(!hv.getSortingType().equalsIgnoreCase("")){
+            if(hv.getSortingType().equalsIgnoreCase("date")){
+                appointments.sort((Appointment a1, Appointment a2)->a1.getTerm().getStartTime().compareTo(a2.getTerm().getStartTime()));
+            }else if(hv.getSortingType().equalsIgnoreCase("typeSpeciality")){
+                appointments.sort((Appointment a1,Appointment a2)-> a1.getCategory().toString().compareTo(a2.getCategory().toString()));
+            }else if(hv.getSortingType().equalsIgnoreCase("price")){
+                appointments.sort((Appointment a1, Appointment a2)-> Double.compare(a1.getTerm().getPrice(),a2.getTerm().getPrice()));
+            }
+        }
+
+        filteredSortedvisits = appointments.stream()
+                .filter(a->hv.getSpeciality().equalsIgnoreCase("") || a.getCategory().toString().equalsIgnoreCase(hv.getSpeciality()))
+                .filter(a->hv.getVisitType().equalsIgnoreCase("") || a.getType().toString().equalsIgnoreCase(hv.getVisitType()))
+                .map(a->new HistoryVisitDTO(a.getTerm().getStartTime().toLocalDateTime().toLocalDate().toString(),
+                        a.getClinic().getName(),a.getEmployee().getName() + " " + a.getEmployee().getSurname(),
+                        a.getType().toString(),a.getCategory().toString(),String.valueOf(a.getTerm().getPrice()))).collect(Collectors.toCollection(ArrayList::new));
+
+        return filteredSortedvisits;
+    }
+
+
+    public ArrayList<Appointment> getPatientsAppointmentsFromPast(String email){
+        Patient patient = (Patient) userService.findByUsername(email);
+        List<Appointment> appointments = patient.getApointments();
+        LocalDateTime today = LocalDateTime.now();
+        return appointments.stream().filter(a -> a.getTerm().getStartTime().toLocalDateTime().isBefore(today)).collect(Collectors.toCollection(ArrayList::new));
+    }
+
+
 
     public Appointment findAppointmentByDoctorAndStartTime(long doctorId, Timestamp startTime){
         List<Appointment> appointments = appointmentRepository.findAll();
@@ -289,5 +339,9 @@ public class AppointmentService {
         }
         return null;
     }
+
+
+
+
 
 }
