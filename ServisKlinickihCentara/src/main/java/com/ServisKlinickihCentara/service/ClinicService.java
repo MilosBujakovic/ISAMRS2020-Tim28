@@ -4,6 +4,7 @@ package com.ServisKlinickihCentara.service;
 import com.ServisKlinickihCentara.dto.clinicsDTO.AdvancedSearchClinicDTO;
 import com.ServisKlinickihCentara.dto.clinicsDTO.AdvancedSearchItem;
 import com.ServisKlinickihCentara.dto.clinicsDTO.ClinicBasicFrontendDTO;
+import com.ServisKlinickihCentara.dto.clinicsDTO.FilterExistingAsiDTO;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.clinics.ClinicRating;
 import com.ServisKlinickihCentara.model.employees.Doctor;
@@ -20,6 +21,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -167,11 +169,42 @@ public class ClinicService {
                 } else {
                     ratingDto = String.valueOf(rating);
                 }
-                AdvancedSearchItem a = new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), ratingDto, clinic.getAddress(), "price");
+                AdvancedSearchItem a = new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), ratingDto, clinic.getAddress(),clinic.getSpecialty().toString(), "price");
                 advancedSearchItems.add(a);
             }
 
         }
+        return advancedSearchItems;
+    }
+
+
+    public ArrayList<AdvancedSearchItem> filterExistingAdvancedSearchedItems(List<String> ids, FilterExistingAsiDTO filterExistingAsiDTO) {
+        ArrayList<AdvancedSearchItem> advancedSearchItems = new ArrayList<>();
+        ArrayList<Clinic> clinics = clinicRepository.findAll();
+        clinics = clinics.stream().filter(clinic -> ids.contains(clinic.getId().toString())).collect(Collectors.toCollection(ArrayList::new));
+
+        if(!filterExistingAsiDTO.getSpeciality().equalsIgnoreCase("")){
+            clinics = clinics.stream()
+                    .filter(clinic -> clinic.getSpecialty().toString().equalsIgnoreCase(filterExistingAsiDTO.getSpeciality()))
+                    .collect(Collectors.toCollection(ArrayList::new));
+        }
+
+        HashMap<Long,Double> ratings = new HashMap<>();
+        for(Clinic clinic: clinics){
+            double clinicRating = clinic.getClinicRatings().stream().collect(Collectors.averagingDouble(cr -> cr.getGrade()));
+            ratings.put(clinic.getId(),clinicRating);
+        }
+
+        if(!filterExistingAsiDTO.getRating().equalsIgnoreCase("")){
+            double ratingDTO = Double.parseDouble(filterExistingAsiDTO.getRating());
+            clinics = clinics.stream().filter(clinic -> ratings.get(clinic.getId()) == ratingDTO).collect(Collectors.toCollection(ArrayList::new));
+        }
+
+
+        advancedSearchItems = clinics.stream()
+                .map(clinic -> new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), String.valueOf(ratings.get(clinic.getId())), clinic.getAddress(),clinic.getSpecialty().toString(), "price"))
+                .collect(Collectors.toCollection(ArrayList::new));
+
         return advancedSearchItems;
     }
 

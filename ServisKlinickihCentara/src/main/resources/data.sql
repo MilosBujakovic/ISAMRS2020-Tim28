@@ -22,7 +22,7 @@ insert into servisklinickihcentara.user (dtype,id,email, password, name, surname
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',5,'stevanstevanovic@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Stevan', 'Stevanovic', true, '2019-10-01 21:58:58.508',false,2,'09:00:00','17:00:00', 4);
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',6,'ankadermatolog@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Anka', 'Ivanovic', true, '2019-10-01 21:58:58.508',false,3,'09:00:00','18:00:00', 3);
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',7,'milanhirurg@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Milan', 'Stojanovic', true, '2019-10-01 21:58:58.508',false,2,'09:00:00','18:00:00', 0);
-insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',8,'jovanopstamedicina@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Jovan', 'Jovanovic', true, '2019-10-01 21:58:58.508',false,2,'09:00:00','18:00:00', 9);
+insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',8,'jovanopstamedicina@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Jovan', 'Jovanovic', true, '2019-10-01 21:58:58.508',false,5,'09:00:00','18:00:00', 9);
 
 
 
@@ -109,3 +109,11 @@ insert into servisklinickihcentara.prescription (id, medication_id, amount_per_d
 
 insert  into servisklinickihcentara.appointment_report_prescription (appointment_report_id,prescription_id) values (3,2);
 insert  into servisklinickihcentara.appointment_report_prescription (appointment_report_id,prescription_id) values (3,3);
+
+insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (1, 3 , 1, 4);
+insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (2, 2 ,1, 3);
+insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (3, 5 ,1, 5);
+
+insert into servisklinickihcentara.doctor_rating (id, doctor_id, patient_id, grade) values (1, 6 , 1, 5);
+insert into servisklinickihcentara.doctor_rating (id, doctor_id, patient_id, grade) values (2, 7 , 1, 3);
+insert into servisklinickihcentara.doctor_rating (id, doctor_id, patient_id, grade) values (3, 8 , 1, 5);

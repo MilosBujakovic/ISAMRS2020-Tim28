@@ -28,7 +28,7 @@ $(document).on("submit", "#clinicSearchForm", function(e){
     var token = localStorage.getItem("token");
 
     if(d < today){
-        alert("Day must be today or in the future");
+        alert("Day must be today or in the future!");
     }else {
         $.ajax({
         		type : 'POST',
@@ -39,29 +39,9 @@ $(document).on("submit", "#clinicSearchForm", function(e){
         		headers: { "Authorization": "Bearer " + token},
         		data : JSON.stringify({"date":date,"speciality": typeOfSpeciality,"address": address,"rating":rating}),
         		success : function(clinics) {
-                    $("#clinics").find("tr:not(:first)").remove();
-                    if(clinics.length === 0){
-                        $("#clinics").hide();
-                    	$("#messageClinicsFound").show();
-                    }else{
-                    	$("#clinics").show();
-                        $("#messageClinicsFound").hide();
-
-                    	$.each(clinics, function(index,clinic){
-                    	    var tr = $("<tr></tr>");
-
-                    		tr.append(
-                    		    "<td>" + clinic.id+"</td>" +
-                				"<td>" + clinic.name+"</td>" +
-                    			"<td>" + clinic.address+"</td>" +
-                    			"<td>" + clinic.rating+"</td>" +
-                   	    		"<td>" + clinic.price+"</td>" +
-                    		    "<td><button name=\"" + clinic.id + "\" id=\"doctors\" background-color=\"#555555\">" + 'Doctors'+"</button></td>"
-                    		);
-                    		$("#clinics").append(tr);
-                    	})
-                    }
-
+        		    $("#clinicSpeciality").val("");
+                    $("#clinicRating").val("");
+                    writeClinicsData(clinics, false);
         		},
         		error : function(errorThrown) {
         			alert(errorThrown);
@@ -69,9 +49,79 @@ $(document).on("submit", "#clinicSearchForm", function(e){
         	});
     }
 
-
-
 })
+
+
+function filterExistingAdvancedSearchedItems(){
+	var clinicSpeciality = document.getElementById("clinicSpeciality").value;
+	var clinicRating = document.getElementById("clinicRating").value;
+	var clinicsIds = localStorage.getItem("clinicsIds");
+
+    var token = localStorage.getItem("token");
+	$.ajax({
+		type : 'POST',
+		url : "/clinic/filterExistingAdvancedSearchedItems?ids=" + clinicsIds,
+		dataType : "json",
+		cache: false,
+		contentType : 'application/json',
+		data: JSON.stringify({"speciality": clinicSpeciality,"rating": clinicRating}),
+		headers: { "Authorization": "Bearer " + token},
+		success : function(clinics) {
+            writeClinicsData(clinics, true);
+		},
+		error : function(errorThrown) {
+			alert(errorThrown);
+		}
+	});
+}
+
+function writeClinicsData(clinics, isFilteringExisting){
+    $("#clinics").find("tr:not(:first)").remove();
+
+    if(clinics.length === 0){
+        $("#clinics").hide();
+        $("#messageClinicsFound").show();
+    }else{
+        $("#clinics").show();
+        $("#messageClinicsFound").hide();
+        clinicsIds = [];
+
+        $.each(clinics, function(index,clinic){
+            var tr = $("<tr></tr>");
+
+            if(!isFilteringExisting){
+                clinicsIds.push(clinic.id);
+            }
+
+            tr.append(
+                "<td>" + clinic.id + "</td>" +
+                "<td>" + clinic.name + "</td>" +
+                "<td>" + clinic.address + "</td>" +
+                "<td>" + clinic.speciality + "</td>" +
+                "<td>" + clinic.rating + "</td>" +
+                "<td>" + clinic.price + "</td>" +
+                "<td><button name=\"" + clinic.id + "\" id=\"doctors\" background-color=\"#555555\">" + 'Doctors'+"</button></td>"
+            );
+            $("#clinics").append(tr);
+        })
+        if(!isFilteringExisting){
+            localStorage.setItem("clinicsIds",clinicsIds);
+        }
+    }
+}
+
+
+$(document).ready(function(){
+	$('#clinicSpeciality').on('change',function() {
+		filterExistingAdvancedSearchedItems();
+	});
+});
+
+$(document).ready(function(){
+	$('#clinicRating').on('change',function() {
+		filterExistingAdvancedSearchedItems();
+	});
+});
 
 function getSpecialities(){
     var token = localStorage.getItem("token");
@@ -87,6 +137,7 @@ function getSpecialities(){
     					specialities,
     					function(index,speciality){
     						$("#typeOfSpeciality").append('<option value=\"' + speciality + '\">' + speciality + '</option>');
+    						$("#clinicSpeciality").append('<option value=\"' + speciality + '\">' + speciality + '</option>');
     					}
     			)
     		},
