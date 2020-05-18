@@ -140,19 +140,26 @@ public class ClinicService {
             List<Doctor> doctors = clinic.getStaff();
             //doctors = doctors.stream().filter(doctor -> doctor.getSpecialty().toString().equalsIgnoreCase(advancedSearchClinicDTO.getSpeciality())).collect(Collectors.toCollection(ArrayList::new));
 
-            boolean doctorIsFree = false;
-            for (Doctor doctor : doctors) {
+            if(doctors.size() == 0){
+                continue;
+            }
 
-                List<LeaveForm> vacations = doctor.getVacations();
+            boolean doctorIsFree = true;
+            for (Doctor doctor : doctors) {
+                LocalDate today = LocalDate.now();
+                List<LeaveForm> vacations = doctor.getVacations()
+                        .stream().filter(leaveForm -> leaveForm.getStartDate().isAfter(today))
+                        .collect(Collectors.toCollection(ArrayList::new));
+
                 if (vacations.size() > 0) {
                     for (LeaveForm vacation : vacations) {
-                        LocalDate vacationStartDate = vacation.getStartTime().toLocalDateTime().toLocalDate();
-                        LocalDate vacationEndDate = vacation.getEndTime().toLocalDateTime().toLocalDate();
+                        LocalDate vacationStartDate = vacation.getStartDate();
+                        LocalDate vacationEndDate = vacation.getEndDate();
 
-                        boolean isBetween = this.dateIsBetween(localDate, vacationStartDate, vacationEndDate);
+                        boolean isBetweenOrEqual = this.dateIsBetweenOrEqual(localDate, vacationStartDate, vacationEndDate);
 
-                        if (!isBetween) {
-                            doctorIsFree = true;
+                        if (isBetweenOrEqual) {
+                            doctorIsFree = false;
                             break;
                         }
 
@@ -208,8 +215,8 @@ public class ClinicService {
         return advancedSearchItems;
     }
 
-    public boolean dateIsBetween(LocalDate date, LocalDate startDate, LocalDate endDate){
-        if(date.isAfter(startDate) && date.isBefore(endDate)){
+    public boolean dateIsBetweenOrEqual(LocalDate date, LocalDate startDate, LocalDate endDate){
+        if((date.isAfter(startDate) && date.isBefore(endDate)) || date.equals(startDate) || date.equals(endDate)){
             return true;
         }
         return false;

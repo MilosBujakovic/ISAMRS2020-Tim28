@@ -3,6 +3,7 @@ package com.ServisKlinickihCentara.model.employees;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -15,10 +16,10 @@ public class LeaveForm
 	private Long id;
 	
 	@Column
-	private Timestamp startTime;
+	private LocalDate startDate;
 	
 	@Column 
-	private Timestamp endTime;
+	private LocalDate endDate;
 
 	@ManyToOne
 	@JsonManagedReference
@@ -35,23 +36,23 @@ public class LeaveForm
 	
 	public LeaveForm() {}
 
-	public LeaveForm(Long id, Timestamp startTime, Timestamp endTime, Employee employee, boolean active,
+	public LeaveForm(Long id, LocalDate startDate, LocalDate endDate, Employee employee, boolean active,
 			LeaveFormRequest request, String description) {
 		super();
 		this.id = id;
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.employee = employee;
 		this.active = active;
 		this.request = request;
 		this.description = description;
 	}
 
-	public LeaveForm(Timestamp startTime, Timestamp endTime, Employee employee, boolean active, LeaveFormRequest request,
+	public LeaveForm(LocalDate startDate, LocalDate endDate, Employee employee, boolean active, LeaveFormRequest request,
 			String description) {
 		super();
-		this.startTime = startTime;
-		this.endTime = endTime;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.employee = employee;
 		this.active = active;
 		this.request = request;
@@ -66,20 +67,20 @@ public class LeaveForm
 		this.id = id;
 	}
 
-	public Timestamp getStartTime() {
-		return startTime;
+	public LocalDate getStartDate() {
+		return startDate;
 	}
 
-	public void setStartTime(Timestamp startTime) {
-		this.startTime = startTime;
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
 	}
 
-	public Timestamp getEndTime() {
-		return endTime;
+	public LocalDate getEndDate() {
+		return endDate;
 	}
 
-	public void setEndTime(Timestamp endTime) {
-		this.endTime = endTime;
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
 	}
 
 	public Employee getEmployee() {

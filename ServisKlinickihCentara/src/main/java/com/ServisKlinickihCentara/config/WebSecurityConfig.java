@@ -89,6 +89,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/medicalRecord/getMedicalRecord").hasAuthority("PATIENT")
                     .antMatchers("/appointment/getPatientsHistory").hasAuthority("PATIENT")
                     .antMatchers("/appointment/filterSortingPatientsHistory").hasAuthority("PATIENT")
+                    .antMatchers("/doctor/getForClinicDoctorsFreeSlots").hasAuthority("PATIENT")
                     .antMatchers("/auth/logout").permitAll()
                     .antMatchers("/auth/refresh").permitAll()
 

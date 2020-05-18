@@ -5,7 +5,13 @@ if (token == null){
     window.location.href = "index.html";
 };
 
-readUnregisteredPatients();
+
+$(document).ready(function(){
+    document.getElementById("requestsButton").click();
+    readUnregisteredPatients();
+});
+
+
 
 function readUnregisteredPatients() {
 	$.ajax({

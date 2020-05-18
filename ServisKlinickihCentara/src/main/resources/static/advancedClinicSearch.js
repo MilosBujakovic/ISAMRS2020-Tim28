@@ -8,10 +8,12 @@ if (token == null){
     if (authority != "PATIENT"){
         window.location.href = "index.html";
     }
+
 }
 
 
 $(document).ready(function(){
+    document.getElementById("acsButton").click();
     getSpecialities();
 });
 
@@ -30,6 +32,7 @@ $(document).on("submit", "#clinicSearchForm", function(e){
     if(d < today){
         alert("Day must be today or in the future!");
     }else {
+        localStorage.setItem("choosenDate",date);
         $.ajax({
         		type : 'POST',
         		contentType : 'application/json',
@@ -41,6 +44,7 @@ $(document).on("submit", "#clinicSearchForm", function(e){
         		success : function(clinics) {
         		    $("#clinicSpeciality").val("");
                     $("#clinicRating").val("");
+
                     writeClinicsData(clinics, false);
         		},
         		error : function(errorThrown) {
@@ -100,7 +104,7 @@ function writeClinicsData(clinics, isFilteringExisting){
                 "<td>" + clinic.speciality + "</td>" +
                 "<td>" + clinic.rating + "</td>" +
                 "<td>" + clinic.price + "</td>" +
-                "<td><button name=\"" + clinic.id + "\" id=\"doctors\" background-color=\"#555555\">" + 'Doctors'+"</button></td>"
+                "<td><button name=\"" + clinic.id + "\" id=\"doctors\" background-color=\"#555555\">" + 'Doctor\'s terms'+"</button></td>"
             );
             $("#clinics").append(tr);
         })
@@ -109,6 +113,14 @@ function writeClinicsData(clinics, isFilteringExisting){
         }
     }
 }
+
+
+$(document).on('click', '#doctors', function(e) {
+	e.preventDefault();
+		var clinicId = $(this).attr("name");
+        localStorage.setItem("clickedClinicForDoctorsTerms", clinicId);
+        var win = window.open('http://localhost:8080/doctorsFreeSlots.html', '_blank');
+})
 
 
 $(document).ready(function(){

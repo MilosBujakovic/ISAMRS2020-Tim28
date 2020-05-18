@@ -11,6 +11,7 @@ import com.ServisKlinickihCentara.model.users.User;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -41,7 +42,10 @@ public class EmailService {
         Timestamp timestamp1 = new Timestamp(System.currentTimeMillis() + 24*60*60*1000);
         System.out.println(timestamp1);
 
+        LocalDate localDate1 = LocalDate.of(2020,7,23);
+        LocalDate localDate2 = LocalDate.of(2020,7,23);
 
+        System.out.println(localDate1.equals(localDate2));
     }
 
 }
