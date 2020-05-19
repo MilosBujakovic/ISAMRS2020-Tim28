@@ -115,11 +115,11 @@ insert  into servisklinickihcentara.appointment_report_prescription (appointment
 
 insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (1, 3 , 1, 4);
 insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (2, 2 ,1, 3);
-insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (3, 5 ,1, 5);
+--insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (3, 5 ,1, 5);
 
 insert into servisklinickihcentara.doctor_rating (id, doctor_id, patient_id, grade) values (1, 6 , 1, 5);
 insert into servisklinickihcentara.doctor_rating (id, doctor_id, patient_id, grade) values (2, 7 , 1, 3);
-insert into servisklinickihcentara.doctor_rating (id, doctor_id, patient_id, grade) values (3, 8 , 1, 5);
+--insert into servisklinickihcentara.doctor_rating (id, doctor_id, patient_id, grade) values (3, 8 , 1, 5);
 
 
 insert into servisklinickihcentara.term (id, room_id, start_time,end_time, duration, price) values (10, 9, '2020-06-30 09:30:00.000', '2020-06-30 10:00:00.000',30,300);

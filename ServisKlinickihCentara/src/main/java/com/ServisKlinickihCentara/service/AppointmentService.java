@@ -7,17 +7,17 @@ import com.ServisKlinickihCentara.dto.appointmentsDTO.HistoryVisitFilterSortDTO;
 import com.ServisKlinickihCentara.dto.appointmentsDTO.PredefinedAppointmenViewtDTO;
 import com.ServisKlinickihCentara.dto.appointmentsDTO.ReservedAppointmentDTO;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
+import com.ServisKlinickihCentara.model.clinics.ClinicRating;
 import com.ServisKlinickihCentara.model.clinics.Term;
 import com.ServisKlinickihCentara.model.employees.Doctor;
+import com.ServisKlinickihCentara.model.employees.DoctorRating;
 import com.ServisKlinickihCentara.model.enums.AppointmentType;
 import com.ServisKlinickihCentara.model.enums.RequestStatus;
 import com.ServisKlinickihCentara.model.enums.Specialty;
 import com.ServisKlinickihCentara.model.patients.Appointment;
 import com.ServisKlinickihCentara.model.patients.AppointmentRequest;
 import com.ServisKlinickihCentara.model.patients.Patient;
-import com.ServisKlinickihCentara.repository.AppointmentRepository;
-import com.ServisKlinickihCentara.repository.AppointmentRequestRepository;
-import com.ServisKlinickihCentara.repository.ClinicRepository;
+import com.ServisKlinickihCentara.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +42,12 @@ public class AppointmentService {
 
     @Autowired
     private ClinicRepository clinicRepository;
+
+    @Autowired
+    private ClinicRatingRepository clinicRatingRepository;
+
+    @Autowired
+    private DoctorRatingRepository doctorRatingRepository;
 
     @Autowired
     private UserService userService;
@@ -274,19 +280,24 @@ public class AppointmentService {
 
     public ArrayList<HistoryVisitDTO> getPatientsHistory(String email){
         ArrayList<HistoryVisitDTO> historyVisitDTOS = new ArrayList<>();
+        long patient_id = userService.findByUsername(email).getId();
 
         LocalDateTime today = LocalDateTime.now();
-        historyVisitDTOS = this.getPatientsAppointmentsFromPast(email).stream().map(a -> new HistoryVisitDTO(a.getTerm().getStartTime().toLocalDateTime().toLocalDate().toString(),
+        /*historyVisitDTOS = this.getPatientsAppointmentsFromPast(email).stream().map(a -> new HistoryVisitDTO(a.getTerm().getStartTime().toLocalDateTime().toLocalDate().toString(),
                 a.getClinic().getName(),a.getEmployee().getName() + ' ' + a.getEmployee().getSurname(),
                 a.getType().toString(),a.getCategory().toString(),String.valueOf(a.getTerm().getPrice()))).collect(Collectors.toCollection(ArrayList::new));
-
+*/
+        ArrayList<Appointment> appointments = this.getPatientsAppointmentsFromPast(email);
+        this.mapAppointmentsHistoryWithGrades(appointments,historyVisitDTOS,patient_id);
         return historyVisitDTOS;
     }
 
+
     public ArrayList<HistoryVisitDTO> filterSortingPatientsHistory(HistoryVisitFilterSortDTO hv){
-        ArrayList<HistoryVisitDTO> historyVisitDTOS = this.getPatientsHistory(hv.getEmail());
         ArrayList<HistoryVisitDTO> filteredSortedvisits = new ArrayList<>();
         ArrayList<Appointment> appointments = this.getPatientsAppointmentsFromPast(hv.getEmail());
+        long patient_id = userService.findByUsername(hv.getEmail()).getId();
+
 
         if(!hv.getSortingType().equalsIgnoreCase("")){
             if(hv.getSortingType().equalsIgnoreCase("date")){
@@ -298,14 +309,36 @@ public class AppointmentService {
             }
         }
 
-        filteredSortedvisits = appointments.stream()
+        appointments = appointments.stream()
                 .filter(a->hv.getSpeciality().equalsIgnoreCase("") || a.getCategory().toString().equalsIgnoreCase(hv.getSpeciality()))
                 .filter(a->hv.getVisitType().equalsIgnoreCase("") || a.getType().toString().equalsIgnoreCase(hv.getVisitType()))
-                .map(a->new HistoryVisitDTO(a.getTerm().getStartTime().toLocalDateTime().toLocalDate().toString(),
+                .collect(Collectors.toCollection(ArrayList::new));
+                /*.map(a->new HistoryVisitDTO(a.getTerm().getStartTime().toLocalDateTime().toLocalDate().toString(),
                         a.getClinic().getName(),a.getEmployee().getName() + " " + a.getEmployee().getSurname(),
                         a.getType().toString(),a.getCategory().toString(),String.valueOf(a.getTerm().getPrice()))).collect(Collectors.toCollection(ArrayList::new));
-
+*/
+        this.mapAppointmentsHistoryWithGrades(appointments,filteredSortedvisits,patient_id);
         return filteredSortedvisits;
+    }
+
+    public void mapAppointmentsHistoryWithGrades(ArrayList<Appointment> appointments, ArrayList<HistoryVisitDTO> appointmentsHistory, long patient_id){
+        for(Appointment a: appointments){
+            long clinic_id = a.getClinic().getId();
+            String clinicRatingDTO = "No rating!";
+            ClinicRating clinicRating = clinicRatingRepository.findByClinicIdAndPatientId(clinic_id,patient_id);
+            if(clinicRating != null){
+                clinicRatingDTO = String.valueOf(clinicRating.getGrade());
+            }
+            long doctor_id = a.getEmployee().getId();
+            String doctorRatingDTO = "No rating!";
+            DoctorRating doctorRating = doctorRatingRepository.findByDoctorIdAndPatientId(doctor_id,patient_id);
+            if(doctorRating != null){
+                doctorRatingDTO = String.valueOf(doctorRating.getGrade());
+            }
+            appointmentsHistory.add(new HistoryVisitDTO(a.getTerm().getStartTime().toLocalDateTime().toLocalDate().toString(),
+                    a.getClinic().getName(),a.getEmployee().getName() + " " + a.getEmployee().getSurname(),
+                    a.getType().toString(), a.getCategory().toString(), String.valueOf(a.getTerm().getPrice()),clinicRatingDTO,doctorRatingDTO, String.valueOf(doctor_id)));
+        }
     }
 
 

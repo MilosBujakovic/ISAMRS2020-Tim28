@@ -7,6 +7,6 @@ import java.util.ArrayList;
 
 public interface ClinicRatingRepository extends JpaRepository<ClinicRating,Long> {
 
-    ArrayList<ClinicRating> findByClinicId(Long clinic_id);
+    ClinicRating findByClinicIdAndPatientId(Long clinicId, Long patientId);
 
 }

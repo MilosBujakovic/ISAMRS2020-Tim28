@@ -41,6 +41,11 @@ public class ClinicRating
 		this.grade = grade;
 	}
 
+	public ClinicRating(Clinic clinic, Patient patient) {
+		this.clinic = clinic;
+		this.patient = patient;
+	}
+
 	public Long getId() {
 		return id;
 	}

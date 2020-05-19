@@ -9,7 +9,7 @@ import java.util.List;
 public interface ClinicRepository extends JpaRepository<Clinic,Long> {
     Clinic findById(long id);
 
+    Clinic findByName(String name);
 
     ArrayList<Clinic> findAll();
-
 }

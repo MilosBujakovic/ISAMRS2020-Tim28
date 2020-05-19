@@ -41,6 +41,12 @@ public class DoctorRating
 		this.grade = grade;
 	}
 
+	public DoctorRating(Doctor doctor, Patient patient) {
+		super();
+		this.doctor = doctor;
+		this.patient = patient;
+	}
+
 	public Long getId() {
 		return id;
 	}

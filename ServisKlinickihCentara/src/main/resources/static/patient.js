@@ -190,7 +190,7 @@ function getClinicsForBasicView(){
     								"<td>" + clinic.address+"</td>" +
     								"<td>" + clinic.speciality+"</td>" +
     								"<td>" + rating+"</td>" +
-    								"<td><button name=\"" + clinic.id + "\" id=\"clinic\" class=\"clinicButton\" background-color=\"#555555\">" + 'Predefined appointments'+"</button></td>"
+    								"<td><button name=\"" + clinic.id + "\" id=\"clinic\" class=\"clinicButton\">" + 'Predefined appointments'+"</button></td>"
 
     						);
     						$("#clinicsForBasicViewFilter").append(tr);
@@ -308,19 +308,102 @@ function writeVisitsData(visits){
                 var tr = $('<tr></tr>');
 
                 tr.append(
-                    "<td>" + visit.date+"</td>" +
-                    "<td>" + visit.clinic+"</td>" +
-                    "<td>" + visit.doctor+"</td>" +
-                    "<td>" + visit.visitType+"</td>" +
-                    "<td>" + visit.speciality+"</td>" +
-                    "<td>" + visit.price+"</td>"
+                    "<td>" + visit.date + "</td>" +
+                    "<td id=\"clinicName" + index + "\">" + visit.clinic + "</td>" +
+                    "<td>" + visit.doctor + "</td>" +
+                    "<td>" + visit.visitType + "</td>" +
+                    "<td>" + visit.speciality + "</td>" +
+                    "<td>" + visit.price + "</td>" +
+                    "<td><p id=\"clinicGrade" + index + "\">" +  visit.clinicGrade + "</p><button id=\"" + index + "\" name=\"giveGradeClinicButton\">Give grade</button>&nbsp<input id=\"givenClinicGrade" + index + "\" style=\"visibility: hidden\" type=\"number\" min=\"1\" max=\"5\" required></td>" +
+                    "<td><p id=\"doctorGrade" + index + "\">" +  visit.doctorGrade + "</p><button id=\"" + index + " " + visit.doctorId  + "\" name=\"giveGradeDoctorButton\">Give grade</button>&nbsp<input id=\"givenDoctorGrade" + index + "\" style=\"visibility: hidden\" type=\"number\" min=\"1\" max=\"5\" required></td>"
                 );
                 $("#historyAppointmentsView").append(tr);
              }
         )
     }
-
 }
+
+
+$(document).on('click',"button[name=giveGradeClinicButton]",function(e){
+	e.preventDefault();
+	var token = localStorage.getItem("token");
+	var email = localStorage.getItem("email");
+    var index = $(this).attr("id");
+
+
+	if(document.getElementById(index).innerText  == "Give grade"){
+        document.getElementById(index).innerText  = "Save";
+        document.getElementById("givenClinicGrade" + index).style.visibility = "visible";
+	}else{
+        var grade = document.getElementById("givenClinicGrade" + index).value;
+        var clinicName = document.getElementById("clinicName" + index).innerText;
+        $.ajax({
+            type : 'PUT',
+            url : "/clinicRating/evaluateClinicByPatient",
+            cache: false,
+            dataType: "json",
+            contentType : 'application/json',
+            data: JSON.stringify({"clinicName": clinicName,"email": email,"grade": grade}),
+            headers: { "Authorization": "Bearer " + token},
+            success : function(message) {
+                alert(message.message);
+                if(message.success == true){
+                    //getPatientsHistory();
+                    document.getElementById("clinicGrade" + index).innerText = (parseInt(grade)).toFixed(1);
+                    document.getElementById(index).innerText  = "Give grade";
+                    document.getElementById("givenClinicGrade" + index).style.visibility = "hidden";
+                }
+
+            },
+            error : function(errorThrown) {
+                alert(errorThrown);
+            }
+        });
+
+    }
+})
+
+$(document).on('click',"button[name=giveGradeDoctorButton]",function(e){
+	e.preventDefault();
+	var token = localStorage.getItem("token");
+	var email = localStorage.getItem("email");
+    var id = $(this).attr("id");
+    var index = id.split(" ")[0];
+    var doctorId = id.split(" ")[1];
+
+	if(document.getElementById(id).innerText  == "Give grade"){
+        document.getElementById(id).innerText  = "Save";
+        document.getElementById("givenDoctorGrade" + index).style.visibility = "visible";
+	}else{
+        var grade = document.getElementById("givenDoctorGrade" + index).value;
+        $.ajax({
+            type : 'PUT',
+            url : "/doctorRating/evaluateDoctorByPatient",
+            cache: false,
+            dataType: "json",
+            contentType : 'application/json',
+            data: JSON.stringify({"doctorId": doctorId,"email": email,"grade": grade}),
+            headers: { "Authorization": "Bearer " + token},
+            success : function(message) {
+                alert(message.message);
+                if(message.success == true){
+                    //getPatientsHistory();
+                    document.getElementById("doctorGrade" + index).innerText = (parseInt(grade)).toFixed(1);
+                    document.getElementById(id).innerText  = "Give grade";
+                    document.getElementById("givenDoctorGrade" + index).style.visibility = "hidden";
+                }
+
+            },
+            error : function(errorThrown) {
+                alert(errorThrown);
+            }
+        });
+
+    }
+})
+
+
+
 
 function filterSortingPatientsHistory(){
     var token = localStorage.getItem("token");
@@ -343,7 +426,7 @@ function filterSortingPatientsHistory(){
     		error : function(errorThrown) {
     			alert(errorThrown);
     		}
-    	});
+    });
 }
 
 $(document).ready(function(){

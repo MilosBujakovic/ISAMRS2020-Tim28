@@ -184,7 +184,12 @@ public class UserService {
         return u;
     }
 
-    public User findById( Long id ) throws AccessDeniedException {
+    /*public User findById( Long id ) throws AccessDeniedException {
+        User u = userRepository.findById((long)id);
+        return u;
+    }*/
+
+    public User findById( Long id ){
         User u = userRepository.findById((long)id);
         return u;
     }
