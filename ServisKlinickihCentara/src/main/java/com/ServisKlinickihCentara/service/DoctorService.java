@@ -2,6 +2,7 @@ package com.ServisKlinickihCentara.service;
 
 
 import com.ServisKlinickihCentara.dto.doctorDTO.DoctorFreeSlotsViewDTO;
+import com.ServisKlinickihCentara.dto.doctorDTO.DoctorSearchDTO;
 import com.ServisKlinickihCentara.dto.doctorDTO.ShiftDTO;
 import com.ServisKlinickihCentara.dto.doctorDTO.TimeShift;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
+import javax.print.Doc;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -67,7 +69,7 @@ public class DoctorService {
                     ratingString = "No rating!";
                 }
 
-                DoctorFreeSlotsViewDTO d = new DoctorFreeSlotsViewDTO(doctor.getName(),doctor.getSurname(),ratingString,freeSlots);
+                DoctorFreeSlotsViewDTO d = new DoctorFreeSlotsViewDTO(doctor.getId().toString(),doctor.getName(),doctor.getSurname(),ratingString,freeSlots);
                 doctorFreeSlotsViewDTOS.add(d);
 
             }
@@ -115,6 +117,44 @@ public class DoctorService {
 
         }
         return freeSlots;
+    }
+
+
+    public ArrayList<DoctorFreeSlotsViewDTO> filterExistingDoctors(List<String> ids, DoctorSearchDTO doctorSearchDTO){
+        ArrayList<DoctorFreeSlotsViewDTO> doctorFreeSlotsViewDTOS = new ArrayList<>();
+        ArrayList<Doctor> doctors = doctorRepository.findAll();
+
+        doctors = doctors.stream().filter(d -> ids.contains(d.getId().toString()))
+                .filter(d->d.getName().equalsIgnoreCase("") || d.getName().toLowerCase().contains(doctorSearchDTO.getName().toLowerCase()))
+                .filter(d->d.getSurname().equalsIgnoreCase("") || d.getSurname().toLowerCase().contains(doctorSearchDTO.getSurname().toLowerCase()))
+                .collect(Collectors.toCollection(ArrayList::new));
+
+
+        LocalDate specificDate = LocalDate.parse(doctorSearchDTO.getDate());
+
+        for(Doctor doctor: doctors){
+
+            List<DoctorRating> doctorRatings = doctor.getRatings();
+            double rating = doctorRatings.stream().collect(Collectors.averagingDouble(dr->dr.getGrade()));
+
+            if(!doctorSearchDTO.getRating().equalsIgnoreCase("")){
+
+                if(rating != Double.parseDouble(doctorSearchDTO.getRating())){
+                    continue;
+                }
+            }
+
+            String ratingDTO = "No rating!";
+
+            if(rating != 0){
+                ratingDTO = String.valueOf(rating);
+            }
+
+            ArrayList<ShiftDTO> shiftDTOS = this.findFreeDoctorSlotsForSpecificDate(doctor,specificDate);
+            doctorFreeSlotsViewDTOS.add(new DoctorFreeSlotsViewDTO(doctor.getName(),doctor.getSurname(),ratingDTO,shiftDTOS));
+        }
+
+        return doctorFreeSlotsViewDTOS;
     }
 
 

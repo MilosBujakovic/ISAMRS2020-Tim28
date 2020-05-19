@@ -3,6 +3,7 @@ package com.ServisKlinickihCentara.dto.doctorDTO;
 import java.util.ArrayList;
 
 public class DoctorFreeSlotsViewDTO {
+    private String doctorId;
     private String name;
     private String surname;
     private String rating;
@@ -17,6 +18,22 @@ public class DoctorFreeSlotsViewDTO {
         this.surname = surname;
         this.rating = rating;
         this.freeSlots = freeSlots;
+    }
+
+    public DoctorFreeSlotsViewDTO(String doctorId, String name, String surname, String rating, ArrayList<ShiftDTO> freeSlots) {
+        this.doctorId = doctorId;
+        this.name = name;
+        this.surname = surname;
+        this.rating = rating;
+        this.freeSlots = freeSlots;
+    }
+
+    public String getDoctorId() {
+        return doctorId;
+    }
+
+    public void setDoctorId(String doctorId) {
+        this.doctorId = doctorId;
     }
 
     public String getName() {

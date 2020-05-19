@@ -92,6 +92,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/doctor/getForClinicDoctorsFreeSlots").hasAuthority("PATIENT")
                     .antMatchers("/clinicRating/evaluateClinicByPatient").hasAuthority("PATIENT")
                     .antMatchers("/doctorRating/evaluateDoctorByPatient").hasAuthority("PATIENT")
+                    .antMatchers("/doctor/filterExistingDoctors").hasAuthority("PATIENT")
                     .antMatchers("/auth/logout").permitAll()
                     .antMatchers("/auth/refresh").permitAll()
 
