@@ -1,13 +1,11 @@
 package com.ServisKlinickihCentara.model.clinics;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.enums.AppointmentType;
 import com.ServisKlinickihCentara.model.enums.PatientType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class PriceItem 
@@ -22,26 +20,31 @@ public class PriceItem
 	
 	@Column
 	private double basePrice;
-	
+
+	@OneToOne
+	@JsonManagedReference
+	private TypeOfExam typeOfExam;
+
 	@Column
-	private PatientType patient;
-	
-	@Column 
-	private double discount;//TODO: discount for special appointments
+	private Double discount;
 	
 	public PriceItem() {}
-	
-	
 
-	public PriceItem(AppointmentType type, double price, PatientType patient, double discount) {
+
+	public PriceItem(AppointmentType type, double price, double discount) {
 		super();
 		this.type = type;
 		this.basePrice = price;
-		this.patient = patient;
 		this.discount = discount;
 	}
 
-
+	public PriceItem(Long id, AppointmentType type, double basePrice, TypeOfExam typeOfExam, double discount) {
+		this.id = id;
+		this.type = type;
+		this.basePrice = basePrice;
+		this.typeOfExam = typeOfExam;
+		this.discount = discount;
+	}
 
 	public Long getId() {
 		return id;
@@ -67,12 +70,20 @@ public class PriceItem
 		this.basePrice = price;
 	}
 
-	public PatientType getPatient() {
-		return patient;
+	public double getBasePrice() {
+		return basePrice;
 	}
 
-	public void setPatient(PatientType patient) {
-		this.patient = patient;
+	public void setBasePrice(double basePrice) {
+		this.basePrice = basePrice;
+	}
+
+	public TypeOfExam getTypeOfExam() {
+		return typeOfExam;
+	}
+
+	public void setTypeOfExam(TypeOfExam typeOfExam) {
+		this.typeOfExam = typeOfExam;
 	}
 
 	public double getDiscount() {
@@ -82,6 +93,8 @@ public class PriceItem
 	public void setDiscount(double discount) {
 		this.discount = discount;
 	}
+
+
 	
 	
 }

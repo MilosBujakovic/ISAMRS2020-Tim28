@@ -50,7 +50,10 @@ function readFreeDoctorsTerms() {
                             doctorSlots.freeSlots,
                             function(index,slot){
                                 slotTable.append(
-                                    "<tr><td>"  + slot.startTime + "</td><td>" + slot.endTime + "</td></tr>"
+                                    "<tr><td>"  + slot.startTime + "</td><td>" + slot.endTime +
+                                     "</td><td><button name=\"choosenTerm\" id=\""
+                                      + clinicId + " " +  doctorSlots.doctorId + " " + date + " " +
+                                      slot.startTime + " " + slot.endTime + "\">Reserve</button></td></tr>"
                                 )
                             }
                         )
@@ -76,6 +79,8 @@ function filterExistingDoctors() {
     var rating = document.getElementById("ratingDoctorDTO").value;
     var date = localStorage.getItem("choosenDate");
     var doctorsIds = localStorage.getItem("doctorsIds");
+
+    var clinicId = localStorage.getItem("clickedClinicForDoctorsTerms");
 
 	$.ajax({
 		type : 'POST',
@@ -104,7 +109,11 @@ function filterExistingDoctors() {
                             doctorSlots.freeSlots,
                             function(index,slot){
                                 slotTable.append(
-                                    "<tr><td>"  + slot.startTime + "</td><td>" + slot.endTime + "</td></tr>"
+                                    "<tr><td>"  + slot.startTime + "</td><td>" + slot.endTime +
+                                    "</td><td><button name=\"choosenTerm\" id=\""
+                                    + clinicId + " " +  doctorSlots.doctorId + " " + date + " " +
+                                    slot.startTime + " " + slot.endTime + "\">Reserve</button></td></tr>"
+
                                 )
                             }
                         )
@@ -137,6 +146,31 @@ $(document).ready(function(){
 		filterExistingDoctors();
 	});
 });
+
+
+
+$(document).on('click',"button[name=choosenTerm]",function(e){
+	e.preventDefault();
+	var token = localStorage.getItem("token");
+	var email = localStorage.getItem("email");
+    var id = $(this).attr("id");
+
+    var array = id.split(" ");
+
+    var clinicId = array[0];
+    var doctorId = array[1];
+    var date = array[2];
+    var startTime = array[3];
+    var endTime = array[4];
+
+    localStorage.setItem("choosenClinicId",clinicId);
+    localStorage.setItem("choosenDoctorId",doctorId);
+    localStorage.setItem("choosenDate", date);
+    localStorage.setItem("choosenStartTime",startTime);
+    localStorage.setItem("choosenEndTime",endTime);
+    var win = window.open('http://localhost:8080/checkUpReserve.html', '_blank');
+
+})
 
 
 function removeChildsFromDoctorTermsDiv(){

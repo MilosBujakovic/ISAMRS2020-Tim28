@@ -59,7 +59,7 @@ public class ClinicService {
 
             }
 
-            ClinicBasicFrontendDTO cDTO = new ClinicBasicFrontendDTO(c.getId().toString(), c.getName(),c.getAddress(),c.getSpecialty().toString(),String.valueOf(rating));
+            ClinicBasicFrontendDTO cDTO = new ClinicBasicFrontendDTO(c.getId().toString(), c.getName(),c.getAddress(),String.valueOf(rating));
             clinicBasicFrontendDTOS.add(cDTO);
         }
         return clinicBasicFrontendDTOS;
@@ -68,7 +68,7 @@ public class ClinicService {
 
 
 
-    public ArrayList<ClinicBasicFrontendDTO> basicFilterSortingClinics(String nameAddressSorting, String speciality){
+    public ArrayList<ClinicBasicFrontendDTO> basicFilterSortingClinics(String nameAddressSorting){
         ArrayList<ClinicBasicFrontendDTO> clinicBasicFrontendDTOS = new ArrayList<>();
         ArrayList<Clinic> clinics = clinicRepository.findAll();
 
@@ -82,11 +82,11 @@ public class ClinicService {
 
 
 
-        if(!speciality.equalsIgnoreCase("")){
+       /* if(!speciality.equalsIgnoreCase("")){
             clinics = clinics.stream()
                     .filter(clinic -> clinic.getSpecialty().toString().equalsIgnoreCase(speciality))
                     .collect(Collectors.toCollection(ArrayList::new));
-        }
+        }*/
 
         for(Clinic c: clinics){
             List<ClinicRating> clinicRatings = c.getClinicRatings();
@@ -98,7 +98,7 @@ public class ClinicService {
                 }
             }
             clinicBasicFrontendDTOS.add(new ClinicBasicFrontendDTO(c.getId().toString(),c.getName(),
-                    c.getAddress(),c.getSpecialty().toString(), String.valueOf(rating)));
+                    c.getAddress(), String.valueOf(rating)));
         }
 
 
@@ -122,10 +122,10 @@ public class ClinicService {
                 continue;
             }
 
-            if (!clinic.getSpecialty().toString().equalsIgnoreCase(advancedSearchClinicDTO.getSpeciality()) &&
+            /*if (!clinic.getSpecialty().toString().equalsIgnoreCase(advancedSearchClinicDTO.getSpeciality()) &&
                     !advancedSearchClinicDTO.getSpeciality().equalsIgnoreCase("")) {
                 continue;
-            }
+            }*/
 
             double rating = 0;
             rating = clinic.getClinicRatings().stream().collect(Collectors.averagingDouble(cr -> cr.getGrade()));
@@ -176,7 +176,7 @@ public class ClinicService {
                 } else {
                     ratingDto = String.valueOf(rating);
                 }
-                AdvancedSearchItem a = new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), ratingDto, clinic.getAddress(),clinic.getSpecialty().toString(), "price");
+                AdvancedSearchItem a = new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), ratingDto, clinic.getAddress(),"", "price");
                 advancedSearchItems.add(a);
             }
 
@@ -190,11 +190,11 @@ public class ClinicService {
         ArrayList<Clinic> clinics = clinicRepository.findAll();
         clinics = clinics.stream().filter(clinic -> ids.contains(clinic.getId().toString())).collect(Collectors.toCollection(ArrayList::new));
 
-        if(!filterExistingAsiDTO.getSpeciality().equalsIgnoreCase("")){
+        /*if(!filterExistingAsiDTO.getSpeciality().equalsIgnoreCase("")){
             clinics = clinics.stream()
                     .filter(clinic -> clinic.getSpecialty().toString().equalsIgnoreCase(filterExistingAsiDTO.getSpeciality()))
                     .collect(Collectors.toCollection(ArrayList::new));
-        }
+        }*/
 
         HashMap<Long,Double> ratings = new HashMap<>();
         for(Clinic clinic: clinics){
@@ -209,7 +209,7 @@ public class ClinicService {
 
 
         advancedSearchItems = clinics.stream()
-                .map(clinic -> new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), String.valueOf(ratings.get(clinic.getId())), clinic.getAddress(),clinic.getSpecialty().toString(), "price"))
+                .map(clinic -> new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), String.valueOf(ratings.get(clinic.getId())), clinic.getAddress(),"", "price"))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         return advancedSearchItems;

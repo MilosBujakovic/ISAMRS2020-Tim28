@@ -3,17 +3,17 @@ package com.ServisKlinickihCentara.dto.appointmentsDTO;
 public class HistoryVisitFilterSortDTO {
     private String email;
     private String visitType;
-    private String speciality;
+    private String typeOfExam;
     private String sortingType;
 
     public HistoryVisitFilterSortDTO(){
         super();
     }
 
-    public HistoryVisitFilterSortDTO(String email, String visitType, String speciality, String sortingType) {
+    public HistoryVisitFilterSortDTO(String email, String visitType, String typeOfExam, String sortingType) {
         this.email = email;
         this.visitType = visitType;
-        this.speciality = speciality;
+        this.typeOfExam = typeOfExam;
         this.sortingType = sortingType;
     }
 
@@ -33,12 +33,12 @@ public class HistoryVisitFilterSortDTO {
         this.visitType = visitType;
     }
 
-    public String getSpeciality() {
-        return speciality;
+    public String getTypeOfExam() {
+        return typeOfExam;
     }
 
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
+    public void setTypeOfExam(String typeOfExam) {
+        this.typeOfExam = typeOfExam;
     }
 
     public String getSortingType() {
@@ -54,7 +54,7 @@ public class HistoryVisitFilterSortDTO {
         return "HistoryVisitFilterSortDTO{" +
                 "email='" + email + '\'' +
                 ", visitType='" + visitType + '\'' +
-                ", speciality='" + speciality + '\'' +
+                ", typeOfExam='" + typeOfExam + '\'' +
                 ", sortingType='" + sortingType + '\'' +
                 '}';
     }

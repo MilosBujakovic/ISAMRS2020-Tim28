@@ -1,10 +1,7 @@
 package com.ServisKlinickihCentara.service;
 
 
-import com.ServisKlinickihCentara.dto.doctorDTO.DoctorFreeSlotsViewDTO;
-import com.ServisKlinickihCentara.dto.doctorDTO.DoctorSearchDTO;
-import com.ServisKlinickihCentara.dto.doctorDTO.ShiftDTO;
-import com.ServisKlinickihCentara.dto.doctorDTO.TimeShift;
+import com.ServisKlinickihCentara.dto.doctorDTO.*;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.employees.DoctorRating;
@@ -151,10 +148,30 @@ public class DoctorService {
             }
 
             ArrayList<ShiftDTO> shiftDTOS = this.findFreeDoctorSlotsForSpecificDate(doctor,specificDate);
-            doctorFreeSlotsViewDTOS.add(new DoctorFreeSlotsViewDTO(doctor.getName(),doctor.getSurname(),ratingDTO,shiftDTOS));
+            doctorFreeSlotsViewDTOS.add(new DoctorFreeSlotsViewDTO(doctor.getId().toString(), doctor.getName(),doctor.getSurname(),ratingDTO,shiftDTOS));
         }
 
         return doctorFreeSlotsViewDTOS;
+    }
+
+    public ClinicDoctorNameDTO getClinicAndDoctor(String clinicId,String doctorId){
+        Clinic clinic = clinicRepository.findById(Long.parseLong(clinicId));
+        Doctor doctor = doctorRepository.findById(Long.parseLong(doctorId));
+
+        ClinicDoctorNameDTO clinicDoctorNameDTO = new ClinicDoctorNameDTO(clinic.getName(),doctor.getName() + " " + doctor.getSurname());
+        return clinicDoctorNameDTO;
+    }
+
+    public ArrayList<String> getDurationToChoose(String startTime,String endTime){
+        ArrayList<String> durations = new ArrayList<>();
+
+        Time start_time = Time.valueOf(startTime);
+        Time end_time = Time.valueOf(endTime);
+
+        System.out.println(startTime);
+        System.out.println(end_time);
+
+        return durations;
     }
 
 

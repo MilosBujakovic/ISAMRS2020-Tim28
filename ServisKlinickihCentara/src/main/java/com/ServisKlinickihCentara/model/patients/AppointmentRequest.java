@@ -3,6 +3,7 @@ package com.ServisKlinickihCentara.model.patients;
 import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.clinics.Term;
+import com.ServisKlinickihCentara.model.clinics.TypeOfExam;
 import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.enums.AppointmentType;
 import com.ServisKlinickihCentara.model.enums.RequestStatus;
@@ -27,8 +28,8 @@ public class AppointmentRequest
 	@ManyToOne
 	private Doctor doctor;
 	
-	@Column
-	private Specialty category;
+	@ManyToOne
+	private TypeOfExam typeOfExam;
 	
 	@Column
 	private AppointmentType type;
@@ -38,47 +39,47 @@ public class AppointmentRequest
 	
 	public AppointmentRequest() {}
 
-	public AppointmentRequest(Patient patient, Term term, Doctor doctor, Specialty category, AppointmentType type) {
+	public AppointmentRequest(Patient patient, Term term, Doctor doctor, TypeOfExam typeOfExam, AppointmentType type) {
 		super();
 		this.patient = patient;
 		this.term = term;
 		this.doctor = doctor;
-		this.category = category;
+		this.typeOfExam = typeOfExam;
 		this.type = type;
 		this.status = RequestStatus.PENDING;
 	}
 
-	public AppointmentRequest(Long id, Patient patient, Term term, Doctor doctor, Specialty category,
+	public AppointmentRequest(Long id, Patient patient, Term term, Doctor doctor, TypeOfExam typeOfExam,
 			AppointmentType type) {
 		super();
 		this.id = id;
 		this.patient = patient;
 		this.term = term;
 		this.doctor = doctor;
-		this.category = category;
+		this.typeOfExam = typeOfExam;
 		this.type = type;
 		this.status = RequestStatus.PENDING;
 	}
 
-	public AppointmentRequest(Patient patient, Term term, Doctor doctor, Specialty category, AppointmentType type,
+	public AppointmentRequest(Patient patient, Term term, Doctor doctor, TypeOfExam typeOfExam, AppointmentType type,
 			RequestStatus status) {
 		super();
 		this.patient = patient;
 		this.term = term;
 		this.doctor = doctor;
-		this.category = category;
+		this.typeOfExam = typeOfExam;
 		this.type = type;
 		this.status = status;
 	}
 
-	public AppointmentRequest(Long id, Patient patient, Term term, Doctor doctor, Specialty category,
+	public AppointmentRequest(Long id, Patient patient, Term term, Doctor doctor, TypeOfExam typeOfExam,
 			AppointmentType type, RequestStatus status) {
 		super();
 		this.id = id;
 		this.patient = patient;
 		this.term = term;
 		this.doctor = doctor;
-		this.category = category;
+		this.typeOfExam = typeOfExam;
 		this.type = type;
 		this.status = status;
 	}
@@ -115,12 +116,12 @@ public class AppointmentRequest
 		this.doctor = doctor;
 	}
 
-	public Specialty getCategory() {
-		return category;
+	public TypeOfExam getTypeOfExam() {
+		return typeOfExam;
 	}
 
-	public void setCategory(Specialty category) {
-		this.category = category;
+	public void setTypeOfExam(TypeOfExam typeOfExam) {
+		this.typeOfExam = typeOfExam;
 	}
 
 	public AppointmentType getType() {

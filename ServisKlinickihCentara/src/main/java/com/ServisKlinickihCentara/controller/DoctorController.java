@@ -1,6 +1,7 @@
 package com.ServisKlinickihCentara.controller;
 
 
+import com.ServisKlinickihCentara.dto.doctorDTO.ClinicDoctorNameDTO;
 import com.ServisKlinickihCentara.dto.doctorDTO.DoctorFreeSlotsViewDTO;
 import com.ServisKlinickihCentara.dto.doctorDTO.DoctorSearchDTO;
 import com.ServisKlinickihCentara.service.DoctorService;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,20 @@ public class DoctorController {
         System.out.println("filterExistingDoctors");
         ArrayList<DoctorFreeSlotsViewDTO> doctorFreeSlotsViewDTOS = doctorService.filterExistingDoctors(ids,doctorSearchDTO);
         return new ResponseEntity<ArrayList<DoctorFreeSlotsViewDTO>>(doctorFreeSlotsViewDTOS, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getClinicAndDoctor", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ClinicDoctorNameDTO> getClinicAndDoctor(@RequestParam String clinicId, @RequestParam String doctorId){
+        System.out.println("getClinicAndDoctor");
+        ClinicDoctorNameDTO clinicDoctorNameDTO = doctorService.getClinicAndDoctor(clinicId,doctorId);
+        return new ResponseEntity<ClinicDoctorNameDTO>(clinicDoctorNameDTO, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/getDurationToChoose", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<ArrayList<String>> getDurationToChoose(@RequestParam String startTime, @RequestParam String endTime){
+        System.out.println("getDurationToChoose");
+        ArrayList<String> durations = doctorService.getDurationToChoose(startTime,endTime);
+        return new ResponseEntity<ArrayList<String>>(durations, HttpStatus.OK);
     }
 
 }

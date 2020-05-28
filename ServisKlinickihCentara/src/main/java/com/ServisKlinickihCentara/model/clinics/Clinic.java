@@ -25,8 +25,8 @@ public class Clinic
 	@Column
 	private String address;
 
-	@Column
-	private Specialty specialty;
+	/*@Column
+	private Specialty specialty;*/
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
 	@JsonBackReference
@@ -57,23 +57,25 @@ public class Clinic
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
 	@JsonBackReference
 	private List<Appointment> appointments;
+
+	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@JoinTable(name = "clinic_type_of_exams", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "type_of_exam_id", referencedColumnName = "id"))
+	private List<TypeOfExam> typeOfExams;
 	
 	
 	public Clinic() {};
 	
-	public Clinic(String name, String address, Specialty specialty)
+	public Clinic(String name, String address)
 	{
 		this.name = name;
 		this.address = address;
-		this.specialty = specialty;
 	}
 
-	public Clinic(String name, String address, Specialty specialty, List<Doctor> staff, List<Nurse> assistingStaff, List<Room> rooms,
+	public Clinic(String name, String address, List<Doctor> staff, List<Nurse> assistingStaff, List<Room> rooms,
 			List<PriceItem> pricelist, List<Term> freeTerms, List<ClinicAdmin> admins) {
 		super();
 		this.name = name;
 		this.address = address;
-		this.specialty = specialty;
 		this.staff = staff;
 		this.assistingStaff = assistingStaff;
 		this.rooms = rooms;
@@ -154,14 +156,6 @@ public class Clinic
 		this.admins = admins;
 	}
 
-	public Specialty getSpecialty() {
-		return specialty;
-	}
-
-	public void setSpecialty(Specialty specialty) {
-		this.specialty = specialty;
-	}
-
 	public List<ClinicRating> getClinicRatings() {
 		return clinicRatings;
 	}
@@ -176,5 +170,13 @@ public class Clinic
 
 	public void setAppointments(List<Appointment> appointments) {
 		this.appointments = appointments;
+	}
+
+	public List<TypeOfExam> getTypeOfExams() {
+		return typeOfExams;
+	}
+
+	public void setTypeOfExams(List<TypeOfExam> typeOfExams) {
+		this.typeOfExams = typeOfExams;
 	}
 }

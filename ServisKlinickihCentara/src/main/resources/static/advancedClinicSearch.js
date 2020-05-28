@@ -83,7 +83,9 @@ function writeClinicsData(clinics, isFilteringExisting){
     $("#clinics").find("tr:not(:first)").remove();
 
     if(clinics.length === 0){
-        $("#clinics").hide();
+        if(!isFilteringExisting){
+            $("#clinics").hide();
+        }
         $("#messageClinicsFound").show();
     }else{
         $("#clinics").show();

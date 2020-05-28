@@ -34,9 +34,9 @@ public class MedicalRecordService {
         if (medicalRecord != null) {
             medicalRecordDTO = new MedicalRecordDTO(medicalRecord);
             for (AppointmentReport ar : medicalRecord.getReports()) {
-                if (ar.getAppointment().getType().equals(AppointmentType.OPERATION)) {
+                /*if (ar.getAppointment().getType().equals(AppointmentType.OPERATION)) {
                    continue;
-                }
+                }*/
                 LocalDateTime localDateTime = ar.getAppointment().getTerm().getStartTime().toLocalDateTime();
                 LocalDate localDate = localDateTime.toLocalDate();
                 String date = localDate.toString();

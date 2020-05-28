@@ -36,7 +36,7 @@ public class ClinicController {
 
         @RequestMapping(value = "/basicFilterSortingClinics", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
         public ResponseEntity<ArrayList<ClinicBasicFrontendDTO>> basicFilterSortingClinics(@RequestBody FilterClinicBasicDTO filterClinicBasicDTO){
-            ArrayList<ClinicBasicFrontendDTO> clinicBasicFrontendDTOS = clinicService.basicFilterSortingClinics(filterClinicBasicDTO.getNameAddressSorting(),filterClinicBasicDTO.getSpeciality());
+            ArrayList<ClinicBasicFrontendDTO> clinicBasicFrontendDTOS = clinicService.basicFilterSortingClinics(filterClinicBasicDTO.getNameAddressSorting());
             System.out.println("basicFilterSortingClinics");
             return new ResponseEntity<ArrayList<ClinicBasicFrontendDTO>>(clinicBasicFrontendDTOS, HttpStatus.OK);
         }

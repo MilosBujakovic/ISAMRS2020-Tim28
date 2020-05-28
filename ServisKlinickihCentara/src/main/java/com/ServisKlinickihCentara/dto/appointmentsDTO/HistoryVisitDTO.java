@@ -5,7 +5,7 @@ public class HistoryVisitDTO {
     private String clinic;
     private String doctor;
     private String visitType;
-    private String speciality;
+    private String typeOfExam;
     private String price;
     private String clinicGrade;
     private String doctorGrade;
@@ -15,22 +15,22 @@ public class HistoryVisitDTO {
         super();
     }
 
-    public HistoryVisitDTO(String date, String clinic, String doctor, String visitType, String speciality, String price, String clinicGrade) {
+    public HistoryVisitDTO(String date, String clinic, String doctor, String visitType, String typeOfExam, String price, String clinicGrade) {
         this.date = date;
         this.clinic = clinic;
         this.doctor = doctor;
         this.visitType = visitType;
-        this.speciality = speciality;
+        this.typeOfExam = typeOfExam;
         this.price = price;
         this.clinicGrade = clinicGrade;
     }
 
-    public HistoryVisitDTO(String date, String clinic, String doctor, String visitType, String speciality, String price, String clinicGrade, String doctorGrade, String doctorId) {
+    public HistoryVisitDTO(String date, String clinic, String doctor, String visitType, String typeOfExam, String price, String clinicGrade, String doctorGrade, String doctorId) {
         this.date = date;
         this.clinic = clinic;
         this.doctor = doctor;
         this.visitType = visitType;
-        this.speciality = speciality;
+        this.typeOfExam = typeOfExam;
         this.price = price;
         this.clinicGrade = clinicGrade;
         this.doctorGrade = doctorGrade;
@@ -69,12 +69,12 @@ public class HistoryVisitDTO {
         this.visitType = visitType;
     }
 
-    public String getSpeciality() {
-        return speciality;
+    public String getTypeOfExam() {
+        return typeOfExam;
     }
 
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
+    public void setTypeOfExam(String typeOfExam) {
+        this.typeOfExam = typeOfExam;
     }
 
     public String getPrice() {

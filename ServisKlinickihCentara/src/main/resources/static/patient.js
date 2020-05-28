@@ -141,28 +141,55 @@ function getMedicalRecord() {
 
 
 function getSpecialities(){
-    var token = localStorage.getItem("token");
-	$.ajax({
-    		type : 'GET',
-    		url : "/clinic/getSpecialities",
-    		cache: false,
-    		dataType: "json",
-            headers: { "Authorization": "Bearer " + token},
-    		success : function(specialities) {
-    			$("#typeOfSpeciality").find('optionl:gt(0)').remove();
-    			$.each(
-    					specialities,
-    					function(index,speciality){
-    						$("#typeOfSpeciality").append('<option value=\"' + speciality + '\">' + speciality + '</option>');
-    						$("#specialityOfCheckup").append('<option value=\"' + speciality + '\">' + speciality + '</option>');
-    					}
-    			)
-    		},
-    		error : function(errorThrown) {
-    			alert(errorThrown);
-    		}
-    	});
+     var token = localStorage.getItem("token");
+ 	$.ajax({
+     		type : 'GET',
+     		url : "/clinic/getSpecialities",
+     		cache: false,
+     		dataType: "json",
+             headers: { "Authorization": "Bearer " + token},
+     		success : function(specialities) {
+     			$("#typeOfSpeciality").find('optionl:gt(0)').remove();
+     			$.each(
+     					specialities,
+     					function(index,speciality){
+     						$("#typeOfSpeciality").append('<option value=\"' + speciality + '\">' + speciality + '</option>');
+     						$("#specialityOfCheckup").append('<option value=\"' + speciality + '\">' + speciality + '</option>');
+     					}
+     			)
+     		},
+     		error : function(errorThrown) {
+     			alert(errorThrown);
+     		}
+     	});
 }
+
+function getTypeOfExams(){
+     var token = localStorage.getItem("token");
+ 	$.ajax({
+     		type : 'GET',
+     		url : "/typeOfExam/getTypeOfExams",
+     		cache: false,
+     		dataType: "json",
+            headers: { "Authorization": "Bearer " + token},
+     		success : function(types) {
+     			$("#examTypes").find('optionl:gt(0)').remove();
+     			$.each(
+     					types,
+     					function(index,type){
+     						$("#examTypes").append('<option value=\"' + type + '\">' + type + '</option>');
+     						$("#typeOfExams").append('<option value=\"' + type + '\">' + type + '</option>');
+     					}
+     			)
+     		},
+     		error : function(errorThrown) {
+     			alert(errorThrown);
+     		}
+     	});
+ }
+
+
+
 
 
 function getClinicsForBasicView(){
@@ -188,9 +215,8 @@ function getClinicsForBasicView(){
     						        "<td>" + clinic.id+"</td>" +
     								"<td>" + clinic.name+"</td>" +
     								"<td>" + clinic.address+"</td>" +
-    								"<td>" + clinic.speciality+"</td>" +
     								"<td>" + rating+"</td>" +
-    								"<td><button name=\"" + clinic.id + "\" id=\"clinic\" class=\"clinicButton\">" + 'Predefined appointments'+"</button></td>"
+    								"<td><button name=\"" + clinic.id + "\" id=\"clinic\">" + 'Predefined appointments'+"</button></td>"
 
     						);
     						$("#clinicsForBasicViewFilter").append(tr);
@@ -222,7 +248,6 @@ $(document).on('click', '#advancedClinicsSearch', function(e) {
 
 
 function basicFilterSortingClinics(){
-	var typeOfSpeciality = document.getElementById("typeOfSpeciality").value;
 	var clinicsSortingType = document.getElementById("clinicsSortingType").value;
 
     var token = localStorage.getItem("token");
@@ -232,7 +257,7 @@ function basicFilterSortingClinics(){
 		dataType : "json",
 		cache: false,
 		contentType : 'application/json',
-		data: JSON.stringify({"nameAddressSorting": clinicsSortingType,"speciality": typeOfSpeciality}),
+		data: JSON.stringify({"nameAddressSorting": clinicsSortingType}),
 		headers: { "Authorization": "Bearer " + token},
 		success : function(clinics) {
 
@@ -256,7 +281,6 @@ function basicFilterSortingClinics(){
                                 "<td>" + clinic.id+"</td>" +
                                 "<td>" + clinic.name+"</td>" +
        							"<td>" + clinic.address+"</td>" +
-       							"<td>" + clinic.speciality+"</td>" +
                                 "<td>" + rating+"</td>" +
                                 "<td><button name=\"" + clinic.id + "\" id=\"clinic\" class=\"clinicButton\" background-color=\"#555555\">" + 'Predefined appointments'+"</button></td>"
                             );
@@ -312,7 +336,7 @@ function writeVisitsData(visits){
                     "<td id=\"clinicName" + index + "\">" + visit.clinic + "</td>" +
                     "<td>" + visit.doctor + "</td>" +
                     "<td>" + visit.visitType + "</td>" +
-                    "<td>" + visit.speciality + "</td>" +
+                    "<td>" + visit.typeOfExam + "</td>" +
                     "<td>" + visit.price + "</td>" +
                     "<td><p id=\"clinicGrade" + index + "\">" +  visit.clinicGrade + "</p><button id=\"" + index + "\" name=\"giveGradeClinicButton\">Give grade</button>&nbsp<input id=\"givenClinicGrade" + index + "\" style=\"visibility: hidden\" type=\"number\" min=\"1\" max=\"5\" required></td>" +
                     "<td><p id=\"doctorGrade" + index + "\">" +  visit.doctorGrade + "</p><button id=\"" + index + " " + visit.doctorId  + "\" name=\"giveGradeDoctorButton\">Give grade</button>&nbsp<input id=\"givenDoctorGrade" + index + "\" style=\"visibility: hidden\" type=\"number\" min=\"1\" max=\"5\" required></td>"
@@ -409,7 +433,7 @@ function filterSortingPatientsHistory(){
     var token = localStorage.getItem("token");
     var email = localStorage.getItem("email");
     var visitType = document.getElementById("visitType").value;
-    var speciality = document.getElementById("specialityOfCheckup").value;
+    var typeOfExam = document.getElementById("typeOfExams").value;
     var sortingType = document.getElementById("historySortingType").value;
 
 	$.ajax({
@@ -418,7 +442,7 @@ function filterSortingPatientsHistory(){
     		cache: false,
     		dataType: "json",
     		contentType : 'application/json',
-    		data: JSON.stringify({"email": email,"visitType": visitType,"speciality": speciality,"sortingType": sortingType}),
+    		data: JSON.stringify({"email": email,"visitType": visitType,"typeOfExam": typeOfExam, "sortingType": sortingType}),
             headers: { "Authorization": "Bearer " + token},
     		success : function(visits) {
     			writeVisitsData(visits);
@@ -436,7 +460,7 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-	$('#specialityOfCheckup').on('change',function() {
+	$('#typeOfExams').on('change',function() {
 		filterSortingPatientsHistory();
 	});
 });
@@ -529,7 +553,7 @@ $(document).on('click',"#cancelAppointment",function(e){
 
 
 $(document).ready(function(){
-	$('#typeOfSpeciality').on('change',function() {
+	$('#examTypes').on('change',function() {
 		basicFilterSortingClinics();
 	});
 });
@@ -542,7 +566,8 @@ $(document).ready(function(){
 });
 
 $(document).ready(function(){
-    getSpecialities();
+    //getSpecialities();
+    getTypeOfExams();
 });
 
 

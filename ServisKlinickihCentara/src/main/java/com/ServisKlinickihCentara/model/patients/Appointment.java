@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.clinics.Term;
+import com.ServisKlinickihCentara.model.clinics.TypeOfExam;
 import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.employees.Employee;
 import com.ServisKlinickihCentara.model.enums.AppointmentType;
@@ -39,12 +40,12 @@ public class Appointment
 	@JsonManagedReference
 	private Employee employee;
 
-	
-	@Column
-	private Specialty category;
-	
+
 	@Column
 	private AppointmentType type;
+
+	@ManyToOne
+	private TypeOfExam typeOfExam;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "report_id", referencedColumnName = "id")
@@ -63,7 +64,7 @@ public class Appointment
 		super();
 	}
 
-	public Appointment(Long id, Patient patient, Term term, Employee employee, Specialty category, AppointmentType type,
+	public Appointment(Long id, Patient patient, Term term, Employee employee, AppointmentType type,
 			AppointmentReport report, Clinic clinic, boolean predefined, boolean active, boolean cancelled) {
 		super();
 		this.id = id;
@@ -71,7 +72,6 @@ public class Appointment
 		this.term = term;
 		//this.doctor = doctor;
 		this.employee = employee;
-		this.category = category;
 		this.type = type;
 		this.report = report;
 		this.clinic = clinic;
@@ -80,13 +80,12 @@ public class Appointment
 		this.cancelled = cancelled;
 	}
 
-	public Appointment(Patient patient, Term term,Employee employee, Specialty category, AppointmentType type,
+	public Appointment(Patient patient, Term term,Employee employee, AppointmentType type,
 			AppointmentReport report,Clinic clinic, boolean predefined, boolean active, boolean cancelled) {
 		super();
 		this.patient = patient;
 		this.term = term;
 		this.employee = employee;
-		this.category = category;
 		this.type = type;
 		this.report = report;
 		this.clinic = clinic;
@@ -95,13 +94,12 @@ public class Appointment
 		this.cancelled = cancelled;
 	}
 
-	public Appointment(Patient patient, Term term, Employee employee, Specialty category, AppointmentType type,
+	public Appointment(Patient patient, Term term, Employee employee, AppointmentType type,
 			AppointmentReport report,Clinic clinic, boolean predefined) {
 		super();
 		this.patient = patient;
 		this.term = term;
 		this.employee = employee;
-		this.category = category;
 		this.type = type;
 		this.report = report;
 		this.clinic = clinic;
@@ -110,13 +108,12 @@ public class Appointment
 		this.cancelled = false;
 	}
 
-	public Appointment(Patient patient, Term term, Employee employee, Specialty category, AppointmentType type,
+	public Appointment(Patient patient, Term term, Employee employee, AppointmentType type,
 			AppointmentReport report, Clinic clinic) {
 		super();
 		this.patient = patient;
 		this.term = term;
 		this.employee = employee;
-		this.category = category;
 		this.type = type;
 		this.report = report;
 		this.clinic = clinic;
@@ -125,7 +122,19 @@ public class Appointment
 		this.cancelled = false;
 	}
 
-
+	public Appointment(Long id, Patient patient, Term term, Clinic clinic, Employee employee, AppointmentType type, TypeOfExam typeOfExam, AppointmentReport report, boolean predefined, boolean active, boolean cancelled) {
+		this.id = id;
+		this.patient = patient;
+		this.term = term;
+		this.clinic = clinic;
+		this.employee = employee;
+		this.type = type;
+		this.typeOfExam = typeOfExam;
+		this.report = report;
+		this.predefined = predefined;
+		this.active = active;
+		this.cancelled = cancelled;
+	}
 
 	public Long getId() {
 		return id;
@@ -167,12 +176,12 @@ public class Appointment
 		this.employee = employee;
 	}
 
-	public Specialty getCategory() {
-		return category;
+	public TypeOfExam getTypeOfExam() {
+		return typeOfExam;
 	}
 
-	public void setCategory(Specialty category) {
-		this.category = category;
+	public void setTypeOfExam(TypeOfExam typeOfExam) {
+		this.typeOfExam = typeOfExam;
 	}
 
 	public AppointmentType getType() {
@@ -224,5 +233,20 @@ public class Appointment
 		this.clinic = clinic;
 	}
 
-
+	@Override
+	public String toString() {
+		return "Appointment{" +
+				"id=" + id +
+				", patient=" + patient.getId() +
+				", term=" + term.getStartTime() +
+				", clinic=" + clinic.getId() +
+				", employee=" + employee.getEmail() +
+				", type=" + type.toString() +
+				", typeOfExam=" + typeOfExam.getName() +
+				", report=" + report.getId() +
+				", predefined=" + predefined +
+				", active=" + active +
+				", cancelled=" + cancelled +
+				'}';
+	}
 }

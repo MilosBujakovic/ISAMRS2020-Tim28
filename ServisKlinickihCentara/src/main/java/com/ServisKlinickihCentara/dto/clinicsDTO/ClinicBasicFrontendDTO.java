@@ -5,7 +5,6 @@ public class ClinicBasicFrontendDTO {
     private String id;
     private String name;
     private String address;
-    private String speciality;
     private String average_rating;
 
 
@@ -13,18 +12,16 @@ public class ClinicBasicFrontendDTO {
         super();
     }
 
-    public ClinicBasicFrontendDTO(String id, String name, String address, String speciality) {
+    public ClinicBasicFrontendDTO(String id, String name, String address) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.speciality = speciality;
     }
 
-    public ClinicBasicFrontendDTO(String id, String name, String address, String speciality, String average_rating) {
+    public ClinicBasicFrontendDTO(String id, String name, String address, String average_rating) {
         this.id = id;
         this.name = name;
         this.address = address;
-        this.speciality = speciality;
         this.average_rating = average_rating;
     }
 
@@ -51,14 +48,6 @@ public class ClinicBasicFrontendDTO {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getSpeciality() {
-        return speciality;
-    }
-
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
     }
 
     public String getAverage_rating() {

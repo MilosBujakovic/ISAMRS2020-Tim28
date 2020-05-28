@@ -9,6 +9,7 @@ import com.ServisKlinickihCentara.dto.appointmentsDTO.ReservedAppointmentDTO;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.clinics.ClinicRating;
 import com.ServisKlinickihCentara.model.clinics.Term;
+import com.ServisKlinickihCentara.model.clinics.TypeOfExam;
 import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.employees.DoctorRating;
 import com.ServisKlinickihCentara.model.enums.AppointmentType;
@@ -38,7 +39,6 @@ public class AppointmentService {
 
     @Autowired
     private AppointmentRequestRepository appointmentRequestRepository;
-
 
     @Autowired
     private ClinicRepository clinicRepository;
@@ -79,10 +79,12 @@ public class AppointmentService {
 
             String doctorNameSurname = appointment.getEmployee().getName() + ' ' + appointment.getEmployee().getSurname();
             String dateTime = startTime.toString();
-            String type = appointment.getCategory().toString();
+            String type_of_exam = appointment.getTypeOfExam().getName();
+
+            double price = appointment.getTypeOfExam().getPriceItem().getPrice();
 
             PredefinedAppointmenViewtDTO p = new PredefinedAppointmenViewtDTO(appointment.getId().toString(),
-                    dateTime,term.getRoom().getNumber(),doctorNameSurname,type,String.valueOf(term.getPrice()));
+                    dateTime,term.getRoom().getNumber(),doctorNameSurname,type_of_exam,String.valueOf(price));
 
             predefinedAppointmenViewtDTOS.add(p);
         }
@@ -126,11 +128,11 @@ public class AppointmentService {
         }
 
         Doctor doctor = (Doctor) appointment.getEmployee();
-        Specialty category = appointment.getCategory();
+        TypeOfExam type_of_exam = appointment.getTypeOfExam();
         AppointmentType appointmentType = appointment.getType();
 
         AppointmentRequest appointmentRequest = new AppointmentRequest(patient,term,
-                doctor,category,appointmentType);
+                doctor,type_of_exam,appointmentType);
         appointmentRequestRepository.save(appointmentRequest);
 
 
@@ -213,7 +215,6 @@ public class AppointmentService {
         List<Appointment> appointments = patient.getApointments();
         List<AppointmentRequest> appointmentRequests = patient.getRequests();
 
-        System.out.println(appointments.size());
 
         for(Appointment a: appointments){
             System.out.println(a.getTerm().getStartTime());
@@ -221,10 +222,12 @@ public class AppointmentService {
             if(today.after(a.getTerm().getStartTime())){
                 continue;
             }
+            double price = a.getTypeOfExam().getPriceItem().getPrice();
+
             ReservedAppointmentDTO reservedAppointmentDTO = new ReservedAppointmentDTO(a.getId().toString(),
                     a.getTerm().getStartTime().toString(),a.getTerm().getRoom().getNumber(),
-                    a.getEmployee().getName() + " " + a.getEmployee().getSurname(), a.getCategory().toString(),
-                    String.valueOf(a.getTerm().getPrice()),RequestStatus.ACCEPTED.toString());
+                    a.getEmployee().getName() + " " + a.getEmployee().getSurname(), a.getTypeOfExam().getName(),
+                    String.valueOf(price),RequestStatus.ACCEPTED.toString());
             reservedAppointmentDTOS.add(reservedAppointmentDTO);
 
         }
@@ -238,11 +241,13 @@ public class AppointmentService {
             if(today.after(ar.getTerm().getStartTime())){
                 continue;
             }
+            double price = ar.getTypeOfExam().getPriceItem().getPrice();
+
             Appointment a = this.findAppointmentByDoctorAndStartTime(ar.getDoctor().getId(),ar.getTerm().getStartTime());
             ReservedAppointmentDTO reservedAppointmentDTO = new ReservedAppointmentDTO(a.getId().toString(),
                     ar.getTerm().getStartTime().toString(),ar.getTerm().getRoom().getNumber(),
-                    ar.getDoctor().getName() + " " + ar.getDoctor().getSurname(), ar.getCategory().toString(),
-                    String.valueOf(ar.getTerm().getPrice()),ar.getStatus().toString());
+                    ar.getDoctor().getName() + " " + ar.getDoctor().getSurname(), ar.getTypeOfExam().getName(),
+                    String.valueOf(price),ar.getStatus().toString());
             reservedAppointmentDTOS.add(reservedAppointmentDTO);
 
 
@@ -302,15 +307,15 @@ public class AppointmentService {
         if(!hv.getSortingType().equalsIgnoreCase("")){
             if(hv.getSortingType().equalsIgnoreCase("date")){
                 appointments.sort((Appointment a1, Appointment a2)->a1.getTerm().getStartTime().compareTo(a2.getTerm().getStartTime()));
-            }else if(hv.getSortingType().equalsIgnoreCase("typeSpeciality")){
-                appointments.sort((Appointment a1,Appointment a2)-> a1.getCategory().toString().compareTo(a2.getCategory().toString()));
+            }else if(hv.getSortingType().equalsIgnoreCase("typeOfExam")){
+                appointments.sort((Appointment a1,Appointment a2)-> a1.getTypeOfExam().getName().compareTo(a2.getTypeOfExam().getName()));
             }else if(hv.getSortingType().equalsIgnoreCase("price")){
-                appointments.sort((Appointment a1, Appointment a2)-> Double.compare(a1.getTerm().getPrice(),a2.getTerm().getPrice()));
+                appointments.sort((Appointment a1, Appointment a2)-> Double.compare(a1.getTypeOfExam().getPriceItem().getPrice(),a2.getTypeOfExam().getPriceItem().getPrice()));
             }
         }
 
         appointments = appointments.stream()
-                .filter(a->hv.getSpeciality().equalsIgnoreCase("") || a.getCategory().toString().equalsIgnoreCase(hv.getSpeciality()))
+                .filter(a->hv.getTypeOfExam().equalsIgnoreCase("") || a.getTypeOfExam().getName().equalsIgnoreCase(hv.getTypeOfExam()))
                 .filter(a->hv.getVisitType().equalsIgnoreCase("") || a.getType().toString().equalsIgnoreCase(hv.getVisitType()))
                 .collect(Collectors.toCollection(ArrayList::new));
                 /*.map(a->new HistoryVisitDTO(a.getTerm().getStartTime().toLocalDateTime().toLocalDate().toString(),
@@ -335,9 +340,12 @@ public class AppointmentService {
             if(doctorRating != null){
                 doctorRatingDTO = String.valueOf(doctorRating.getGrade());
             }
+            System.out.println(a);
+            System.out.println(String.valueOf(a.getTypeOfExam().getPriceItem().getPrice()));
+
             appointmentsHistory.add(new HistoryVisitDTO(a.getTerm().getStartTime().toLocalDateTime().toLocalDate().toString(),
                     a.getClinic().getName(),a.getEmployee().getName() + " " + a.getEmployee().getSurname(),
-                    a.getType().toString(), a.getCategory().toString(), String.valueOf(a.getTerm().getPrice()),clinicRatingDTO,doctorRatingDTO, String.valueOf(doctor_id)));
+                    a.getType().toString(), a.getTypeOfExam().getName(), String.valueOf(a.getTypeOfExam().getPriceItem().getPrice()),clinicRatingDTO,doctorRatingDTO, String.valueOf(doctor_id)));
         }
     }
 

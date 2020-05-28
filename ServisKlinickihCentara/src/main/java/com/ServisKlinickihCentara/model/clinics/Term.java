@@ -24,25 +24,19 @@ public class Term
     @Column
     private Timestamp endTime;
     
-    @Column
-    private int duration;//in minutes
-    
-    @Column
-    private double price;
+
     
     public Term() {}
     
     
 
-	public Term(Long id, Room room, Timestamp startTime, Timestamp endTime, int duration, double price)
+	public Term(Long id, Room room, Timestamp startTime, Timestamp endTime)
 	{
 		super();
 		this.id = id;
 		this.room = room;
 		this.startTime = startTime;
 		this.endTime = endTime;
-		this.duration = duration;
-		this.price = price;
 	}
 
 
@@ -86,28 +80,4 @@ public class Term
 		this.endTime = endTime;
 	}
 
-	public int getDuration()
-	{
-		return duration;
-	}
-
-	public void setDuration(int duration)
-	{
-		this.duration = duration;
-	}
-
-	public double getPrice() 
-	{
-		return price;
-	}
-
-	public void setPrice(double price) 
-	{
-		this.price = price;
-	}
-    
-    
-    
-	
-	
 }
