@@ -45,21 +45,16 @@ public class ClinicService {
 
             List<ClinicRating> clinicRatings = c.getClinicRatings();
             double rating = 0;
+            String clinicRatingDTO = "No rating";
             if (clinicRatings != null){
                 if (clinicRatings.size() > 0){
-
                     rating = clinicRatings.stream().collect(Collectors.averagingDouble(cr->cr.getGrade()));
-
-                    /*double sum = 0;
-                    for(ClinicRating clinicRating: clinicRatings) {
-                        sum += clinicRating.getGrade();
-                    }
-                    rating = (int)sum/clinicRatings.size();*/
+                    clinicRatingDTO = String.valueOf(rating);
                 }
 
             }
 
-            ClinicBasicFrontendDTO cDTO = new ClinicBasicFrontendDTO(c.getId().toString(), c.getName(),c.getAddress(),String.valueOf(rating));
+            ClinicBasicFrontendDTO cDTO = new ClinicBasicFrontendDTO(c.getId().toString(), c.getName(),c.getAddress(),clinicRatingDTO);
             clinicBasicFrontendDTOS.add(cDTO);
         }
         return clinicBasicFrontendDTOS;
@@ -77,28 +72,27 @@ public class ClinicService {
                 clinics.sort((Clinic c1, Clinic c2)->c1.getName().compareTo(c2.getName()));
             }else if(nameAddressSorting.equalsIgnoreCase("address")){
                 clinics.sort((Clinic c1, Clinic c2)->c1.getAddress().compareTo(c2.getAddress()));
+            }else if(nameAddressSorting.equalsIgnoreCase("rating")){
+                clinics.sort((Clinic c1, Clinic c2)->c1.getClinicRatings()
+                        .stream().collect(Collectors.averagingDouble(cr -> cr.getGrade()))
+                        .compareTo(c2.getClinicRatings().stream().collect(Collectors.averagingDouble(cr -> cr.getGrade()))));
             }
         }
 
 
-
-       /* if(!speciality.equalsIgnoreCase("")){
-            clinics = clinics.stream()
-                    .filter(clinic -> clinic.getSpecialty().toString().equalsIgnoreCase(speciality))
-                    .collect(Collectors.toCollection(ArrayList::new));
-        }*/
-
         for(Clinic c: clinics){
             List<ClinicRating> clinicRatings = c.getClinicRatings();
             double rating = 0;
+            String clinicRatingDTO = "No rating";
             if (clinicRatings != null){
                 if (clinicRatings.size() > 0){
 
                     rating = clinicRatings.stream().collect(Collectors.averagingDouble(cr->cr.getGrade()));
+                    clinicRatingDTO = String.valueOf(rating);
                 }
             }
             clinicBasicFrontendDTOS.add(new ClinicBasicFrontendDTO(c.getId().toString(),c.getName(),
-                    c.getAddress(), String.valueOf(rating)));
+                    c.getAddress(), clinicRatingDTO));
         }
 
 
@@ -118,14 +112,16 @@ public class ClinicService {
         for (Clinic clinic : clinics) {
 
             if (!clinic.getAddress().toLowerCase().contains(advancedSearchClinicDTO.getAddress().toLowerCase()) &&
-                    !clinic.getAddress().equalsIgnoreCase("")) {
+                    !advancedSearchClinicDTO.getAddress().equalsIgnoreCase("")) {
                 continue;
             }
 
-            /*if (!clinic.getSpecialty().toString().equalsIgnoreCase(advancedSearchClinicDTO.getSpeciality()) &&
-                    !advancedSearchClinicDTO.getSpeciality().equalsIgnoreCase("")) {
+            boolean typeOfExamExists = clinic.getTypeOfExams()
+                    .stream().anyMatch(typeOfExam -> typeOfExam.getName().equalsIgnoreCase(advancedSearchClinicDTO.getTypeOfExam()));
+            if(!typeOfExamExists){
                 continue;
-            }*/
+            }
+
 
             double rating = 0;
             rating = clinic.getClinicRatings().stream().collect(Collectors.averagingDouble(cr -> cr.getGrade()));
@@ -190,11 +186,11 @@ public class ClinicService {
         ArrayList<Clinic> clinics = clinicRepository.findAll();
         clinics = clinics.stream().filter(clinic -> ids.contains(clinic.getId().toString())).collect(Collectors.toCollection(ArrayList::new));
 
-        /*if(!filterExistingAsiDTO.getSpeciality().equalsIgnoreCase("")){
-            clinics = clinics.stream()
-                    .filter(clinic -> clinic.getSpecialty().toString().equalsIgnoreCase(filterExistingAsiDTO.getSpeciality()))
+        if(!filterExistingAsiDTO.getTypeOfExam().equalsIgnoreCase("")){
+            clinics = clinics.stream().filter(clinic -> clinic.getTypeOfExams()
+                    .stream().anyMatch(typeOfExam -> typeOfExam.getName().equalsIgnoreCase(filterExistingAsiDTO.getTypeOfExam())))
                     .collect(Collectors.toCollection(ArrayList::new));
-        }*/
+        }
 
         HashMap<Long,Double> ratings = new HashMap<>();
         for(Clinic clinic: clinics){

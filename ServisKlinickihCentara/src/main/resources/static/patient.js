@@ -87,7 +87,7 @@ function getMedicalRecord() {
                 $("#bloodType").text(medicalRecord.bloodtype);
                 $("#rhFactor").text(medicalRecord.rhfactor);
                 $("#alergies").text(medicalRecord.alergies);
-                console.log(medicalRecord.diseaseHistoryDTOS.length);
+
                 if (medicalRecord.diseaseHistoryDTOS.length > 0){
                     $("#diseaseHistoryFound").show();
                     $("#diseases").show();
@@ -103,14 +103,14 @@ function getMedicalRecord() {
                             )
                             $("#diseases").append("<li>" + disease.date + "</li>");
                             $("#diseases").append(table);
-                            console.log(disease.prescriptionMrDTOS.length);
+
                             if (disease.prescriptionMrDTOS.length > 0){
                                 $("#diseases").append("<p>" + 'Prescriptions:' + "</p>");
                                 var prescriptionTable = $("<table class=\"table table-bordered table-hover\" style=\"width:350px\" bgcolor=\"#d9d9d9\"><thead><th>medication</th><th>amount per day</th></thead></table>");
                                 $.each(
                                    disease.prescriptionMrDTOS,
                                    function(index,prescription){
-                                        console.log(prescription.name);
+
                                         prescriptionTable.append(
                                             "<tr><td>"  + prescription.name + "</td><td>" + prescription.amount + "</td></tr>"
                                         )
@@ -189,9 +189,6 @@ function getTypeOfExams(){
  }
 
 
-
-
-
 function getClinicsForBasicView(){
     var token = localStorage.getItem("token");
 	$.ajax({
@@ -206,16 +203,12 @@ function getClinicsForBasicView(){
     					clinics,
     					function(index,clinic){
     						var tr = $('<tr></tr>');
-    						var rating = "No rating";
-    						if(clinic.rating !== '0.0'){
-    							rating = clinic.average_rating;
-    						}
 
     						tr.append(
-    						        "<td>" + clinic.id+"</td>" +
-    								"<td>" + clinic.name+"</td>" +
-    								"<td>" + clinic.address+"</td>" +
-    								"<td>" + rating+"</td>" +
+    						        "<td>" + clinic.id + "</td>" +
+    								"<td>" + clinic.name + "</td>" +
+    								"<td>" + clinic.address + "</td>" +
+    								"<td>" + clinic.average_rating + "</td>" +
     								"<td><button name=\"" + clinic.id + "\" id=\"clinic\">" + 'Predefined appointments'+"</button></td>"
 
     						);
@@ -272,17 +265,13 @@ function basicFilterSortingClinics(){
 						clinics,
 						function(index,clinic){
 							var tr = $('<tr></tr>');
-                            var rating = "No rating";
 
-                            if(clinic.rating !== '0.0'){
-                                rating = clinic.average_rating;
-                            }
 							tr.append(
                                 "<td>" + clinic.id+"</td>" +
                                 "<td>" + clinic.name+"</td>" +
        							"<td>" + clinic.address+"</td>" +
-                                "<td>" + rating+"</td>" +
-                                "<td><button name=\"" + clinic.id + "\" id=\"clinic\" class=\"clinicButton\" background-color=\"#555555\">" + 'Predefined appointments'+"</button></td>"
+                                "<td>" + clinic.average_rating+"</td>" +
+                                "<td><button name=\"" + clinic.id + "\" id=\"clinic\">" + 'Predefined appointments'+"</button></td>"
                             );
                             $("#clinicsForBasicViewFilter").append(tr);
 						}
@@ -338,8 +327,8 @@ function writeVisitsData(visits){
                     "<td>" + visit.visitType + "</td>" +
                     "<td>" + visit.typeOfExam + "</td>" +
                     "<td>" + visit.price + "</td>" +
-                    "<td><p id=\"clinicGrade" + index + "\">" +  visit.clinicGrade + "</p><button id=\"" + index + "\" name=\"giveGradeClinicButton\">Give grade</button>&nbsp<input id=\"givenClinicGrade" + index + "\" style=\"visibility: hidden\" type=\"number\" min=\"1\" max=\"5\" required></td>" +
-                    "<td><p id=\"doctorGrade" + index + "\">" +  visit.doctorGrade + "</p><button id=\"" + index + " " + visit.doctorId  + "\" name=\"giveGradeDoctorButton\">Give grade</button>&nbsp<input id=\"givenDoctorGrade" + index + "\" style=\"visibility: hidden\" type=\"number\" min=\"1\" max=\"5\" required></td>"
+                    "<td><p id=\"clinicGrade" + index + "\" name=\"clinicGradeName" + visit.clinic + "\">" +  visit.clinicGrade + "</p><button id=\"" + index + "\" name=\"giveGradeClinicButton\">Give grade</button>&nbsp<input id=\"givenClinicGrade" + index + "\" style=\"visibility: hidden\" type=\"number\" min=\"1\" max=\"5\" required></td>" +
+                    "<td><p id=\"doctorGrade" + index + "\" name=\"doctorGradeName" + visit.doctorId + "\">" +  visit.doctorGrade + "</p><button id=\"" + index + " " + visit.doctorId  + "\" name=\"giveGradeDoctorButton\">Give grade</button>&nbsp<input id=\"givenDoctorGrade" + index + "\" style=\"visibility: hidden\" type=\"number\" min=\"1\" max=\"5\" required></td>"
                 );
                 $("#historyAppointmentsView").append(tr);
              }
@@ -373,7 +362,9 @@ $(document).on('click',"button[name=giveGradeClinicButton]",function(e){
                 alert(message.message);
                 if(message.success == true){
                     //getPatientsHistory();
-                    document.getElementById("clinicGrade" + index).innerText = (parseInt(grade)).toFixed(1);
+                    //document.getElementById("clinicGrade" + index).innerText = (parseInt(grade)).toFixed(1);
+
+                    updateGrades("clinicGradeName" + clinicName,(parseInt(grade)).toFixed(1));
                     document.getElementById(index).innerText  = "Give grade";
                     document.getElementById("givenClinicGrade" + index).style.visibility = "hidden";
                 }
@@ -412,7 +403,8 @@ $(document).on('click',"button[name=giveGradeDoctorButton]",function(e){
                 alert(message.message);
                 if(message.success == true){
                     //getPatientsHistory();
-                    document.getElementById("doctorGrade" + index).innerText = (parseInt(grade)).toFixed(1);
+                    //document.getElementById("doctorGrade" + index).innerText = (parseInt(grade)).toFixed(1);
+                    updateGrades("doctorGradeName" + doctorId,(parseInt(grade)).toFixed(1));
                     document.getElementById(id).innerText  = "Give grade";
                     document.getElementById("givenDoctorGrade" + index).style.visibility = "hidden";
                 }
@@ -427,6 +419,15 @@ $(document).on('click',"button[name=giveGradeDoctorButton]",function(e){
 })
 
 
+function updateGrades(name,newGrade){
+    var grades = document.getElementsByName(name);
+    $.each(
+        grades,
+        function(index,grade){
+            grade.innerText = newGrade;
+        }
+    )
+}
 
 
 function filterSortingPatientsHistory(){

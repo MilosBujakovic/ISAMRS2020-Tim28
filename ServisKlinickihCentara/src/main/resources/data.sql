@@ -48,7 +48,7 @@ insert into servisklinickihcentara.clinic_type_of_exams (clinic_id,type_of_exam_
 insert into servisklinickihcentara.clinic_type_of_exams (clinic_id,type_of_exam_id) values (2,6);
 
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',4,'milanmilanovic@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Milan', 'Milanovic', true, '2019-10-01 21:58:58.508',false,1,'09:00:00','17:00:00', 5);
-insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',5,'stevanstevanovicoft@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Stevan', 'Stevanovic', true, '2019-10-01 21:58:58.508',false,2,'09:00:00','17:00:00', 4);
+insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',5,'stevanstevanovicoft@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Stevan', 'Stevanovic', true, '2019-10-01 21:58:58.508',false,4,'09:00:00','17:00:00', 4);
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',6,'ankadermatolog@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Anka', 'Ivanovic', true, '2019-10-01 21:58:58.508',false,3,'09:00:00','18:00:00', 3);
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',7,'milanhirurg@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Milan', 'Stojanovic', true, '2019-10-01 21:58:58.508',false,2,'09:00:00','18:00:00', 0);
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',8,'jovanopstamedicina@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Jovan', 'Jovanovic', true, '2019-10-01 21:58:58.508',false,5,'09:00:00','18:00:00', 9);
@@ -70,12 +70,15 @@ insert into servisklinickihcentara.medication (id, name, description, manufactur
 insert into servisklinickihcentara.medication (id, name, description, manufacturer) values (4, 'antibiotik','prehlada','galenika');
 insert into servisklinickihcentara.medication (id, name, description, manufacturer) values (5, 'aciklovir','protiv herpesa','galenika');
 insert into servisklinickihcentara.medication (id, name, description, manufacturer) values (6, 'melem','protiv oziljaka','galenika');
+insert into servisklinickihcentara.medication (id, name, description, manufacturer) values (7, 'rinostop','za nos','galenika');
+
 
 insert into servisklinickihcentara.diagnosis (id, name, medication) values (1, 'Devijacija nosa','hirurska operacija');
 insert into servisklinickihcentara.diagnosis (id, name, medication) values (2, 'Mladez-fibron','hirurska operacija');
 insert into servisklinickihcentara.diagnosis (id, name, medication) values (3, 'Urastanje nokta','hirurska operacija');
 insert into servisklinickihcentara.diagnosis (id, name, medication) values (4, 'Temperatura i prehlada','lijekovi');
 insert into servisklinickihcentara.diagnosis (id, name, medication) values (5, 'Upala grla','lijekovi');
+insert into servisklinickihcentara.diagnosis (id, name, medication) values (6, 'Prehlada i zacepljen nos','lijekovi');
 
 insert into servisklinickihcentara.patient_medications (patient_id, medication_id) values (1, 1);
 insert into servisklinickihcentara.patient_medications (patient_id, medication_id) values (1, 2);
@@ -123,7 +126,7 @@ insert into servisklinickihcentara.prescription (id, medication_id, amount_per_d
 insert  into servisklinickihcentara.appointment_report_prescription (appointment_report_id,prescription_id) values (2,1);
 
 
-
+--
 insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (9, 5, '2015-03-02 09:30:00.000', '2013-03-02 09:45:00.000');
 insert into servisklinickihcentara.appointment_report (id, diagnosis_id, description,medical_record_id) values (3,4,'Preporuceno je lijecenje lijekovima.',1);
 insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled,patient_id, report_id) values (9, 9, 5, 9, 2, 0, false, true, false,1,3);
@@ -135,6 +138,14 @@ insert into servisklinickihcentara.prescription (id, medication_id, amount_per_d
 insert  into servisklinickihcentara.appointment_report_prescription (appointment_report_id,prescription_id) values (3,2);
 insert  into servisklinickihcentara.appointment_report_prescription (appointment_report_id,prescription_id) values (3,3);
 
+--
+insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (10, 5, '2015-11-02 09:30:00.000', '2013-11-02 09:45:00.000');
+insert into servisklinickihcentara.appointment_report (id, diagnosis_id, description,medical_record_id) values (4,6,'Preporuceno je lijecenje lijekovima.',1);
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled,patient_id, report_id) values (10, 10, 5, 9, 2, 0, false, true, false,1,4);
+
+insert into servisklinickihcentara.prescription (id, medication_id, amount_per_day,verified) values (4, 7, 3, true);
+
+insert  into servisklinickihcentara.appointment_report_prescription (appointment_report_id,prescription_id) values (4,4);
 
 insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (1, 3 , 1, 4);
 insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (2, 2 ,1, 3);

@@ -5,16 +5,16 @@ import java.util.List;
 
 public class FilterExistingAsiDTO {
     //private ClinicIdsDTO ids;
-    private String speciality;
+    private String typeOfExam;
     private String rating;
 
     public FilterExistingAsiDTO(){
         super();
     }
 
-    public FilterExistingAsiDTO(String speciality, String rating) {
+    public FilterExistingAsiDTO(String typeOfExam, String rating) {
         //this.ids = ids;
-        this.speciality = speciality;
+        this.typeOfExam = typeOfExam;
         this.rating = rating;
     }
 
@@ -26,12 +26,12 @@ public class FilterExistingAsiDTO {
         this.ids = ids;
     }*/
 
-    public String getSpeciality() {
-        return speciality;
+    public String getTypeOfExam() {
+        return typeOfExam;
     }
 
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
+    public void setTypeOfExam(String typeOfExam) {
+        this.typeOfExam = typeOfExam;
     }
 
     public String getRating() {

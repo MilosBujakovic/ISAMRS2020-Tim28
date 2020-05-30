@@ -14,13 +14,14 @@ if (token == null){
 
 $(document).ready(function(){
     document.getElementById("acsButton").click();
-    getSpecialities();
+    //getSpecialities();
+    getTypeOfExamsWithoutOperations();
 });
 
 $(document).on("submit", "#clinicSearchForm", function(e){
 	e.preventDefault();
 	var date = document.getElementById("dateOfCheckup").value;
-	var typeOfSpeciality = document.getElementById("typeOfSpeciality").value;
+	var typeOfExam = document.getElementById("typeOfExam").value;
 	var address = document.getElementById("address").value;
 	var rating = document.getElementById("rating").value;
 
@@ -40,9 +41,9 @@ $(document).on("submit", "#clinicSearchForm", function(e){
         		cache: false,
         		url : "/clinic/getClinicsByAdvancedSearch",
         		headers: { "Authorization": "Bearer " + token},
-        		data : JSON.stringify({"date":date,"speciality": typeOfSpeciality,"address": address,"rating":rating}),
+        		data : JSON.stringify({"date":date,"typeOfExam": typeOfExam,"address": address,"rating":rating}),
         		success : function(clinics) {
-        		    $("#clinicSpeciality").val("");
+        		    //$("#clinicSpeciality").val("");
                     $("#clinicRating").val("");
 
                     writeClinicsData(clinics, false);
@@ -57,7 +58,7 @@ $(document).on("submit", "#clinicSearchForm", function(e){
 
 
 function filterExistingAdvancedSearchedItems(){
-	var clinicSpeciality = document.getElementById("clinicSpeciality").value;
+	var typeOfExam = document.getElementById("examTypes").value;
 	var clinicRating = document.getElementById("clinicRating").value;
 	var clinicsIds = localStorage.getItem("clinicsIds");
 
@@ -68,7 +69,7 @@ function filterExistingAdvancedSearchedItems(){
 		dataType : "json",
 		cache: false,
 		contentType : 'application/json',
-		data: JSON.stringify({"speciality": clinicSpeciality,"rating": clinicRating}),
+		data: JSON.stringify({"typeOfExam":typeOfExam, "rating": clinicRating}),
 		headers: { "Authorization": "Bearer " + token},
 		success : function(clinics) {
             writeClinicsData(clinics, true);
@@ -103,7 +104,6 @@ function writeClinicsData(clinics, isFilteringExisting){
                 "<td>" + clinic.id + "</td>" +
                 "<td>" + clinic.name + "</td>" +
                 "<td>" + clinic.address + "</td>" +
-                "<td>" + clinic.speciality + "</td>" +
                 "<td>" + clinic.rating + "</td>" +
                 "<td>" + clinic.price + "</td>" +
                 "<td><button name=\"" + clinic.id + "\" id=\"doctors\" background-color=\"#555555\">" + 'Doctor\'s terms'+"</button></td>"
@@ -126,7 +126,7 @@ $(document).on('click', '#doctors', function(e) {
 
 
 $(document).ready(function(){
-	$('#clinicSpeciality').on('change',function() {
+	$('#examTypes').on('change',function() {
 		filterExistingAdvancedSearchedItems();
 	});
 });
@@ -136,6 +136,32 @@ $(document).ready(function(){
 		filterExistingAdvancedSearchedItems();
 	});
 });
+
+function getTypeOfExamsWithoutOperations(){
+     var token = localStorage.getItem("token");
+ 	$.ajax({
+     		type : 'GET',
+     		url : "/typeOfExam/getTypeOfExamsWithoutOperations",
+     		cache: false,
+     		dataType: "json",
+            headers: { "Authorization": "Bearer " + token},
+     		success : function(types) {
+     			$("#examTypes").find('optionl:gt(0)').remove();
+     			$.each(
+     					types,
+     					function(index,type){
+     						$("#typeOfExam").append('<option value=\"' + type + '\">' + type + '</option>');
+     					    $("#examTypes").append('<option value=\"' + type + '\">' + type + '</option>');
+
+     					}
+     			)
+     		},
+     		error : function(errorThrown) {
+     			alert(errorThrown);
+     		}
+     	});
+ }
+
 
 function getSpecialities(){
     var token = localStorage.getItem("token");

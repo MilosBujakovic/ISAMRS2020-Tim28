@@ -97,9 +97,9 @@ input[type=checkbox] {
 
 
             <div class="form-group row">
-                <label class="control-label col-sm-2" for="typeOfSpeciality">Type of checkup:</label>
+                <label class="control-label col-sm-2" for="typeOfExam">Type of exam:</label>
                 <div class="col-sm-5">
-                    <select id="typeOfSpeciality" class="form-control">
+                    <select id="typeOfExam" class="form-control" required>
                         <option value="" selected></option>
                     </select>
                 </div>
@@ -144,9 +144,6 @@ input[type=checkbox] {
         <th>id</th>
         <th>name</th>
         <th>address</th>
-        <th>speciality<select id="clinicSpeciality" class="form-control">
-            <option value="" selected></option>
-        </select></th>
         <th>rating<select id="clinicRating" class="form-control">
             <option value="" selected></option>
             <option value="1">1</option>
@@ -156,7 +153,7 @@ input[type=checkbox] {
             <option value="5">5</option>
         </select></th>
         <th>price</th>
-        <th></th>
+        <th><p>filter by type of exam:</p><select id="examTypes"><option value="" selected></option></select></th>
         </thead>
         <tbody>
 

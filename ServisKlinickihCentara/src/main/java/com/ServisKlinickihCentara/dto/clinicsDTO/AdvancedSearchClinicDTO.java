@@ -2,7 +2,7 @@ package com.ServisKlinickihCentara.dto.clinicsDTO;
 
 public class AdvancedSearchClinicDTO {
     private String date;
-    private String speciality;
+    private String typeOfExam;
     private String address;
     private String rating;
 
@@ -11,9 +11,9 @@ public class AdvancedSearchClinicDTO {
     }
 
 
-    public AdvancedSearchClinicDTO(String date, String speciality, String address, String rating) {
+    public AdvancedSearchClinicDTO(String date, String typeOfExam, String address, String rating) {
         this.date = date;
-        this.speciality = speciality;
+        this.typeOfExam = typeOfExam;
         this.address = address;
         this.rating = rating;
     }
@@ -27,12 +27,12 @@ public class AdvancedSearchClinicDTO {
         this.date = date;
     }
 
-    public String getSpeciality() {
-        return speciality;
+    public String getTypeOfExam() {
+        return typeOfExam;
     }
 
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
+    public void setTypeOfExam(String typeOfExam) {
+        this.typeOfExam = typeOfExam;
     }
 
     public String getAddress() {
