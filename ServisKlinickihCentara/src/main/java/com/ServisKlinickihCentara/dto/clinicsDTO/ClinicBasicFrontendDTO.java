@@ -18,13 +18,13 @@ public class ClinicBasicFrontendDTO {
         this.address = address;
     }
 
+
     public ClinicBasicFrontendDTO(String id, String name, String address, String average_rating) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.average_rating = average_rating;
     }
-
 
     public String getId() {
         return id;

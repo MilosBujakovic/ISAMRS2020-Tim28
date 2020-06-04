@@ -12,7 +12,10 @@ import com.ServisKlinickihCentara.model.users.User;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.UUID;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 public class EmailService {
@@ -46,6 +49,7 @@ public class EmailService {
         LocalDate localDate2 = LocalDate.of(2020,7,23);
 
         System.out.println(localDate1.equals(localDate2));
+
     }
 
 }

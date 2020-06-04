@@ -13,8 +13,17 @@ if (token == null){
 
 $(document).ready(function(){
     document.getElementById("doctorTermsButton").click();
+    //getTypeOfExamsWithoutOperations();
     readFreeDoctorsTerms();
+    /*setTimeout(function() {
+                var choosenExam = localStorage.getItem("choosenExam");
+                $("#typeOfExam option[value='" + choosenExam + "']").prop("selected",true);
+
+    }, 500);*/
+
 });
+
+
 
 
 function readFreeDoctorsTerms() {
@@ -23,6 +32,9 @@ function readFreeDoctorsTerms() {
 
     var clinicId = localStorage.getItem("clickedClinicForDoctorsTerms");
     var date = localStorage.getItem("choosenDate");
+
+    $('#dateOfExamDTO').val(date);
+
 
 	$.ajax({
 		type : 'GET',
@@ -180,3 +192,28 @@ function removeChildsFromDoctorTermsDiv(){
     }
 }
 
+
+function getTypeOfExamsWithoutOperations(){
+     var token = localStorage.getItem("token");
+ 	$.ajax({
+     		type : 'GET',
+     		url : "/typeOfExam/getTypeOfExamsWithoutOperations",
+     		cache: false,
+     		dataType: "json",
+            headers: { "Authorization": "Bearer " + token},
+     		success : function(types) {
+     			$("#typeOfExam").find('option:gt(0)').remove();
+     			var options = $('#typeOfExam').attr('options');
+
+     			$.each(
+     					types,
+     					function(index,type){
+     						$("#typeOfExam").append('<option value=\"' + type + '\" data-id=\"' + type + '\">' + type + '</option>');
+     					}
+     			)
+     		},
+     		error : function(errorThrown) {
+     			alert(errorThrown);
+     		}
+     	});
+ }

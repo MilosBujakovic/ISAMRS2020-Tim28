@@ -150,23 +150,23 @@ public class AppointmentService {
     }
 
 
-    public MessageDTO acceptQuickAppointment(String uuid, String appointmentId, String appointmentRequestId){
+    public String acceptQuickAppointment(String uuid, String appointmentId, String appointmentRequestId){
         Patient patient = (Patient) userService.findByUuid(uuid);
 
         if(patient == null){
-            return new MessageDTO("Something is wrong, patient doesn't exist!!!",false);
+            return "Something is wrong, patient doesn't exist!!!";
         }
 
         Appointment appointment = appointmentRepository.findById(Long.parseLong(appointmentId));
 
         if(appointment == null){
-            return new MessageDTO("Something is wrong, appointment with this id doesn't exist!!!",false);
+            return new String("Something is wrong, appointment with this id doesn't exist!!!");
         }
 
         AppointmentRequest  appointmentRequest = appointmentRequestRepository.findById(Long.parseLong(appointmentRequestId));
 
         if(appointmentRequest == null){
-            return new MessageDTO("Something is wrong, appointment request with this id doesn't exist!!!",false);
+            return "Something is wrong, appointment request with this id doesn't exist!!!";
         }
 
 
@@ -176,36 +176,37 @@ public class AppointmentService {
         Timestamp startTime = term.getStartTime();
 
         if(today.after(startTime)){
-            return new MessageDTO("Date for this appointment was passed!!!", false);
+            return "Date for this appointment was passed!!!";
         }
 
 
 
         Patient p = appointment.getPatient();
         if (p != null){
-            return new MessageDTO("Someone reserved this appointment before you!!!", false);
+            return "Someone reserved this appointment before you!!!";
         }
 
         appointment.setPatient(patient);
         appointmentRequest.setStatus(RequestStatus.ACCEPTED);
         appointmentRepository.save(appointment);
         appointmentRequestRepository.save(appointmentRequest);
-        return new MessageDTO("You reserved successfully appointment!!!", true);
+        String link = "<a href='http://localhost:8080/redirect.html' target='_blank'>http://localhost:8080/redirect.html</a>";
+        return "You reserved successfully appointment, click below to go on your reserved appointments \n" + link;
     }
 
 
-    public MessageDTO declineQuickAppointment(String uuid, String appointmentRequestId){
+    public String declineQuickAppointment(String uuid, String appointmentRequestId){
         Patient patient = (Patient) userService.findByUuid(uuid);
         AppointmentRequest appointmentRequest = appointmentRequestRepository.findById(Long.parseLong(appointmentRequestId));
 
         if(appointmentRequest == null){
-            return new MessageDTO("Something is wrong, appointment request with this id doesn't exist!!!",false);
+            return "Something is wrong, appointment request with this id doesn't exist!!!";
         }
 
 
         appointmentRequest.setStatus(RequestStatus.DECLINED);
         appointmentRequestRepository.save(appointmentRequest);
-        return new MessageDTO("You declined successfully appointment!!!", true);
+        return  "You declined successfully appointment!!!";
     }
 
     public ArrayList<ReservedAppointmentDTO> getPatientsAppointments(String email){

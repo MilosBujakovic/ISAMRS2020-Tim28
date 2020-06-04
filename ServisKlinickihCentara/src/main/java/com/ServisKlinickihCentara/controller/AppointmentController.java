@@ -42,22 +42,22 @@ public class AppointmentController {
         return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/acceptQuickAppointment/{uuid}/{appointmentId}/{appointmentRequestId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MessageDTO> acceptQuickAppointment(@PathVariable("uuid") String uuid,
+    @RequestMapping(value = "/acceptQuickAppointment/{uuid}/{appointmentId}/{appointmentRequestId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public ResponseEntity<String> acceptQuickAppointment(@PathVariable("uuid") String uuid,
                                                              @PathVariable("appointmentId") String appointmentId,
                                                              @PathVariable("appointmentRequestId") String appointmentRequestId){
         System.out.println("acceptQuickAppointment");
-        MessageDTO messageDTO = appointmentService.acceptQuickAppointment(uuid,appointmentId,appointmentRequestId);
-        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+        String message = appointmentService.acceptQuickAppointment(uuid,appointmentId,appointmentRequestId);
+        return new ResponseEntity<String>(message, HttpStatus.OK);
     }
 
 
-    @RequestMapping(value = "/declineQuickAppointment/{uuid}/{appointmentRequestId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MessageDTO> declineQuickAppointment(@PathVariable("uuid") String uuid,
+    @RequestMapping(value = "/declineQuickAppointment/{uuid}/{appointmentRequestId}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> declineQuickAppointment(@PathVariable("uuid") String uuid,
                                                              @PathVariable("appointmentRequestId") String appointmentRequestId){
         System.out.println("declineQuickAppointment");
-        MessageDTO messageDTO = appointmentService.declineQuickAppointment(uuid,appointmentRequestId);
-        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+        String message = appointmentService.declineQuickAppointment(uuid,appointmentRequestId);
+        return new ResponseEntity<String>(message, HttpStatus.OK);
     }
 
 

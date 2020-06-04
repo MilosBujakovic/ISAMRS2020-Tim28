@@ -68,6 +68,10 @@ input[type=checkbox] {
 }
 
 
+.clinicFont {
+  font-size: 150%;
+}
+
 </style>
 
 
@@ -77,12 +81,64 @@ input[type=checkbox] {
 <body>
 
 <div class="tab">
-    <button class="tablinks" onclick="openCity(event, 'clinic')">Clinic</button>
-    <button class="tablinks" onclick="openCity(event, 'predefinedAppointments')">Predefined appointments</button>
+    <button class="tablinks" id="clinicButton" onclick="openCity(event, 'clinic')">Clinic</button>
+    <button class="tablinks" id="predefinedAppointmentsButton" onclick="openCity(event, 'predefinedAppointments')">Predefined appointments</button>
 </div>
 
 
 <div id="clinic" class="tabcontent">
+
+    <table>
+        <tr>
+            <td><b><p class="clinicFont">Clinic:&nbsp;</p></b></td>
+            <td><b><p id="clinicName" class="clinicFont"></p></b></td>
+        </tr>
+
+        <tr>
+            <td><b><p class="clinicFont">Address:&nbsp;</p></b></td>
+            <td><b><p id="clinicAddress" class="clinicFont"></p></b></td>
+        </tr>
+
+        <tr>
+            <td><b><p class="clinicFont">Rating:&nbsp;</p></b></td>
+            <td><b><p id="clinicRating" class="clinicFont"></p></b></td>
+        </tr>
+    </table>
+
+
+    <h3>Search doctors for exam</h3>
+
+    <div class="container">
+        <form id="doctorsSearchForm">
+
+            <div class="form-group row">
+                <label class="control-label col-sm-2" for="dateOfCheckup">Date of checkup:</label>
+                <div class="col-sm-5">
+                    <input type="date" required class="form-control" id="dateOfCheckup"
+                           placeholder="Choose date of checkup" required>
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <label class="control-label col-sm-2" for="typeOfExam">Type of exam:</label>
+                <div class="col-sm-5">
+                    <select id="typeOfExam" class="form-control" required>
+                        <option value="" selected></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-xs-10 col-xs-offset-2">
+                <input type="submit" class="btn btn-primary" value="Search doctors" />
+            </div>
+
+
+        </form>
+    </div>
+
+
+
 
 </div>
 

@@ -18,6 +18,11 @@ public class AdvancedSearchClinicDTO {
         this.rating = rating;
     }
 
+    public AdvancedSearchClinicDTO(String date, String typeOfExam) {
+        this.date = date;
+        this.typeOfExam = typeOfExam;
+
+    }
 
     public String getDate() {
         return date;

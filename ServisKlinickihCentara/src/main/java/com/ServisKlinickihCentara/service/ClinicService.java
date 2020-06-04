@@ -1,16 +1,19 @@
 package com.ServisKlinickihCentara.service;
 
 
+import com.ServisKlinickihCentara.dto.MessageDTO;
 import com.ServisKlinickihCentara.dto.clinicsDTO.AdvancedSearchClinicDTO;
 import com.ServisKlinickihCentara.dto.clinicsDTO.AdvancedSearchItem;
 import com.ServisKlinickihCentara.dto.clinicsDTO.ClinicBasicFrontendDTO;
 import com.ServisKlinickihCentara.dto.clinicsDTO.FilterExistingAsiDTO;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.clinics.ClinicRating;
+import com.ServisKlinickihCentara.model.clinics.TypeOfExam;
 import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.employees.LeaveForm;
 import com.ServisKlinickihCentara.repository.ClinicRatingRepository;
 import com.ServisKlinickihCentara.repository.ClinicRepository;
+import com.ServisKlinickihCentara.repository.TypeOfExamRepository;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +37,22 @@ public class ClinicService {
     @Autowired
     private ClinicRatingRepository clinicRatingRepository;
 
+    @Autowired
+    private TypeOfExamRepository typeOfExamRepository;
+
+
+    public ClinicBasicFrontendDTO getClinicNameAddressRating(long id){
+        Clinic clinic = clinicRepository.findById(id);
+
+        double rating = clinic.getClinicRatings()
+                .stream().collect(Collectors.averagingDouble(cr->cr.getGrade()));
+
+        String ratingDTO = "No rating";
+        if(rating != 0){
+            ratingDTO = String.valueOf(rating);
+        }
+        return new ClinicBasicFrontendDTO(String.valueOf(id),clinic.getName(),clinic.getAddress(),ratingDTO);
+    }
 
 
     public ArrayList<ClinicBasicFrontendDTO> getClinics(){
@@ -103,6 +122,7 @@ public class ClinicService {
         ArrayList<AdvancedSearchItem> advancedSearchItems = new ArrayList<>();
         ArrayList<Clinic> clinics = clinicRepository.findAll();
 
+        TypeOfExam te = typeOfExamRepository.findByName(advancedSearchClinicDTO.getTypeOfExam());
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         System.out.println(timestamp.toLocalDateTime().toLocalDate());
@@ -172,7 +192,7 @@ public class ClinicService {
                 } else {
                     ratingDto = String.valueOf(rating);
                 }
-                AdvancedSearchItem a = new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), ratingDto, clinic.getAddress(),"", "price");
+                AdvancedSearchItem a = new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), ratingDto, clinic.getAddress(), String.valueOf(te.getPriceItem().getPrice()));
                 advancedSearchItems.add(a);
             }
 
@@ -186,11 +206,22 @@ public class ClinicService {
         ArrayList<Clinic> clinics = clinicRepository.findAll();
         clinics = clinics.stream().filter(clinic -> ids.contains(clinic.getId().toString())).collect(Collectors.toCollection(ArrayList::new));
 
-        if(!filterExistingAsiDTO.getTypeOfExam().equalsIgnoreCase("")){
+        TypeOfExam te = typeOfExamRepository.findByName(filterExistingAsiDTO.getTypeOfExam());
+
+        /*if(!filterExistingAsiDTO.getTypeOfExam().equalsIgnoreCase("")){
             clinics = clinics.stream().filter(clinic -> clinic.getTypeOfExams()
                     .stream().anyMatch(typeOfExam -> typeOfExam.getName().equalsIgnoreCase(filterExistingAsiDTO.getTypeOfExam())))
                     .collect(Collectors.toCollection(ArrayList::new));
+        }*/
+
+        if(!filterExistingAsiDTO.getSortBy().equalsIgnoreCase("")){
+            if(filterExistingAsiDTO.getSortBy().equalsIgnoreCase("rating")){
+                clinics.sort((Clinic c1, Clinic c2) -> c1.getClinicRatings().stream().collect(Collectors.averagingDouble(cr1 -> cr1.getGrade()))
+                        .compareTo(c2.getClinicRatings().stream().collect(Collectors.averagingDouble(cr2 -> cr2.getGrade()))));
+            }
+
         }
+
 
         HashMap<Long,Double> ratings = new HashMap<>();
         for(Clinic clinic: clinics){
@@ -204,12 +235,66 @@ public class ClinicService {
         }
 
 
+        /*advancedSearchItems = clinics.stream()
+                .map(clinic -> new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), String.valueOf(ratings.get(clinic.getId())), clinic.getAddress(), String.valueOf(te.getPriceItem().getPrice())))
+                .collect(Collectors.toCollection(ArrayList::new));
+*/
         advancedSearchItems = clinics.stream()
-                .map(clinic -> new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(), String.valueOf(ratings.get(clinic.getId())), clinic.getAddress(),"", "price"))
+                .map(clinic -> new AdvancedSearchItem(clinic.getId().toString(), clinic.getName(),ratings.get(clinic.getId()) == 0 ? "No rating" : String.valueOf(ratings.get(clinic.getId())), clinic.getAddress(), String.valueOf(te.getPriceItem().getPrice())))
                 .collect(Collectors.toCollection(ArrayList::new));
 
         return advancedSearchItems;
     }
+
+
+    public MessageDTO checkClinicHasFreeDoctorsForSpecificDateAndTypeOfExam(long clinicId ,AdvancedSearchClinicDTO advancedSearchClinicDTO) {
+        Clinic clinic = clinicRepository.findById(clinicId);
+        LocalDate localDate = LocalDate.parse(advancedSearchClinicDTO.getDate());
+
+        boolean typeOfExamExists = clinic.getTypeOfExams()
+                .stream().anyMatch(te->te.getName().equalsIgnoreCase(advancedSearchClinicDTO.getTypeOfExam()));
+
+        if(!typeOfExamExists){
+            return new MessageDTO("There is no doctors for this type of exam!",false);
+        }
+
+        List<Doctor> doctors = clinic.getStaff();
+
+        boolean hasFreeAtLeastOneDoctorAtCertainDay = false;
+        if(doctors.size() > 0){
+            hasFreeAtLeastOneDoctorAtCertainDay = this.hasFreeAtLeastOneDoctorAtCertainDay(localDate,doctors);
+        }
+
+        if(!hasFreeAtLeastOneDoctorAtCertainDay) {
+            return new MessageDTO("There is not free doctors for date that you entered!", false);
+        }
+        return new MessageDTO("There is at least one doctor free :)", true);
+    }
+
+    public boolean hasFreeAtLeastOneDoctorAtCertainDay(LocalDate localDate, List<Doctor> doctors){
+        for (Doctor doctor : doctors) {
+            LocalDate today = LocalDate.now();
+            List<LeaveForm> vacations = doctor.getVacations()
+                    .stream().filter(leaveForm -> leaveForm.getStartDate().isAfter(today))
+                    .collect(Collectors.toCollection(ArrayList::new));
+
+            if (vacations.size() > 0) {
+                for (LeaveForm vacation : vacations) {
+                    LocalDate vacationStartDate = vacation.getStartDate();
+                    LocalDate vacationEndDate = vacation.getEndDate();
+
+                    boolean isBetweenOrEqual = this.dateIsBetweenOrEqual(localDate, vacationStartDate, vacationEndDate);
+
+                    if (isBetweenOrEqual) {
+                        return false;
+                    }
+
+                }
+            }
+        }
+        return true;
+    }
+
 
     public boolean dateIsBetweenOrEqual(LocalDate date, LocalDate startDate, LocalDate endDate){
         if((date.isAfter(startDate) && date.isBefore(endDate)) || date.equals(startDate) || date.equals(endDate)){
