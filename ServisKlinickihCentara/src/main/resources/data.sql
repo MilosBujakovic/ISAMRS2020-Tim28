@@ -174,7 +174,7 @@ insert into servisklinickihcentara.term (id, room_id, start_time,end_time) value
 insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (13, 6, '2020-06-30 15:00:00.000', '2020-06-30 15:10:00.000');
 insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (14, 6, '2020-06-30 16:30:00.000', '2020-06-30 16:40:00.000');
 
-insert into servisklinickihcentara.appointment_request (id, patient_id, term_id,doctor_id, type_of_exam_id, type, status) values (1, 2, 11, 8, 2, 0,1);
+insert into servisklinickihcentara.appointment_request (id, patient_id, clinic_id, term_id,doctor_id, type_of_exam_id, type, status, predefined) values (1, 2, 5, 11, 8, 2, 0,1, true);
 
 insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled,patient_id) values (11, 11, 5, 8, 2, 0, true, true, false,2);
 insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled) values (12, 12, 5, 8, 2, 0, true, true, false);

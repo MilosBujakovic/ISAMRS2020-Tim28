@@ -2,10 +2,7 @@ package com.ServisKlinickihCentara.service;
 
 
 import com.ServisKlinickihCentara.dto.MessageDTO;
-import com.ServisKlinickihCentara.dto.appointmentsDTO.HistoryVisitDTO;
-import com.ServisKlinickihCentara.dto.appointmentsDTO.HistoryVisitFilterSortDTO;
-import com.ServisKlinickihCentara.dto.appointmentsDTO.PredefinedAppointmenViewtDTO;
-import com.ServisKlinickihCentara.dto.appointmentsDTO.ReservedAppointmentDTO;
+import com.ServisKlinickihCentara.dto.appointmentsDTO.*;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.clinics.ClinicRating;
 import com.ServisKlinickihCentara.model.clinics.Term;
@@ -19,6 +16,7 @@ import com.ServisKlinickihCentara.model.patients.Appointment;
 import com.ServisKlinickihCentara.model.patients.AppointmentRequest;
 import com.ServisKlinickihCentara.model.patients.Patient;
 import com.ServisKlinickihCentara.repository.*;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +27,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +46,13 @@ public class AppointmentService {
     private ClinicRatingRepository clinicRatingRepository;
 
     @Autowired
+    private DoctorRepository doctorRepository;
+
+    @Autowired
     private DoctorRatingRepository doctorRatingRepository;
+
+    @Autowired
+    private TypeOfExamRepository typeOfExamRepository;
 
     @Autowired
     private UserService userService;
@@ -132,7 +137,7 @@ public class AppointmentService {
         AppointmentType appointmentType = appointment.getType();
 
         AppointmentRequest appointmentRequest = new AppointmentRequest(patient,term,
-                doctor,type_of_exam,appointmentType);
+                doctor,type_of_exam,appointmentType,true);
         appointmentRequestRepository.save(appointmentRequest);
 
 
@@ -142,7 +147,7 @@ public class AppointmentService {
                 "http://localhost:8080/appointment/declineQuickAppointment/" +
                 patient.getUuid() + "/" + appointmentRequest.getId();
 
-        //koristicemo samo jedan email za svakog pacijenta
+        //koristicemo samo jedan email za svakog pacijenta radi lakseg testiranja
         emailService.sendMail("slavengaric@gmail.com",
                 "Confirmation of reservation appointment",messageBody);
 
@@ -282,6 +287,40 @@ public class AppointmentService {
 
         return new MessageDTO("You successfully cancelled appointment!",true);
     }
+
+    public MessageDTO customAppointmentReservation(CustomAppointmentDTO customAppointmentDTO){
+        Patient patient = (Patient) userService.findByUsername(customAppointmentDTO.getEmail());
+        Clinic clinic = clinicRepository.findById(Long.parseLong(customAppointmentDTO.getClinicId()));
+        Doctor doctor = doctorRepository.findById(Long.parseLong(customAppointmentDTO.getDoctorId()));
+        TypeOfExam typeOfExam = typeOfExamRepository.findByName(customAppointmentDTO.getTypeOfExam());
+
+        Time startTime = Time.valueOf(customAppointmentDTO.getStartTime());
+        LocalDate date = LocalDate.parse(customAppointmentDTO.getDate());
+        LocalDateTime localDateTime = date.atTime(startTime.getHours(),startTime.getMinutes());
+
+        int duration = typeOfExam.getDuration();
+
+        Timestamp start = Timestamp.valueOf(localDateTime);
+        Timestamp end = new Timestamp(start.getTime());
+        end.setTime(end.getTime() + TimeUnit.MINUTES.toMillis(duration));
+
+        Term term = new Term(start,end);
+
+        AppointmentRequest appointmentRequest = new AppointmentRequest(patient,term,doctor,typeOfExam,AppointmentType.CHECKUP,false);
+        appointmentRequest.setClinic(clinic);
+        appointmentRequestRepository.save(appointmentRequest);
+
+        emailService.sendMail("milosslaven96@gmail.com",
+                "Request for appointment reservation of ","Patient "
+                        + patient.getEmail() +  " wants to reserve "
+                        + typeOfExam.getName() +  " checkup appointment at the doctor " + doctor.getName() + " "
+                        + doctor.getSurname() + " at " + start.toString() + "."
+                );
+
+        return new MessageDTO("You successfully sent request for reservation of appointment",true);
+    }
+
+
 
 
     public ArrayList<HistoryVisitDTO> getPatientsHistory(String email){

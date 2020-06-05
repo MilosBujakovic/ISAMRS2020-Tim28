@@ -14,6 +14,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
@@ -48,7 +49,14 @@ public class EmailService {
         LocalDate localDate1 = LocalDate.of(2020,7,23);
         LocalDate localDate2 = LocalDate.of(2020,7,23);
 
+        Timestamp start = new Timestamp(System.currentTimeMillis());
+        Timestamp end = new Timestamp(start.getTime());
+        end.setTime(end.getTime() + TimeUnit.MINUTES.toMillis(5));
+
         System.out.println(localDate1.equals(localDate2));
+        System.out.println(start);
+        System.out.println(end);
+
 
     }
 

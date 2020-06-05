@@ -32,13 +32,14 @@ function readFreeDoctorsTerms() {
 
     var clinicId = localStorage.getItem("clickedClinicForDoctorsTerms");
     var date = localStorage.getItem("choosenDate");
+    var typeOfExam = localStorage.getItem("choosenExam");
 
     $('#dateOfExamDTO').val(date);
 
 
 	$.ajax({
 		type : 'GET',
-		url : "/doctor/getForClinicDoctorsFreeSlots?clinicId=" + clinicId + "&date=" + date,
+		url : "/doctor/getForClinicDoctorsFreeSlots?clinicId=" + clinicId + "&date=" + date + "&te=" + typeOfExam,
 		cache: false,
 		dataType: "json",
 		headers: { "Authorization": "Bearer " + token},
@@ -91,12 +92,13 @@ function filterExistingDoctors() {
     var rating = document.getElementById("ratingDoctorDTO").value;
     var date = localStorage.getItem("choosenDate");
     var doctorsIds = localStorage.getItem("doctorsIds");
+    var typeOfExam = localStorage.getItem("choosenExam");
 
     var clinicId = localStorage.getItem("clickedClinicForDoctorsTerms");
 
 	$.ajax({
 		type : 'POST',
-		url : "/doctor/filterExistingDoctors?ids=" + doctorsIds,
+		url : "/doctor/filterExistingDoctors?ids=" + doctorsIds + "&te=" + typeOfExam,
 		cache: false,
 		dataType: "json",
 		contentType : 'application/json',
@@ -174,6 +176,9 @@ $(document).on('click',"button[name=choosenTerm]",function(e){
     var date = array[2];
     var startTime = array[3];
     var endTime = array[4];
+    var choosenExam = localStorage.getItem("choosenExam");
+
+
 
     localStorage.setItem("choosenClinicId",clinicId);
     localStorage.setItem("choosenDoctorId",doctorId);
@@ -215,5 +220,5 @@ function getTypeOfExamsWithoutOperations(){
      		error : function(errorThrown) {
      			alert(errorThrown);
      		}
-     	});
+     });
  }

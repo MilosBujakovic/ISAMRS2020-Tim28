@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,6 +59,14 @@ public class AppointmentController {
         System.out.println("declineQuickAppointment");
         String message = appointmentService.declineQuickAppointment(uuid,appointmentRequestId);
         return new ResponseEntity<String>(message, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/customAppointmentReservation", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageDTO> customAppointmentReservation(@RequestBody CustomAppointmentDTO customAppointmentDTO){
+        System.out.println("customAppointmentReservation");
+        System.out.println(customAppointmentDTO);
+        MessageDTO messageDTO = appointmentService.customAppointmentReservation(customAppointmentDTO);
+        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
     }
 
 
