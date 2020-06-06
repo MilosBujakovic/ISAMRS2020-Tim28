@@ -21,6 +21,9 @@ public class ClinicAdmin  extends Admin
 	@JsonManagedReference
 	private Clinic clinic;
 	
+	@Column
+	private boolean passwordChanged;
+	
 	public ClinicAdmin() 
 	{
 		super();
@@ -31,6 +34,15 @@ public class ClinicAdmin  extends Admin
 	{
 		super(id, email, password, name, surname, enabled, lastPasswordResetDate);
 		this.clinic = clinic;
+		this.passwordChanged = false;
+	}
+	
+	public ClinicAdmin(Long id, String email, String password, String name, String surname, boolean enabled,
+			Timestamp lastPasswordResetDate, Clinic clinic, boolean passwordChanged) 
+	{
+		super(id, email, password, name, surname, enabled, lastPasswordResetDate);
+		this.clinic = clinic;
+		this.passwordChanged = passwordChanged;
 	}
 
 
@@ -43,6 +55,15 @@ public class ClinicAdmin  extends Admin
 	{
 		this.clinic = clinic;
 	}
+
+	public boolean isPasswordChanged() {
+		return passwordChanged;
+	}
+
+	public void setPasswordChanged(boolean passwordChanged) {
+		this.passwordChanged = passwordChanged;
+	}
+	
 	
 	
 }

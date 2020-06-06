@@ -54,6 +54,8 @@ insert into servisklinickihcentara.user (dtype,id,email, password, name, surname
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',8,'jovanopstamedicina@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Jovan', 'Jovanovic', true, '2019-10-01 21:58:58.508',false,5,'09:00:00','18:00:00', 9);
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',9,'miragavricporodicni@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Mira', 'Gavric', true, '2019-10-01 21:58:58.508',false,5,'08:00:00','16:00:00', 9);
 
+insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, clinic_id) VALUES ('ADMIN',10,'milosbujakovic97@gmail.com', '$2a$10$DgZyVrZ4iR1qN8NcnwboKOvI2NYMkJ6aET.VolHI3VWvv0f42CwrS', 'Milos', 'Bujakovic', true, '2019-10-01 21:58:58.508', 5);
+
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (1,1);
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (2,1);
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (3,2);
@@ -63,6 +65,7 @@ insert  into servisklinickihcentara.user_authority (user_id,authority_id) values
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (7,4);
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (8,4);
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (9,4);
+insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (10,3); 
 
 insert into servisklinickihcentara.medication (id, name, description, manufacturer) values (1, 'brufen','protiv visoke temperature','galenika');
 insert into servisklinickihcentara.medication (id, name, description, manufacturer) values (2, 'paracetamol','glavobolja i kostobolja','galenika');
