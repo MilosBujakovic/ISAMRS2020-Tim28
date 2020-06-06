@@ -81,14 +81,4 @@ public class UserController {
         return new ResponseEntity<MessageDTO>(messageDTO,HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public ResponseEntity<MessageDTO> test(){
-        Doctor doctor = (Doctor) userService.findByUsername("milanmilanovic@gmail.com");
-
-        System.out.println(doctor.getShiftStart());
-        System.out.println(doctor.getShiftEnd());
-
-        return new ResponseEntity<MessageDTO>(new MessageDTO("odgovor", true),HttpStatus.OK);
-    }
-
 }

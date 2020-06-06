@@ -38,7 +38,9 @@ insert into servisklinickihcentara.clinic (id, name, address) values(1, 'Tirsova
 insert into servisklinickihcentara.clinic (id, name, address) values(2, 'Hirurska','Vojvodjanska 13');
 insert into servisklinickihcentara.clinic (id, name, address) values(3, 'Dermatoloska','Safarikova 33');
 insert into servisklinickihcentara.clinic (id, name, address) values(4, 'Oftamoloska','Temerinska 67');
-insert into servisklinickihcentara.clinic (id, name, address) values(5, 'Opsta','Vojvodjanskih brigada 134');
+insert into servisklinickihcentara.clinic (id, name, address) values(5, 'Opsta 1','Vojvodjanskih brigada 134');
+insert into servisklinickihcentara.clinic (id, name, address) values(6, 'Opsta 2','Vojvodjanskih brigada 123');
+
 
 insert into servisklinickihcentara.clinic_type_of_exams (clinic_id,type_of_exam_id) values (1,4);
 insert into servisklinickihcentara.clinic_type_of_exams (clinic_id,type_of_exam_id) values (1,5);
@@ -46,6 +48,8 @@ insert into servisklinickihcentara.clinic_type_of_exams (clinic_id,type_of_exam_
 insert into servisklinickihcentara.clinic_type_of_exams (clinic_id,type_of_exam_id) values (4,3);
 insert into servisklinickihcentara.clinic_type_of_exams (clinic_id,type_of_exam_id) values (5,2);
 insert into servisklinickihcentara.clinic_type_of_exams (clinic_id,type_of_exam_id) values (2,6);
+insert into servisklinickihcentara.clinic_type_of_exams (clinic_id,type_of_exam_id) values (6,2);
+
 
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',4,'milanmilanovic@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Milan', 'Milanovic', true, '2019-10-01 21:58:58.508',false,1,'09:00:00','17:00:00', 5);
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',5,'stevanstevanovicoft@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Stevan', 'Stevanovic', true, '2019-10-01 21:58:58.508',false,4,'09:00:00','17:00:00', 4);
@@ -53,8 +57,12 @@ insert into servisklinickihcentara.user (dtype,id,email, password, name, surname
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',7,'milanhirurg@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Milan', 'Stojanovic', true, '2019-10-01 21:58:58.508',false,2,'09:00:00','18:00:00', 0);
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',8,'jovanopstamedicina@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Jovan', 'Jovanovic', true, '2019-10-01 21:58:58.508',false,5,'09:00:00','18:00:00', 9);
 insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',9,'miragavricporodicni@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Mira', 'Gavric', true, '2019-10-01 21:58:58.508',false,5,'08:00:00','16:00:00', 9);
+insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, on_vacation, clinic_id, shift_start,shift_end,specialty) VALUES ('DOCTOR',10,'petarmaricopsta@gmail.com', '$2a$10$oRKFEa5ST812Y39m3zWJ2OB3NScFTyvaiRS9NyJt17COs71yh6rkK', 'Petar', 'Maric', true, '2019-10-01 21:58:58.508',false,6,'07:00:00','15:00:00', 9);
 
-insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, clinic_id) VALUES ('ADMIN',10,'milosbujakovic97@gmail.com', '$2a$10$DgZyVrZ4iR1qN8NcnwboKOvI2NYMkJ6aET.VolHI3VWvv0f42CwrS', 'Milos', 'Bujakovic', true, '2019-10-01 21:58:58.508', 5);
+insert into servisklinickihcentara.leave_form (id, start_date, end_date, employee_id,active,description) values (1,'2020-06-25', '2020-07-06',5,true,'Ljetni odmor');
+
+
+insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, clinic_id) VALUES ('ADMIN',11  ,'milosbujakovic97@gmail.com', '$2a$10$DgZyVrZ4iR1qN8NcnwboKOvI2NYMkJ6aET.VolHI3VWvv0f42CwrS', 'Milos', 'Bujakovic', true, '2019-10-01 21:58:58.508', 5);
 
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (1,1);
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (2,1);
@@ -65,7 +73,10 @@ insert  into servisklinickihcentara.user_authority (user_id,authority_id) values
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (7,4);
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (8,4);
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (9,4);
-insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (10,3); 
+
+insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (11,3); 
+
+insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (10,4);
 
 insert into servisklinickihcentara.medication (id, name, description, manufacturer) values (1, 'brufen','protiv visoke temperature','galenika');
 insert into servisklinickihcentara.medication (id, name, description, manufacturer) values (2, 'paracetamol','glavobolja i kostobolja','galenika');
@@ -154,7 +165,22 @@ insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, gra
 insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (2, 2 ,1, 3);
 insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (3, 5 ,1, 5);
 
+insert into servisklinickihcentara.clinic_rating (id, clinic_id, patient_id, grade) values (4, 6 ,1, 2);
+
 insert into servisklinickihcentara.doctor_rating (id, doctor_id, patient_id, grade) values (1, 6 , 1, 5);
 insert into servisklinickihcentara.doctor_rating (id, doctor_id, patient_id, grade) values (2, 7 , 1, 3);
 insert into servisklinickihcentara.doctor_rating (id, doctor_id, patient_id, grade) values (3, 9 , 1, 4);
 
+
+--za testiranje
+insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (11, 6, '2020-06-30 10:00:00.000', '2020-06-30 10:10:00.000');
+insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (12, 6, '2020-06-30 12:30:00.000', '2020-06-30 12:40:00.000');
+insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (13, 6, '2020-06-30 15:00:00.000', '2020-06-30 15:10:00.000');
+insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (14, 6, '2020-06-30 16:30:00.000', '2020-06-30 16:40:00.000');
+
+insert into servisklinickihcentara.appointment_request (id, patient_id, clinic_id, term_id,doctor_id, type_of_exam_id, type, status, predefined) values (1, 2, 5, 11, 8, 2, 0,1, true);
+
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled,patient_id) values (11, 11, 5, 8, 2, 0, true, true, false,2);
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled) values (12, 12, 5, 8, 2, 0, true, true, false);
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled) values (13, 13, 5, 8, 2, 0, true, true, false);
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled) values (14, 14, 5, 8, 2, 0, true, true, false);

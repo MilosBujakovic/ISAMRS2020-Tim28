@@ -1,6 +1,7 @@
 package com.ServisKlinickihCentara.controller;
 
 
+import com.ServisKlinickihCentara.dto.MessageDTO;
 import com.ServisKlinickihCentara.dto.clinicsDTO.*;
 import com.ServisKlinickihCentara.model.enums.Specialty;
 import com.ServisKlinickihCentara.service.ClinicService;
@@ -24,6 +25,14 @@ public class ClinicController {
         @Autowired
         private ClinicService clinicService;
 
+
+        @RequestMapping(value = "/getClinicNameAddressRating/{clinicId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<ClinicBasicFrontendDTO> getClinicNameAddressRating(@PathVariable("clinicId") String clinicId){
+            ClinicBasicFrontendDTO clinicBasicFrontendDTO = clinicService.getClinicNameAddressRating(Long.parseLong(clinicId));
+            System.out.println("getClinicNameAddressRating");
+            return new ResponseEntity<ClinicBasicFrontendDTO>(clinicBasicFrontendDTO, HttpStatus.OK);
+
+        }
 
         @RequestMapping(value = "/getClinicsForBasicView", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
         public ResponseEntity<ArrayList<ClinicBasicFrontendDTO>> getClinics(){
@@ -62,6 +71,13 @@ public class ClinicController {
             System.out.println("filterExistingAdvancedSearchedItems");
             ArrayList<AdvancedSearchItem> advancedSearchItems = clinicService.filterExistingAdvancedSearchedItems(ids,filterExistingAsiDTO);
             return new ResponseEntity<ArrayList<AdvancedSearchItem>>(advancedSearchItems, HttpStatus.OK);
+        }
+
+        @RequestMapping(value = "/checkClinicHasFreeDoctorsForSpecificDateAndTypeOfExam/{clinicId}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+        public ResponseEntity<MessageDTO> checkClinicHasFreeDoctorsForSpecificDateAndTypeOfExam(@PathVariable("clinicId") String clinicId ,@RequestBody AdvancedSearchClinicDTO advancedSearchClinicDTO){
+            System.out.println("checkClinicHasFreeDoctorsForSpecificDateAndTypeOfExam");
+            MessageDTO messageDTO = clinicService.checkClinicHasFreeDoctorsForSpecificDateAndTypeOfExam(Long.parseLong(clinicId),advancedSearchClinicDTO);
+            return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
         }
 
 }

@@ -24,17 +24,17 @@ public class DoctorController {
     private DoctorService doctorService;
 
     @RequestMapping(value = "/getForClinicDoctorsFreeSlots", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<DoctorFreeSlotsViewDTO>> getDoctorsFreeSlots(@RequestParam String clinicId,@RequestParam String date){
+    public ResponseEntity<ArrayList<DoctorFreeSlotsViewDTO>> getDoctorsFreeSlots(@RequestParam String clinicId,@RequestParam String date, @RequestParam String te){
         System.out.println("getForClinicDoctorsFreeSlots");
-        ArrayList<DoctorFreeSlotsViewDTO> doctorFreeSlotsViewDTOS = doctorService.getForClinicDoctorsFreeSlots(clinicId,date);
+        ArrayList<DoctorFreeSlotsViewDTO> doctorFreeSlotsViewDTOS = doctorService.getForClinicDoctorsFreeSlots(clinicId,date,te);
         return new ResponseEntity<ArrayList<DoctorFreeSlotsViewDTO>>(doctorFreeSlotsViewDTOS, HttpStatus.OK);
 
     }
 
     @RequestMapping(value = "/filterExistingDoctors", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ArrayList<DoctorFreeSlotsViewDTO>> filterExistingDoctors(@RequestParam List<String> ids, @RequestBody DoctorSearchDTO doctorSearchDTO){
+    public ResponseEntity<ArrayList<DoctorFreeSlotsViewDTO>> filterExistingDoctors(@RequestParam List<String> ids, @RequestBody DoctorSearchDTO doctorSearchDTO, @RequestParam String te){
         System.out.println("filterExistingDoctors");
-        ArrayList<DoctorFreeSlotsViewDTO> doctorFreeSlotsViewDTOS = doctorService.filterExistingDoctors(ids,doctorSearchDTO);
+        ArrayList<DoctorFreeSlotsViewDTO> doctorFreeSlotsViewDTOS = doctorService.filterExistingDoctors(ids,doctorSearchDTO,te);
         return new ResponseEntity<ArrayList<DoctorFreeSlotsViewDTO>>(doctorFreeSlotsViewDTOS, HttpStatus.OK);
     }
 
@@ -43,13 +43,6 @@ public class DoctorController {
         System.out.println("getClinicAndDoctor");
         ClinicDoctorNameDTO clinicDoctorNameDTO = doctorService.getClinicAndDoctor(clinicId,doctorId);
         return new ResponseEntity<ClinicDoctorNameDTO>(clinicDoctorNameDTO, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/getDurationToChoose", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<ArrayList<String>> getDurationToChoose(@RequestParam String startTime, @RequestParam String endTime){
-        System.out.println("getDurationToChoose");
-        ArrayList<String> durations = doctorService.getDurationToChoose(startTime,endTime);
-        return new ResponseEntity<ArrayList<String>>(durations, HttpStatus.OK);
     }
 
 }

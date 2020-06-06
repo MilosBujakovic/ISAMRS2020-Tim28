@@ -4,27 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilterExistingAsiDTO {
-    //private ClinicIdsDTO ids;
     private String typeOfExam;
     private String rating;
+    private String sortBy;
 
     public FilterExistingAsiDTO(){
         super();
     }
 
-    public FilterExistingAsiDTO(String typeOfExam, String rating) {
-        //this.ids = ids;
+
+    public FilterExistingAsiDTO(String typeOfExam, String rating, String sortBy) {
         this.typeOfExam = typeOfExam;
         this.rating = rating;
+        this.sortBy = sortBy;
     }
 
-    /*public ClinicIdsDTO getIds() {
-        return ids;
-    }
-
-    public void setIds(ClinicIdsDTO ids) {
-        this.ids = ids;
-    }*/
 
     public String getTypeOfExam() {
         return typeOfExam;
@@ -42,4 +36,11 @@ public class FilterExistingAsiDTO {
         this.rating = rating;
     }
 
+    public String getSortBy() {
+        return sortBy;
+    }
+
+    public void setSortBy(String sortBy) {
+        this.sortBy = sortBy;
+    }
 }

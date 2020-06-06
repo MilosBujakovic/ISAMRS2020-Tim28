@@ -2,6 +2,7 @@ package com.ServisKlinickihCentara.model.patients;
 
 import javax.persistence.*;
 
+import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.clinics.Term;
 import com.ServisKlinickihCentara.model.clinics.TypeOfExam;
 import com.ServisKlinickihCentara.model.employees.Doctor;
@@ -22,7 +23,7 @@ public class AppointmentRequest
 	@JsonManagedReference
 	private Patient patient;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	private Term term;
 	
 	@ManyToOne
@@ -36,10 +37,17 @@ public class AppointmentRequest
 	
 	@Column
 	private RequestStatus status;
+
+	@Column
+	private boolean predefined;
+
+	@ManyToOne
+	@JsonManagedReference
+	private Clinic clinic;
 	
 	public AppointmentRequest() {}
 
-	public AppointmentRequest(Patient patient, Term term, Doctor doctor, TypeOfExam typeOfExam, AppointmentType type) {
+	public AppointmentRequest(Patient patient, Term term, Doctor doctor, TypeOfExam typeOfExam, AppointmentType type, boolean predefined) {
 		super();
 		this.patient = patient;
 		this.term = term;
@@ -47,6 +55,7 @@ public class AppointmentRequest
 		this.typeOfExam = typeOfExam;
 		this.type = type;
 		this.status = RequestStatus.PENDING;
+		this.predefined = predefined;
 	}
 
 	public AppointmentRequest(Long id, Patient patient, Term term, Doctor doctor, TypeOfExam typeOfExam,
@@ -61,20 +70,7 @@ public class AppointmentRequest
 		this.status = RequestStatus.PENDING;
 	}
 
-	public AppointmentRequest(Patient patient, Term term, Doctor doctor, TypeOfExam typeOfExam, AppointmentType type,
-			RequestStatus status) {
-		super();
-		this.patient = patient;
-		this.term = term;
-		this.doctor = doctor;
-		this.typeOfExam = typeOfExam;
-		this.type = type;
-		this.status = status;
-	}
-
-	public AppointmentRequest(Long id, Patient patient, Term term, Doctor doctor, TypeOfExam typeOfExam,
-			AppointmentType type, RequestStatus status) {
-		super();
+	public AppointmentRequest(Long id, Patient patient, Term term, Doctor doctor, TypeOfExam typeOfExam, AppointmentType type, RequestStatus status, boolean predefined, Clinic clinic) {
 		this.id = id;
 		this.patient = patient;
 		this.term = term;
@@ -82,7 +78,11 @@ public class AppointmentRequest
 		this.typeOfExam = typeOfExam;
 		this.type = type;
 		this.status = status;
+		this.predefined = predefined;
+		this.clinic = clinic;
 	}
+
+
 
 	public Long getId() {
 		return id;
@@ -139,5 +139,20 @@ public class AppointmentRequest
 	public void setStatus(RequestStatus status) {
 		this.status = status;
 	}
-	
+
+	public boolean isPredefined() {
+		return predefined;
+	}
+
+	public void setPredefined(boolean predefined) {
+		this.predefined = predefined;
+	}
+
+	public Clinic getClinic() {
+		return clinic;
+	}
+
+	public void setClinic(Clinic clinic) {
+		this.clinic = clinic;
+	}
 }

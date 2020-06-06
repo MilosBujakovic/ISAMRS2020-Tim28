@@ -43,10 +43,10 @@ $(document).on("submit", "#clinicSearchForm", function(e){
         		headers: { "Authorization": "Bearer " + token},
         		data : JSON.stringify({"date":date,"typeOfExam": typeOfExam,"address": address,"rating":rating}),
         		success : function(clinics) {
-        		    //$("#clinicSpeciality").val("");
                     $("#clinicRating").val("");
 
                     writeClinicsData(clinics, false);
+                    localStorage.setItem("choosenExam",typeOfExam);
         		},
         		error : function(errorThrown) {
         			alert(errorThrown);
@@ -58,8 +58,9 @@ $(document).on("submit", "#clinicSearchForm", function(e){
 
 
 function filterExistingAdvancedSearchedItems(){
-	var typeOfExam = document.getElementById("examTypes").value;
+	var typeOfExam = document.getElementById("typeOfExam").value;
 	var clinicRating = document.getElementById("clinicRating").value;
+	var sortBy = document.getElementById("sortBy").value;
 	var clinicsIds = localStorage.getItem("clinicsIds");
 
     var token = localStorage.getItem("token");
@@ -69,7 +70,7 @@ function filterExistingAdvancedSearchedItems(){
 		dataType : "json",
 		cache: false,
 		contentType : 'application/json',
-		data: JSON.stringify({"typeOfExam":typeOfExam, "rating": clinicRating}),
+		data: JSON.stringify({"typeOfExam":typeOfExam, "rating": clinicRating,"sortBy":sortBy}),
 		headers: { "Authorization": "Bearer " + token},
 		success : function(clinics) {
             writeClinicsData(clinics, true);
@@ -126,7 +127,7 @@ $(document).on('click', '#doctors', function(e) {
 
 
 $(document).ready(function(){
-	$('#examTypes').on('change',function() {
+	$('#sortBy').on('change',function() {
 		filterExistingAdvancedSearchedItems();
 	});
 });
@@ -146,12 +147,12 @@ function getTypeOfExamsWithoutOperations(){
      		dataType: "json",
             headers: { "Authorization": "Bearer " + token},
      		success : function(types) {
-     			$("#examTypes").find('optionl:gt(0)').remove();
+     			$("#typeOfExam").find('optionl:gt(0)').remove();
      			$.each(
      					types,
      					function(index,type){
      						$("#typeOfExam").append('<option value=\"' + type + '\">' + type + '</option>');
-     					    $("#examTypes").append('<option value=\"' + type + '\">' + type + '</option>');
+     					    //$("#examTypes").append('<option value=\"' + type + '\">' + type + '</option>');
 
      					}
      			)

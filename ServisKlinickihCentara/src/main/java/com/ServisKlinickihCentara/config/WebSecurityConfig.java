@@ -94,9 +94,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/doctorRating/evaluateDoctorByPatient").hasAuthority("PATIENT")
                     .antMatchers("/doctor/filterExistingDoctors").hasAuthority("PATIENT")
                     .antMatchers("/doctor/getClinicAndDoctor").hasAuthority("PATIENT")
-                    .antMatchers("/doctor/getDurationToChoose").hasAuthority("PATIENT")
                     .antMatchers("/typeOfExam/getTypeOfExams").permitAll()
                     .antMatchers("/typeOfExam/getTypeOfExamsWithoutOperations").permitAll()
+                    .antMatchers("/clinic/getClinicNameAddressRating/**").hasAuthority("PATIENT")
+                    .antMatchers("/clinic/checkClinicHasFreeDoctorsForSpecificDateAndTypeOfExam/**").hasAuthority("PATIENT")
+                    .antMatchers("/appointment/customAppointmentReservation").hasAuthority("PATIENT")
                     .antMatchers("/auth/logout").permitAll()
                     .antMatchers("/auth/refresh").permitAll()
 
@@ -132,10 +134,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(
                 HttpMethod.GET,
                 "/appointment/declineQuickAppointment/**"
-        );
-        web.ignoring().antMatchers(
-                HttpMethod.GET,
-                "/user/test"
         );
         web.ignoring().antMatchers(
                 HttpMethod.GET,

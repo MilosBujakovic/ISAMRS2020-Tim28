@@ -66,6 +66,9 @@ input[type=checkbox] {
     transform: scale(1.5);
 }
 
+.choosenCheckupFont {
+  font-size: 115%;
+}
 
 
 </style>
@@ -82,13 +85,14 @@ input[type=checkbox] {
 
 <div id="choosenCheckup" class="tabcontent">
     <table id="checkUpData">
-        <tr><td>clinic:&nbsp</td><td id="clinic"></td></tr>
-        <tr><td>doctor:&nbsp</td><td id="doctor"></td></tr>
-        <tr><td>date:&nbsp</td><td id="date"></td></tr>
-        <tr><td>start time:&nbsp</td><td><p id="startTime"></p></td></tr>
-        <tr><td>end time:&nbsp</td><td><p id="endTime"></p></td></tr>
-        <tr><td>Choose duration:&nbsp</td><td><select  id="duration"><option></option></select></td></tr>
-        <tr><td><input type="submit" id="reserveButton" value="Reserve"/></td></tr>
+        <tr><td><b><p class="choosenCheckupFont">clinic:&nbsp</p></b></td><td><b><p id="clinic" class="choosenCheckupFont"></p></b></td></tr>
+        <tr><td><b><p class="choosenCheckupFont">doctor:&nbsp</p></b></td><td><b><p id="doctor" class="choosenCheckupFont"></p></b></td></tr>
+        <tr><td><b><p class="choosenCheckupFont">date:&nbsp</p></b></td><td><b><p id="date" class="choosenCheckupFont"></p></b></td></tr>
+
+        <tr><td><b><p class="choosenCheckupFont">time slot of potential term:&nbsp</p></b></td><td><b><p id="startTime" class="choosenCheckupFont"></p></b></td><td><b><p id="endTime" class="choosenCheckupFont"></p></b></td></tr>
+
+        <tr><td><b><p class="choosenCheckupFont">type of exam:&nbsp</p></b></td><td><b><p id="typeOfExam" class="choosenCheckupFont"></p></b></td></tr>
+        <tr><td><button id="reserveButton">Confirm reservation</button></td></tr>
     </table>
 </div>
 

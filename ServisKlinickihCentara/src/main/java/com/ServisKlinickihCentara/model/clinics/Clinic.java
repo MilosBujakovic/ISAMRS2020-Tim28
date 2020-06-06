@@ -8,6 +8,7 @@ import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.employees.Nurse;
 import com.ServisKlinickihCentara.model.enums.Specialty;
 import com.ServisKlinickihCentara.model.patients.Appointment;
+import com.ServisKlinickihCentara.model.patients.AppointmentRequest;
 import com.ServisKlinickihCentara.model.users.ClinicAdmin;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -58,11 +59,15 @@ public class Clinic
 	@JsonBackReference
 	private List<Appointment> appointments;
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
+	@JsonBackReference
+	private List<AppointmentRequest> appointmentRequests;
+
 	@ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
 	@JoinTable(name = "clinic_type_of_exams", joinColumns = @JoinColumn(name = "clinic_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "type_of_exam_id", referencedColumnName = "id"))
 	private List<TypeOfExam> typeOfExams;
-	
-	
+
+
 	public Clinic() {};
 	
 	public Clinic(String name, String address)
@@ -82,6 +87,21 @@ public class Clinic
 		this.pricelist = pricelist;
 		this.freeTerms = freeTerms;
 		this.admins = admins;
+	}
+
+	public Clinic(String name, String address, List<Doctor> staff, List<Nurse> assistingStaff, List<Room> rooms, List<PriceItem> pricelist, List<Term> freeTerms, List<ClinicAdmin> admins, List<ClinicRating> clinicRatings, List<Appointment> appointments, List<AppointmentRequest> appointmentRequests, List<TypeOfExam> typeOfExams) {
+		this.name = name;
+		this.address = address;
+		this.staff = staff;
+		this.assistingStaff = assistingStaff;
+		this.rooms = rooms;
+		this.pricelist = pricelist;
+		this.freeTerms = freeTerms;
+		this.admins = admins;
+		this.clinicRatings = clinicRatings;
+		this.appointments = appointments;
+		this.appointmentRequests = appointmentRequests;
+		this.typeOfExams = typeOfExams;
 	}
 
 	public Long getId() {

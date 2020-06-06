@@ -13,8 +13,17 @@ if (token == null){
 
 $(document).ready(function(){
     document.getElementById("doctorTermsButton").click();
+    //getTypeOfExamsWithoutOperations();
     readFreeDoctorsTerms();
+    /*setTimeout(function() {
+                var choosenExam = localStorage.getItem("choosenExam");
+                $("#typeOfExam option[value='" + choosenExam + "']").prop("selected",true);
+
+    }, 500);*/
+
 });
+
+
 
 
 function readFreeDoctorsTerms() {
@@ -23,10 +32,14 @@ function readFreeDoctorsTerms() {
 
     var clinicId = localStorage.getItem("clickedClinicForDoctorsTerms");
     var date = localStorage.getItem("choosenDate");
+    var typeOfExam = localStorage.getItem("choosenExam");
+
+    $('#dateOfExamDTO').val(date);
+
 
 	$.ajax({
 		type : 'GET',
-		url : "/doctor/getForClinicDoctorsFreeSlots?clinicId=" + clinicId + "&date=" + date,
+		url : "/doctor/getForClinicDoctorsFreeSlots?clinicId=" + clinicId + "&date=" + date + "&te=" + typeOfExam,
 		cache: false,
 		dataType: "json",
 		headers: { "Authorization": "Bearer " + token},
@@ -79,12 +92,13 @@ function filterExistingDoctors() {
     var rating = document.getElementById("ratingDoctorDTO").value;
     var date = localStorage.getItem("choosenDate");
     var doctorsIds = localStorage.getItem("doctorsIds");
+    var typeOfExam = localStorage.getItem("choosenExam");
 
     var clinicId = localStorage.getItem("clickedClinicForDoctorsTerms");
 
 	$.ajax({
 		type : 'POST',
-		url : "/doctor/filterExistingDoctors?ids=" + doctorsIds,
+		url : "/doctor/filterExistingDoctors?ids=" + doctorsIds + "&te=" + typeOfExam,
 		cache: false,
 		dataType: "json",
 		contentType : 'application/json',
@@ -162,6 +176,9 @@ $(document).on('click',"button[name=choosenTerm]",function(e){
     var date = array[2];
     var startTime = array[3];
     var endTime = array[4];
+    var choosenExam = localStorage.getItem("choosenExam");
+
+
 
     localStorage.setItem("choosenClinicId",clinicId);
     localStorage.setItem("choosenDoctorId",doctorId);
@@ -180,3 +197,28 @@ function removeChildsFromDoctorTermsDiv(){
     }
 }
 
+
+function getTypeOfExamsWithoutOperations(){
+     var token = localStorage.getItem("token");
+ 	$.ajax({
+     		type : 'GET',
+     		url : "/typeOfExam/getTypeOfExamsWithoutOperations",
+     		cache: false,
+     		dataType: "json",
+            headers: { "Authorization": "Bearer " + token},
+     		success : function(types) {
+     			$("#typeOfExam").find('option:gt(0)').remove();
+     			var options = $('#typeOfExam').attr('options');
+
+     			$.each(
+     					types,
+     					function(index,type){
+     						$("#typeOfExam").append('<option value=\"' + type + '\" data-id=\"' + type + '\">' + type + '</option>');
+     					}
+     			)
+     		},
+     		error : function(errorThrown) {
+     			alert(errorThrown);
+     		}
+     });
+ }

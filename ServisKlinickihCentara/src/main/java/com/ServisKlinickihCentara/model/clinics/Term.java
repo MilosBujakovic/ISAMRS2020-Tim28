@@ -39,9 +39,12 @@ public class Term
 		this.endTime = endTime;
 	}
 
+	public Term(Timestamp startTime, Timestamp endTime) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
 
-
-	public Long getId() 
+	public Long getId()
 	{
 		return id;
 	}

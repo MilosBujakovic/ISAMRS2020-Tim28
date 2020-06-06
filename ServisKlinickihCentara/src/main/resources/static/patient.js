@@ -12,6 +12,12 @@ if (token == null){
 }
 
 
+$(document).ready(function(){
+    if(localStorage.hasOwnProperty("fromAcceptingAppointment")){
+        document.getElementById("reservedAppointmentsButton").click();
+        localStorage.removeItem("fromAcceptingAppointment");
+    }
+});
 
 $(document).ready(function(){
     getLoggedPatient();
@@ -209,7 +215,9 @@ function getClinicsForBasicView(){
     								"<td>" + clinic.name + "</td>" +
     								"<td>" + clinic.address + "</td>" +
     								"<td>" + clinic.average_rating + "</td>" +
-    								"<td><button name=\"" + clinic.id + "\" id=\"clinic\">" + 'Predefined appointments'+"</button></td>"
+    								"<td><button name=\"" + clinic.id + "\" id=\"clinic\">" + 'Predefined appointments'+"</button></td>" +
+    								"<td><button id=\"doctors\" name=\"" + clinic.id + "\">" + 'Doctors search' + "</button></td>"
+
 
     						);
     						$("#clinicsForBasicViewFilter").append(tr);
@@ -229,6 +237,16 @@ $(document).on('click', '#clinic', function(e) {
 
 		var clinicId = $(this).attr("name");
         localStorage.setItem("clickedClinicId", clinicId);
+        localStorage.setItem("forAppointments","true");
+        var win = window.open('http://localhost:8080/clinicForPatient.html', '_blank');
+})
+
+$(document).on('click', '#doctors', function(e) {
+	e.preventDefault();
+
+		var clinicId = $(this).attr("name");
+        localStorage.setItem("clickedClinicId", clinicId);
+        localStorage.setItem("forAppointments","false");
         var win = window.open('http://localhost:8080/clinicForPatient.html', '_blank');
 })
 
@@ -271,7 +289,8 @@ function basicFilterSortingClinics(){
                                 "<td>" + clinic.name+"</td>" +
        							"<td>" + clinic.address+"</td>" +
                                 "<td>" + clinic.average_rating+"</td>" +
-                                "<td><button name=\"" + clinic.id + "\" id=\"clinic\">" + 'Predefined appointments'+"</button></td>"
+                                "<td><button name=\"" + clinic.id + "\" id=\"clinic\">" + 'Predefined appointments'+"</button></td>" +
+                                "<td><button id=\"doctors\" name=\"" + clinic.id + "\">" + 'Doctors search' + "</button></td>"
                             );
                             $("#clinicsForBasicViewFilter").append(tr);
 						}

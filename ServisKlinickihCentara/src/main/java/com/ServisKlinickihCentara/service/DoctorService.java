@@ -3,12 +3,14 @@ package com.ServisKlinickihCentara.service;
 
 import com.ServisKlinickihCentara.dto.doctorDTO.*;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
+import com.ServisKlinickihCentara.model.clinics.TypeOfExam;
 import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.model.employees.DoctorRating;
 import com.ServisKlinickihCentara.model.employees.LeaveForm;
 import com.ServisKlinickihCentara.model.patients.Appointment;
 import com.ServisKlinickihCentara.repository.ClinicRepository;
 import com.ServisKlinickihCentara.repository.DoctorRepository;
+import com.ServisKlinickihCentara.repository.TypeOfExamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -31,11 +33,15 @@ public class DoctorService {
     private ClinicRepository clinicRepository;
 
     @Autowired
+    private TypeOfExamRepository typeOfExamRepository;
+
+    @Autowired
     private ClinicService clinicService;
 
 
-    public ArrayList<DoctorFreeSlotsViewDTO> getForClinicDoctorsFreeSlots(String clinic_id, String date){
+    public ArrayList<DoctorFreeSlotsViewDTO> getForClinicDoctorsFreeSlots(String clinic_id, String date, String te){
         ArrayList<DoctorFreeSlotsViewDTO> doctorFreeSlotsViewDTOS = new ArrayList<>();
+        TypeOfExam typeOfExam = typeOfExamRepository.findByName(te);
 
         Clinic clinic = clinicRepository.findById(Long.parseLong(clinic_id));
 
@@ -57,7 +63,7 @@ public class DoctorService {
             }
 
             if(doctorIsFree){
-                ArrayList<ShiftDTO> freeSlots = this.findFreeDoctorSlotsForSpecificDate(doctor,dateDTO);
+                ArrayList<ShiftDTO> freeSlots = this.findFreeDoctorSlotsForSpecificDate(doctor, dateDTO, typeOfExam);
 
                 double rating = doctor.getRatings().stream().collect(Collectors.averagingDouble(dr -> dr.getGrade()));
 
@@ -75,7 +81,7 @@ public class DoctorService {
         return doctorFreeSlotsViewDTOS;
     }
 
-    public ArrayList<ShiftDTO> findFreeDoctorSlotsForSpecificDate(Doctor doctor, LocalDate localDate){
+    public ArrayList<ShiftDTO> findFreeDoctorSlotsForSpecificDate(Doctor doctor, LocalDate localDate, TypeOfExam typeOfExam){
         ArrayList<ShiftDTO> freeSlots = new ArrayList<>();
         List<Appointment> appointments = doctor.getWorkingCalendar();
         Time doctorShiftStart = doctor.getShiftStart();
@@ -92,23 +98,25 @@ public class DoctorService {
             ShiftDTO shiftDTO = new ShiftDTO(doctorShiftStart.toString(),doctorShiftEnd.toString());
             freeSlots.add(shiftDTO);
         }else{
-            boolean moreOrEqualThan15Minutes = convertToMinutes(takenSlots.get(0).getStartTime()) - convertToMinutes(doctorShiftStart) >= 15;
+            int duration = typeOfExam.getDuration();
 
-            if(moreOrEqualThan15Minutes){
+            boolean moreOrEqualThan = convertToMinutes(takenSlots.get(0).getStartTime()) - convertToMinutes(doctorShiftStart) >= duration;
+
+            if(moreOrEqualThan){
                 freeSlots.add(new ShiftDTO(doctorShiftStart.toString(),takenSlots.get(0).getStartTime().toString()));
             }
 
             int n = takenSlots.size();
             for(int i = 1; i < n; i++){
-                moreOrEqualThan15Minutes = convertToMinutes(takenSlots.get(i).getStartTime()) - convertToMinutes(takenSlots.get(i - 1).getEndTime()) >= 15;
-                if(moreOrEqualThan15Minutes){
+                moreOrEqualThan = convertToMinutes(takenSlots.get(i).getStartTime()) - convertToMinutes(takenSlots.get(i - 1).getEndTime()) >= duration;
+                if(moreOrEqualThan){
                     freeSlots.add(new ShiftDTO(takenSlots.get(i - 1).getEndTime().toString(),takenSlots.get(i).getStartTime().toString()));
                 }
             }
 
-            moreOrEqualThan15Minutes = convertToMinutes(doctorShiftEnd) - convertToMinutes(takenSlots.get(n - 1).getEndTime()) >= 15;
+            moreOrEqualThan = convertToMinutes(doctorShiftEnd) - convertToMinutes(takenSlots.get(n - 1).getEndTime()) >= duration;
 
-            if(moreOrEqualThan15Minutes){
+            if(moreOrEqualThan){
                 freeSlots.add(new ShiftDTO(takenSlots.get(n - 1).getEndTime().toString(),doctorShiftEnd.toString()));
             }
 
@@ -117,9 +125,10 @@ public class DoctorService {
     }
 
 
-    public ArrayList<DoctorFreeSlotsViewDTO> filterExistingDoctors(List<String> ids, DoctorSearchDTO doctorSearchDTO){
+    public ArrayList<DoctorFreeSlotsViewDTO> filterExistingDoctors(List<String> ids, DoctorSearchDTO doctorSearchDTO, String te){
         ArrayList<DoctorFreeSlotsViewDTO> doctorFreeSlotsViewDTOS = new ArrayList<>();
         ArrayList<Doctor> doctors = doctorRepository.findAll();
+        TypeOfExam typeOfExam = typeOfExamRepository.findByName(te);
 
         doctors = doctors.stream().filter(d -> ids.contains(d.getId().toString()))
                 .filter(d->d.getName().equalsIgnoreCase("") || d.getName().toLowerCase().contains(doctorSearchDTO.getName().toLowerCase()))
@@ -147,7 +156,7 @@ public class DoctorService {
                 ratingDTO = String.valueOf(rating);
             }
 
-            ArrayList<ShiftDTO> shiftDTOS = this.findFreeDoctorSlotsForSpecificDate(doctor,specificDate);
+            ArrayList<ShiftDTO> shiftDTOS = this.findFreeDoctorSlotsForSpecificDate(doctor,specificDate,typeOfExam);
             doctorFreeSlotsViewDTOS.add(new DoctorFreeSlotsViewDTO(doctor.getId().toString(), doctor.getName(),doctor.getSurname(),ratingDTO,shiftDTOS));
         }
 
@@ -161,19 +170,6 @@ public class DoctorService {
         ClinicDoctorNameDTO clinicDoctorNameDTO = new ClinicDoctorNameDTO(clinic.getName(),doctor.getName() + " " + doctor.getSurname());
         return clinicDoctorNameDTO;
     }
-
-    public ArrayList<String> getDurationToChoose(String startTime,String endTime){
-        ArrayList<String> durations = new ArrayList<>();
-
-        Time start_time = Time.valueOf(startTime);
-        Time end_time = Time.valueOf(endTime);
-
-        System.out.println(startTime);
-        System.out.println(end_time);
-
-        return durations;
-    }
-
 
     public int convertToMinutes(Time time){
         return time.getHours() * 60 + time.getMinutes();

@@ -5,19 +5,17 @@ public class AdvancedSearchItem {
     private String name;
     private String rating;
     private String address;
-    private String speciality;
     private String price;
 
     public AdvancedSearchItem(){
         super();
     }
 
-    public AdvancedSearchItem(String id, String name, String rating, String address, String speciality, String price) {
+    public AdvancedSearchItem(String id, String name, String rating, String address, String price) {
         this.id = id;
         this.name = name;
         this.rating = rating;
         this.address = address;
-        this.speciality = speciality;
         this.price = price;
     }
 
@@ -51,14 +49,6 @@ public class AdvancedSearchItem {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getSpeciality() {
-        return speciality;
-    }
-
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
     }
 
     public String getPrice() {
