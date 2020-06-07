@@ -25,6 +25,9 @@ public class Clinic
 	
 	@Column
 	private String address;
+	
+	@Column
+	private String description;
 
 	/*@Column
 	private Specialty specialty;*/
@@ -47,9 +50,9 @@ public class Clinic
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Term> freeTerms;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
+	@OneToOne(fetch = FetchType.EAGER)
 	@JsonBackReference
-	private List<ClinicAdmin> admins;
+	private ClinicAdmin admin;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
 	@JsonBackReference
@@ -74,10 +77,11 @@ public class Clinic
 	{
 		this.name = name;
 		this.address = address;
+		this.description = "";
 	}
 
 	public Clinic(String name, String address, List<Doctor> staff, List<Nurse> assistingStaff, List<Room> rooms,
-			List<PriceItem> pricelist, List<Term> freeTerms, List<ClinicAdmin> admins) {
+			List<PriceItem> pricelist, List<Term> freeTerms, ClinicAdmin admin) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -86,10 +90,11 @@ public class Clinic
 		this.rooms = rooms;
 		this.pricelist = pricelist;
 		this.freeTerms = freeTerms;
-		this.admins = admins;
+		this.admin = admin;
+		this.description = "";
 	}
 
-	public Clinic(String name, String address, List<Doctor> staff, List<Nurse> assistingStaff, List<Room> rooms, List<PriceItem> pricelist, List<Term> freeTerms, List<ClinicAdmin> admins, List<ClinicRating> clinicRatings, List<Appointment> appointments, List<AppointmentRequest> appointmentRequests, List<TypeOfExam> typeOfExams) {
+	public Clinic(String name, String address, List<Doctor> staff, List<Nurse> assistingStaff, List<Room> rooms, List<PriceItem> pricelist, List<Term> freeTerms, ClinicAdmin admins, List<ClinicRating> clinicRatings, List<Appointment> appointments, List<AppointmentRequest> appointmentRequests, List<TypeOfExam> typeOfExams) {
 		this.name = name;
 		this.address = address;
 		this.staff = staff;
@@ -97,7 +102,51 @@ public class Clinic
 		this.rooms = rooms;
 		this.pricelist = pricelist;
 		this.freeTerms = freeTerms;
-		this.admins = admins;
+		this.admin = admins;
+		this.clinicRatings = clinicRatings;
+		this.appointments = appointments;
+		this.appointmentRequests = appointmentRequests;
+		this.typeOfExams = typeOfExams;
+		this.description = "";
+	}
+	
+	
+
+	public Clinic(Long id, String name, String address, String description, List<Doctor> staff,
+			List<Nurse> assistingStaff, List<Room> rooms, List<PriceItem> pricelist, List<Term> freeTerms,
+			ClinicAdmin admin) 
+	{
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.description = description;
+		this.staff = staff;
+		this.assistingStaff = assistingStaff;
+		this.rooms = rooms;
+		this.pricelist = pricelist;
+		this.freeTerms = freeTerms;
+		this.admin = admin;
+	}
+	
+	
+
+	public Clinic(Long id, String name, String address, String description, List<Doctor> staff,
+			List<Nurse> assistingStaff, List<Room> rooms, List<PriceItem> pricelist, List<Term> freeTerms,
+			ClinicAdmin admin, List<ClinicRating> clinicRatings, List<Appointment> appointments,
+			List<AppointmentRequest> appointmentRequests, List<TypeOfExam> typeOfExams) 
+	{
+		super();
+		this.id = id;
+		this.name = name;
+		this.address = address;
+		this.description = description;
+		this.staff = staff;
+		this.assistingStaff = assistingStaff;
+		this.rooms = rooms;
+		this.pricelist = pricelist;
+		this.freeTerms = freeTerms;
+		this.admin = admin;
 		this.clinicRatings = clinicRatings;
 		this.appointments = appointments;
 		this.appointmentRequests = appointmentRequests;
@@ -168,12 +217,12 @@ public class Clinic
 		this.freeTerms = freeTerms;
 	}
 
-	public List<ClinicAdmin> getAdmins() {
-		return admins;
+	public ClinicAdmin getAdmin() {
+		return admin;
 	}
 
-	public void setAdmins(List<ClinicAdmin> admins) {
-		this.admins = admins;
+	public void setAdmin(ClinicAdmin admin) {
+		this.admin = admin;
 	}
 
 	public List<ClinicRating> getClinicRatings() {
@@ -198,5 +247,21 @@ public class Clinic
 
 	public void setTypeOfExams(List<TypeOfExam> typeOfExams) {
 		this.typeOfExams = typeOfExams;
+	}
+
+	public List<AppointmentRequest> getAppointmentRequests() {
+		return appointmentRequests;
+	}
+
+	public void setAppointmentRequests(List<AppointmentRequest> appointmentRequests) {
+		this.appointmentRequests = appointmentRequests;
+	}
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

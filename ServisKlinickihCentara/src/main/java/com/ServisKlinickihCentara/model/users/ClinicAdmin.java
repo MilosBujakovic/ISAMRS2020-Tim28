@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.users.Admin;
@@ -17,7 +18,7 @@ import java.sql.Timestamp;
 @DiscriminatorValue("CLINICADMIN")
 public class ClinicAdmin  extends Admin
 {
-	@ManyToOne
+	@OneToOne
 	@JsonManagedReference
 	private Clinic clinic;
 	
