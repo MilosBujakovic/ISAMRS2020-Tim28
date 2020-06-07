@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.users.Admin;
@@ -17,9 +18,12 @@ import java.sql.Timestamp;
 @DiscriminatorValue("CLINICADMIN")
 public class ClinicAdmin  extends Admin
 {
-	@ManyToOne
+	@OneToOne
 	@JsonManagedReference
 	private Clinic clinic;
+	
+	@Column
+	private boolean passwordChanged;
 	
 	public ClinicAdmin() 
 	{
@@ -31,6 +35,15 @@ public class ClinicAdmin  extends Admin
 	{
 		super(id, email, password, name, surname, enabled, lastPasswordResetDate);
 		this.clinic = clinic;
+		this.passwordChanged = false;
+	}
+	
+	public ClinicAdmin(Long id, String email, String password, String name, String surname, boolean enabled,
+			Timestamp lastPasswordResetDate, Clinic clinic, boolean passwordChanged) 
+	{
+		super(id, email, password, name, surname, enabled, lastPasswordResetDate);
+		this.clinic = clinic;
+		this.passwordChanged = passwordChanged;
 	}
 
 
@@ -43,6 +56,15 @@ public class ClinicAdmin  extends Admin
 	{
 		this.clinic = clinic;
 	}
+
+	public boolean isPasswordChanged() {
+		return passwordChanged;
+	}
+
+	public void setPasswordChanged(boolean passwordChanged) {
+		this.passwordChanged = passwordChanged;
+	}
+	
 	
 	
 }

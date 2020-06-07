@@ -28,6 +28,10 @@ $(document).on("submit", ".login-form", function(e) {
                 window.location.href = "patient.html";
             } else if(results.authority == "SYSTEM_ADMIN"){
                 window.location.href = "systemAdmin.html";
+            } 
+            else if(results.authority == "CLINIC_ADMIN")
+            {
+            	window.location.href = "/clinicAdmin/clinicAdmin.html";
             }
 
 
