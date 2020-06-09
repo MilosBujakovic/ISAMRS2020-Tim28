@@ -15,6 +15,7 @@ import com.ServisKlinickihCentara.model.enums.Specialty;
 import com.ServisKlinickihCentara.model.patients.Appointment;
 import com.ServisKlinickihCentara.model.patients.AppointmentRequest;
 import com.ServisKlinickihCentara.model.patients.Patient;
+import com.ServisKlinickihCentara.model.users.ClinicAdmin;
 import com.ServisKlinickihCentara.repository.*;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,9 +88,10 @@ public class AppointmentService {
             String type_of_exam = appointment.getTypeOfExam().getName();
 
             double price = appointment.getTypeOfExam().getPriceItem().getPrice();
+            double discount = appointment.getTypeOfExam().getPriceItem().getDiscount();
 
             PredefinedAppointmenViewtDTO p = new PredefinedAppointmenViewtDTO(appointment.getId().toString(),
-                    dateTime,term.getRoom().getNumber(),doctorNameSurname,type_of_exam,String.valueOf(price));
+                    dateTime,term.getRoom().getNumber(),doctorNameSurname,type_of_exam,String.valueOf(price), String.valueOf((int)(discount*100) + "%"));
 
             predefinedAppointmenViewtDTOS.add(p);
         }
@@ -309,6 +311,10 @@ public class AppointmentService {
         AppointmentRequest appointmentRequest = new AppointmentRequest(patient,term,doctor,typeOfExam,AppointmentType.CHECKUP,false);
         appointmentRequest.setClinic(clinic);
         appointmentRequestRepository.save(appointmentRequest);
+
+        ClinicAdmin clinicAdmin = clinic.getAdmin();
+
+        System.out.println(clinicAdmin.getEmail());
 
         emailService.sendMail("milosslaven96@gmail.com",
                 "Request for appointment reservation of ","Patient "

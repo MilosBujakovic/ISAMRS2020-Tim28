@@ -15,19 +15,19 @@ insert into servisklinickihcentara.type_of_exam(id,name,specialty, duration) val
 insert into servisklinickihcentara.type_of_exam(id,name,specialty, duration) values (6,'operacija skidanja mladeza',0,60);
 
 
-insert into servisklinickihcentara.price_item (id,type,base_price, type_of_exam_id) values (1,0,700,1);
+insert into servisklinickihcentara.price_item (id,type,base_price, type_of_exam_id, discount) values (1,0,700,1, 0.2);
 update servisklinickihcentara.type_of_exam set price_item_id = 1 where id = 1;
 
-insert into servisklinickihcentara.price_item (id,type,base_price, type_of_exam_id) values (2,0,100,2);
+insert into servisklinickihcentara.price_item (id,type,base_price, type_of_exam_id, discount) values (2,0,100,2,0.1);
 update servisklinickihcentara.type_of_exam set price_item_id = 2 where id = 2;
 
-insert into servisklinickihcentara.price_item (id,type,base_price, type_of_exam_id) values (3,0,500,3);
+insert into servisklinickihcentara.price_item (id,type,base_price, type_of_exam_id, discount) values (3,0,500,3,0.15);
 update servisklinickihcentara.type_of_exam set price_item_id = 3 where id = 3;
 
-insert into servisklinickihcentara.price_item (id,type,base_price, type_of_exam_id) values (4,0,750,4);
+insert into servisklinickihcentara.price_item (id,type,base_price, type_of_exam_id, discount) values (4,0,750,4,0.25);
 update servisklinickihcentara.type_of_exam set price_item_id = 4 where id = 4;
 
-insert into servisklinickihcentara.price_item (id,type,base_price, type_of_exam_id) values (5,0,1300,5);
+insert into servisklinickihcentara.price_item (id,type,base_price, type_of_exam_id, discount) values (5,0,1300,5,0.3);
 update servisklinickihcentara.type_of_exam set price_item_id = 5 where id = 5;
 
 insert into servisklinickihcentara.price_item (id,type,base_price, type_of_exam_id) values (6,1,3300,6);
@@ -62,7 +62,9 @@ insert into servisklinickihcentara.user (dtype,id,email, password, name, surname
 insert into servisklinickihcentara.leave_form (id, start_date, end_date, employee_id,active,description) values (1,'2020-06-25', '2020-07-06',5,true,'Ljetni odmor');
 
 
-insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, clinic_id) VALUES ('ADMIN',11  ,'milosbujakovic97@gmail.com', '$2a$10$DgZyVrZ4iR1qN8NcnwboKOvI2NYMkJ6aET.VolHI3VWvv0f42CwrS', 'Milos', 'Bujakovic', true, '2019-10-01 21:58:58.508', 5);
+insert into servisklinickihcentara.user (dtype,id,email, password, name, surname, enabled, last_password_reset_date, password_changed) VALUES ('CLINICADMIN',11  ,'milosbujakovic97@gmail.com', '$2a$10$DgZyVrZ4iR1qN8NcnwboKOvI2NYMkJ6aET.VolHI3VWvv0f42CwrS', 'Milos', 'Bujakovic', true, '2019-10-01 21:58:58.508', true);
+
+insert  into servisklinickihcentara.clinic_admin_clinic (user_id,clinic_id) values (11,5);
 
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (1,1);
 insert  into servisklinickihcentara.user_authority (user_id,authority_id) values (2,1);

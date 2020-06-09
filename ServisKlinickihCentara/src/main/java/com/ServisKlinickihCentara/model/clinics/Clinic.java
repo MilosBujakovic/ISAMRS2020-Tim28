@@ -11,6 +11,7 @@ import com.ServisKlinickihCentara.model.patients.Appointment;
 import com.ServisKlinickihCentara.model.patients.AppointmentRequest;
 import com.ServisKlinickihCentara.model.users.ClinicAdmin;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Clinic 
@@ -50,8 +51,7 @@ public class Clinic
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Term> freeTerms;
 
-	@OneToOne(fetch = FetchType.EAGER)
-	@JsonBackReference
+	@OneToOne(mappedBy = "clinic")
 	private ClinicAdmin admin;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")

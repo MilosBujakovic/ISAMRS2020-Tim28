@@ -80,6 +80,7 @@ function getPredefinedAppointments(){
                     			"<td>" + a.doctor+"</td>" +
                     			"<td>" + a.typeSpeciality+"</td>" +
                     			"<td>" + a.price+"</td>" +
+                    			"<td>" + a.discount + "</td>" +
                     			"<td><button name=\"" + a.id + "\" id=\"appointmentReserve\" background-color=\"#008CBA\">" + 'Reserve'+"</button></td>"
                     	);
                     $("#predefinedAppointmentsTable").append(tr);
