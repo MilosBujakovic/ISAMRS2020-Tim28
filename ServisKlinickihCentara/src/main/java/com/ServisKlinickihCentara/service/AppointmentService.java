@@ -198,7 +198,7 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
         appointmentRequestRepository.save(appointmentRequest);
         String link = "<a href='http://localhost:8080/redirect.html' target='_blank'>http://localhost:8080/redirect.html</a>";
-        return "You reserved successfully appointment, click below to go on your reserved appointments \n" + link;
+        return "You reserved successfully appointment, click below to go on your reserved appointments </br>" + link;
     }
 
 
@@ -210,10 +210,10 @@ public class AppointmentService {
             return "Something is wrong, appointment request with this id doesn't exist!!!";
         }
 
-
         appointmentRequest.setStatus(RequestStatus.DECLINED);
         appointmentRequestRepository.save(appointmentRequest);
-        return  "You declined successfully appointment!!!";
+        String link = "<a href='http://localhost:8080/redirect.html' target='_blank'>http://localhost:8080/redirect.html</a>";
+        return  "You declined successfully appointment, click below to go on your reserved appointments </br>" + link;
     }
 
     public ArrayList<ReservedAppointmentDTO> getPatientsAppointments(String email){
@@ -314,7 +314,6 @@ public class AppointmentService {
 
         ClinicAdmin clinicAdmin = clinic.getAdmin();
 
-        System.out.println(clinicAdmin.getEmail());
 
         emailService.sendMail("milosslaven96@gmail.com",
                 "Request for appointment reservation of ","Patient "

@@ -6,6 +6,8 @@ import com.ServisKlinickihCentara.dto.clinicsDTO.AdvancedSearchClinicDTO;
 import com.ServisKlinickihCentara.dto.clinicsDTO.AdvancedSearchItem;
 import com.ServisKlinickihCentara.dto.clinicsDTO.ClinicBasicFrontendDTO;
 import com.ServisKlinickihCentara.dto.clinicsDTO.FilterExistingAsiDTO;
+import com.ServisKlinickihCentara.dto.doctorDTO.DoctorFreeSlotsViewDTO;
+import com.ServisKlinickihCentara.dto.doctorDTO.ShiftDTO;
 import com.ServisKlinickihCentara.model.clinics.Clinic;
 import com.ServisKlinickihCentara.model.clinics.ClinicRating;
 import com.ServisKlinickihCentara.model.clinics.TypeOfExam;
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDate;
@@ -39,6 +42,9 @@ public class ClinicService {
 
     @Autowired
     private TypeOfExamRepository typeOfExamRepository;
+
+    @Autowired
+    private DoctorService doctorService;
 
 
     public ClinicBasicFrontendDTO getClinicNameAddressRating(long id){
@@ -131,7 +137,7 @@ public class ClinicService {
 
         for (Clinic clinic : clinics) {
 
-            if (!clinic.getAddress().toLowerCase().contains(advancedSearchClinicDTO.getAddress().toLowerCase()) &&
+            if (!clinic.getAddress().toLowerCase().contains(advancedSearchClinicDTO.getAddress().trim().toLowerCase()) &&
                     !advancedSearchClinicDTO.getAddress().equalsIgnoreCase("")) {
                 continue;
             }
@@ -160,7 +166,8 @@ public class ClinicService {
                 continue;
             }
 
-            boolean doctorIsFree = true;
+            boolean doctorIsntOnVacation = true;
+            boolean doctorHasFreeTerms = false;
             for (Doctor doctor : doctors) {
                 LocalDate today = LocalDate.now();
                 List<LeaveForm> vacations = doctor.getVacations()
@@ -175,17 +182,26 @@ public class ClinicService {
                         boolean isBetweenOrEqual = this.dateIsBetweenOrEqual(localDate, vacationStartDate, vacationEndDate);
 
                         if (isBetweenOrEqual) {
-                            doctorIsFree = false;
+                            doctorIsntOnVacation = false;
                             break;
                         }
 
                     }
                 } else {
-                    doctorIsFree = true;
+                    doctorIsntOnVacation = true;
+                }
+
+                if(doctorIsntOnVacation){
+                    doctorHasFreeTerms = doctorService.findFreeDoctorSlotsForSpecificDate(doctor,localDate,te).size() > 0;
+                }
+
+                if(doctorHasFreeTerms){
                     break;
                 }
+
             }
-            if (doctorIsFree) {
+            if (doctorHasFreeTerms) {
+
                 String ratingDto = "";
                 if (rating == 0) {
                     ratingDto = "No rating";
@@ -251,6 +267,8 @@ public class ClinicService {
         Clinic clinic = clinicRepository.findById(clinicId);
         LocalDate localDate = LocalDate.parse(advancedSearchClinicDTO.getDate());
 
+        TypeOfExam typeOfExam = typeOfExamRepository.findByName(advancedSearchClinicDTO.getTypeOfExam());
+
         boolean typeOfExamExists = clinic.getTypeOfExams()
                 .stream().anyMatch(te->te.getName().equalsIgnoreCase(advancedSearchClinicDTO.getTypeOfExam()));
 
@@ -262,7 +280,7 @@ public class ClinicService {
 
         boolean hasFreeAtLeastOneDoctorAtCertainDay = false;
         if(doctors.size() > 0){
-            hasFreeAtLeastOneDoctorAtCertainDay = this.hasFreeAtLeastOneDoctorAtCertainDay(localDate,doctors);
+            hasFreeAtLeastOneDoctorAtCertainDay = this.hasFreeAtLeastOneDoctorAtCertainDay(localDate,doctors,typeOfExam);
         }
 
         if(!hasFreeAtLeastOneDoctorAtCertainDay) {
@@ -271,28 +289,41 @@ public class ClinicService {
         return new MessageDTO("There is at least one doctor free :)", true);
     }
 
-    public boolean hasFreeAtLeastOneDoctorAtCertainDay(LocalDate localDate, List<Doctor> doctors){
+    public boolean hasFreeAtLeastOneDoctorAtCertainDay(LocalDate localDate, List<Doctor> doctors, TypeOfExam typeOfExam){
         for (Doctor doctor : doctors) {
             LocalDate today = LocalDate.now();
             List<LeaveForm> vacations = doctor.getVacations()
                     .stream().filter(leaveForm -> leaveForm.getStartDate().isAfter(today))
                     .collect(Collectors.toCollection(ArrayList::new));
 
+
+            boolean doctorHasFreeTerms = false;
+            boolean isBetweenOrEqual = false;
             if (vacations.size() > 0) {
                 for (LeaveForm vacation : vacations) {
                     LocalDate vacationStartDate = vacation.getStartDate();
                     LocalDate vacationEndDate = vacation.getEndDate();
 
-                    boolean isBetweenOrEqual = this.dateIsBetweenOrEqual(localDate, vacationStartDate, vacationEndDate);
+                    isBetweenOrEqual = this.dateIsBetweenOrEqual(localDate, vacationStartDate, vacationEndDate);
 
-                    if (isBetweenOrEqual) {
-                        return false;
+                    if (!isBetweenOrEqual) {
+                        break;
                     }
 
                 }
             }
+
+            if(!isBetweenOrEqual){
+                doctorHasFreeTerms = doctorService.findFreeDoctorSlotsForSpecificDate(doctor,localDate,typeOfExam).size() > 0;
+            }
+
+            if(doctorHasFreeTerms){
+                return true;
+            }
+
+
         }
-        return true;
+        return false;
     }
 
 

@@ -53,7 +53,7 @@ public class AppointmentController {
     }
 
 
-    @RequestMapping(value = "/declineQuickAppointment/{uuid}/{appointmentRequestId}", method = RequestMethod.GET, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/declineQuickAppointment/{uuid}/{appointmentRequestId}", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public ResponseEntity<String> declineQuickAppointment(@PathVariable("uuid") String uuid,
                                                              @PathVariable("appointmentRequestId") String appointmentRequestId){
         System.out.println("declineQuickAppointment");

@@ -186,3 +186,14 @@ insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_
 insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled) values (12, 12, 5, 8, 2, 0, true, true, false);
 insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled) values (13, 13, 5, 8, 2, 0, true, true, false);
 insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled) values (14, 14, 5, 8, 2, 0, true, true, false);
+
+
+
+insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (15, 1, '2020-07-07 10:20:00.000', '2020-07-07 10:40:00.000');
+insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (16, 1, '2020-07-07 10:50:00.000', '2020-07-07 11:10:00.000');
+
+
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled) values (15, 15, 4, 5, 3, 0, true, true, false);
+insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled) values (16, 16, 4, 5, 3, 0, true, true, false);
+
+

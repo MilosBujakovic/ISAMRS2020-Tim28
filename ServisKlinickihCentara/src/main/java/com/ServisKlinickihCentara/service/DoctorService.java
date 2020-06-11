@@ -131,8 +131,8 @@ public class DoctorService {
         TypeOfExam typeOfExam = typeOfExamRepository.findByName(te);
 
         doctors = doctors.stream().filter(d -> ids.contains(d.getId().toString()))
-                .filter(d->d.getName().equalsIgnoreCase("") || d.getName().toLowerCase().contains(doctorSearchDTO.getName().toLowerCase()))
-                .filter(d->d.getSurname().equalsIgnoreCase("") || d.getSurname().toLowerCase().contains(doctorSearchDTO.getSurname().toLowerCase()))
+                .filter(d->d.getName().equalsIgnoreCase("") || d.getName().toLowerCase().contains(doctorSearchDTO.getName().trim().toLowerCase()))
+                .filter(d->d.getSurname().equalsIgnoreCase("") || d.getSurname().toLowerCase().contains(doctorSearchDTO.getSurname().trim().toLowerCase()))
                 .collect(Collectors.toCollection(ArrayList::new));
 
 

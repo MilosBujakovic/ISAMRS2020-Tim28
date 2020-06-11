@@ -45,8 +45,8 @@ function readUnregisteredPatients() {
                 								"<td>" + patient.country+"</td>" +
                 								"<td>" + patient.phone+"</td>" +
                 								"<td>" + patient.insurance_number+"</td>" +
-                								"<td><button name=\"" + patient.email + "\" id=\"accept\" class=\"btn btn-default\" background-color=\"#555555\">" + accept+"</button></td>" +
-                								"<td><button name=\"" + patient.email + "\" id=\"reject\" class=\"btn btn-default\" background-color=\"#555555\">" + reject+"</button></td>"
+                								"<td><button name=\"" + patient.email + "\" id=\"accept\"  background-color=\"#555555\">" + accept+"</button></td>" +
+                								"<td><button name=\"reject " + patient.email + "\" id=\"reject\"  background-color=\"#555555\">" + reject+"</button></td>"
 
                 						);
                 						$("#registrations").append(tr);
@@ -65,15 +65,19 @@ $(document).on('click', '#accept', function(e) {
 	e.preventDefault();
 		if (confirm('Are you sure that you want to accept registration of this patient?')) {
 		    var email = $(this).attr("name");
+		    var form = this;
 		    console.log(email);
             		$.ajax({
             			type : 'PUT',
             			url : "/user/acceptPatient/" + email,
             			headers: { "Authorization": "Bearer " + token},
             			success : function() {
-            		        $('[name=\"' + email + '\"]').prop("disabled",true);
+            		        //$('[name=\"' + email + '\"]').prop("disabled",true);
 
-                            alert("Activation was sent to patient's mail.")
+                            alert("Activation was sent to patient's mail.");
+                            $(form).replaceWith("<p>ACCEPTED</p>");
+                            document.getElementsByName("reject " + email)[0].replaceWith("");
+
             			},
             			error : function(errorThrown) {
             				alert(errorThrown);
@@ -86,7 +90,7 @@ $(document).on('click', '#accept', function(e) {
 $(document).on('click', '#reject', function(e) {
 	e.preventDefault();
 		if (confirm('Are you sure that you want to reject registration of this patient?')) {
-		    var email = $(this).attr("name");
+		    var email = $(this).attr("name").split(" ")[1];
 
 		    if ($.trim($('#reason').val()).length == 0)
             {

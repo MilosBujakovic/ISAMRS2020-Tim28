@@ -164,7 +164,7 @@ function getTypeOfExamsWithoutOperations(){
  }
 
 
-function getSpecialities(){
+/*function getSpecialities(){
     var token = localStorage.getItem("token");
 	$.ajax({
     		type : 'GET',
@@ -186,4 +186,4 @@ function getSpecialities(){
     			alert(errorThrown);
     		}
     	});
-}
+}*/
