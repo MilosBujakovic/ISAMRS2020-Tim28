@@ -111,6 +111,7 @@ $(document).on('click', '#appointmentReserve', function(e) {
         		success : function(message) {
                     if(message.success == true){
                         getPredefinedAppointments();
+                        lockButtons();
                     }
                     alert(message.message);
 
@@ -120,11 +121,14 @@ $(document).on('click', '#appointmentReserve', function(e) {
         		}
         	});
 
-
-
-
 })
 
+
+function lockButtons(){
+    setTimeout(function() {
+        $("#predefinedAppointmentsTable tbody tr td button").prop("disabled",true);
+    }, 1000);
+}
 
 $(document).on('submit', '#doctorsSearchForm', function(e) {
 	e.preventDefault();

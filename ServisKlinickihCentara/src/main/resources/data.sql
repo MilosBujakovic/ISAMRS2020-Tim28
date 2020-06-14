@@ -119,6 +119,9 @@ insert into servisklinickihcentara.term (id, room_id, start_time,end_time) value
 insert into servisklinickihcentara.medical_record (id, age,height,weight,diopter,alergies, bloodtype, rhfactor) values (1,23,183,75,'-0.75','Alergija na ambroziju i polen.',1,1);
 update servisklinickihcentara.user set medical_record_id = 1 where id = 1;
 
+insert into servisklinickihcentara.medical_record (id, age,height,weight,diopter,alergies, bloodtype, rhfactor) values (2,28,187,89,'-0.25','Nema alergiju ni na sta.',2,0);
+update servisklinickihcentara.user set medical_record_id = 2 where id = 2;
+
 --predefinisani oftamoloski pregledi
 insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled) values (1, 1, 4, 5, 3, 0, true, true, false);
 insert into servisklinickihcentara.appointment (id, term_id, clinic_id,employee_id, type_of_exam_id, type, predefined, active, cancelled) values (2, 2, 4, 5, 3, 0, true, true, false);

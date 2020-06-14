@@ -185,6 +185,7 @@ $(document).on('click',"button[name=choosenTerm]",function(e){
     localStorage.setItem("choosenDate", date);
     localStorage.setItem("choosenStartTime",startTime);
     localStorage.setItem("choosenEndTime",endTime);
+    lockButtons();
     var win = window.open('http://localhost:8080/checkUpReserve.html', '_blank');
 
 })
@@ -195,6 +196,10 @@ function removeChildsFromDoctorTermsDiv(){
     while (parent.firstChild) {
         parent.firstChild.remove();
     }
+}
+
+function lockButtons(){
+    $("button[name='choosenTerm']").prop("disabled",true);
 }
 
 

@@ -77,6 +77,8 @@ $(document).on("click", "#reserveButton", function(e){
             headers: { "Authorization": "Bearer " + token},
             success : function(message) {
                 alert(message.message);
+                $("#reserveButton").html('Reservation confirmed');
+                $('#reserveButton').prop("disabled",true);
          	},
          	error : function(errorThrown) {
          		alert(errorThrown);
