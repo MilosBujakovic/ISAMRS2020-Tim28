@@ -82,23 +82,22 @@
  	<h2>Edit Clinic</h2>
  	<table>
  		<tr>
- 			<td> <input type="hidden" value="admin" id="clinicAdmin"></td>
- 			<td> <input type="hidden" value="1" id="clinicId"></td>
+ 			<td> <input type="hidden" id="clinicId"></td>
  		<tr>
  			<td> Clinic name: </td>
- 			<td> <input type="text" value="Klinika" id="clinicName"></td>
+ 			<td> <input type="text" id="clinicName"></td>
  		</tr>
  		<tr>
  			<td> Address: </td>
- 			<td> <input type="text" value="Adresa" id="clinicAddress"></td>
+ 			<td> <input type="text" id="clinicAddress"></td>
  		</tr>
  		<tr>
  			<td> Description: </td>
- 			<td> <textArea rows="3" value="Opis" id="clinicDescription"></textArea></td>
+ 			<td> <textArea rows="3" id="clinicDescription"></textArea></td>
  		</tr>
  		<tr>
  			<td colspan="2" align="center">
- 			 <button id="editClinicButton" onclick="updateClinicBasics()">Save changes</button>
+ 			 <button id="editClinicSubmitButton">Save changes</button>
  			</td>
  		</tr>
  	</table>
@@ -106,6 +105,16 @@
  
  <div class="tabcontent" id="makeAppointments">
  	<h2>Make Predefined Appointments</h2>
+ 	<table>
+ 		<tr>
+ 			<td> Choose a date: </td>
+ 		</tr>
+ 		<tr>
+ 			<td>Type of appointment:</td>
+ 			<td>
+ 		</tr>
+ 		
+ 	</table>
  </div>
  
  <div class="tabcontent" id="reports">

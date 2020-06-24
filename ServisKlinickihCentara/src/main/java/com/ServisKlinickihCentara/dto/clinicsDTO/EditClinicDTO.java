@@ -4,7 +4,7 @@ import com.ServisKlinickihCentara.model.clinics.Clinic;
 
 public class EditClinicDTO 
 {
-	private Long id;
+	private long id;
 	private String name;//TODO: Unique
 	private String address;
 	private String description;
@@ -82,11 +82,11 @@ public class EditClinicDTO
 		this.admin = admin;
 	}
 
-	public Long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	
