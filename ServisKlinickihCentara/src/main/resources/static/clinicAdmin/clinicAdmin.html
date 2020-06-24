@@ -70,6 +70,7 @@
  	<button class="tablinks" id="appointmentsButton" onclick="openTab(event, 'makeAppointments')">Make Predefined Appointments</button>
  	<button class="tablinks" id="reportsButton" onclick="openTab(event, 'reports')">Business Reports</button>
  	<button class="tablinks" id="roomsButton" onclick="openTab(event, 'clinicRooms')">Clinic Rooms</button>
+ 	<button class="tablinks" id="pricelistButton" onclick="openTab(event, 'clinicPricelist')">Clinic Pricelist</button>
  	<button class="tablinks" id="appointmentTypesButton" onclick="openTab(event, 'appointmentTypes')">Clinic Appointment types</button>
  	<button class="tablinks" id="staffButton" onclick="openTab(event, 'staff')">My staff</button>
  	<button class="tablinks" id="profileButton" onclick="openTab(event, 'profile')">My Profile</button>
@@ -79,6 +80,28 @@
  <!-- built-in edit of contents? -->
  <div class="tabcontent" id="editClinic">
  	<h2>Edit Clinic</h2>
+ 	<table>
+ 		<tr>
+ 			<td> <input type="hidden" value="admin" id="clinicAdmin"></td>
+ 			<td> <input type="hidden" value="1" id="clinicId"></td>
+ 		<tr>
+ 			<td> Clinic name: </td>
+ 			<td> <input type="text" value="Klinika" id="clinicName"></td>
+ 		</tr>
+ 		<tr>
+ 			<td> Address: </td>
+ 			<td> <input type="text" value="Adresa" id="clinicAddress"></td>
+ 		</tr>
+ 		<tr>
+ 			<td> Description: </td>
+ 			<td> <textArea rows="3" value="Opis" id="clinicDescription"></textArea></td>
+ 		</tr>
+ 		<tr>
+ 			<td colspan="2" align="center">
+ 			 <button id="editClinicButton" onclick="updateClinicBasics()">Save changes</button>
+ 			</td>
+ 		</tr>
+ 	</table>
  </div>
  
  <div class="tabcontent" id="makeAppointments">
@@ -91,6 +114,10 @@
  
  <div class="tabcontent" id="clinicRooms">
  	<h2>Clinic Rooms Management</h2>
+ </div>
+ 
+ <div class="tabcontent" id="clinicPricelist">
+ 	<h2>Clinic Appointments Pricelist</h2>
  </div>
  
  <div class="tabcontent" id="appointmentTypes">
