@@ -4,62 +4,14 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Clinic admin page</title>
+    <title>Clinic admin</title>
 
     <script type="text/javascript" src="./../jquery.min.js"></script>
     <script src="bootstrap.min.js"></script>
     <link rel="stylesheet" href="./../bootstrap.min.css">
+	<link rel="stylesheet" href="./../styles/pagestyling.css">
 
     <script type="text/javascript" src="clinicAdmin.js"></script>
-
-
-    <style>
-        body {
-            background-image: url('./../h.jpg');
-            font-family: Arial;
-        }
-
-        .tab {
-		  overflow: hidden;
-		  border: 1px solid #ccc;
-		  background-color: #f1f1f1;
-		}
-
-		/* Style the buttons inside the tab */
-		.tab button {
-		  background-color: inherit;
-		  float: left;
-		  border: none;
-		  outline: none;
-		  cursor: pointer;
-		  padding: 14px 16px;
-		  transition: 0.3s;
-		  font-size: 17px;
-		}
-		
-		/* Change background color of buttons on hover */
-		.tab button:hover {
-		  background-color: #ddd;
-		}
-		
-		/* Create an active/current tablink class */
-		.tab button.active {
-		  background-color: #ccc;
-		}
-		
-		/* Style the tab content */
-		.tabcontent {
-		  display: none;
-		  padding: 6px 12px;
-		  border: 1px solid #ccc;
-		  border-top: none;
-		  background-color: #1ad1ff;
-		}
-		
-		label {
-			padding: 5px;
-		}
-	</style>
 
 </head>
 
@@ -80,9 +32,9 @@
  <!-- built-in edit of contents? -->
  <div class="tabcontent" id="editClinic">
  	<h2>Edit Clinic</h2>
- 	<table>
- 		<tr>
- 			<td> <input type="hidden" id="clinicId"></td>
+ 	<table align="center" class="table table-bordered table-hover table-fit2 td-centered">
+ 		<tr >
+ 			<td colspan="2"><h4>Edit Clinic info:</h4> <input type="hidden" id="clinicId"></td>
  		<tr>
  			<td> Clinic name: </td>
  			<td> <input type="text" id="clinicName"></td>
@@ -105,16 +57,49 @@
  
  <div class="tabcontent" id="makeAppointments">
  	<h2>Make Predefined Appointments</h2>
- 	<table>
+ 	<form id="makePredefinedAppointment">
+ 	<table align=center class="table table-bordered table-hover table-fit2 td-centered" id="datePredefinedChoose">
  		<tr>
- 			<td> Choose a date: </td>
- 		</tr>
- 		<tr>
- 			<td>Type of appointment:</td>
+ 			<td><h5 align=center> Choose a date of appointment: </h5></td>
+ 			
  			<td>
+ 			<input type="date" required id="dateOfCheckup" 
+ 			placeholder="Choose date of checkup" required>
+ 			</td>
  		</tr>
+ 		<tr>
+ 			<td><h5 align=center>Choose a Type of exam:</h5></td>
+ 			<td><select id="examTypes">
+ 				<option value=""></option> </select> </td>
+ 		</tr>
+ 		<tr>
+ 			<td colspan="2"><input type="submit" id="predefinedDoctorButton" value="Choose a Doctor"/></td>
+  		</tr>
  		
  	</table>
+ 	</form>
+ </div>
+ <div class="tabcontent" id="freeDoctorSlots">
+ 	<h2 align=center>Free doctor's term slots</h2>
+ 	<table id="searchParametersTable">
+    <tr>
+        <td>Name of doctor:<input type="text" id="nameDoctorDTO"/></td>
+        <td>Surname of doctor:<input type="text" id="surnameDoctorDTO"/></td>
+        <td>Rating:<input type="number" id="ratingDoctorDTO" min="1" max="5"/></td>
+        <!--<td>Date of exam:<input type="date" id="dateOfExamDTO"/></td>
+        <td>Type of exam:<select name="optionsExam" id="typeOfExam"><option value="" selected></option></select></td>
+        -->
+    </tr>
+</table>
+
+
+<div id="slots" class="tabcontent">
+
+    <div id="doctorsTerms">
+
+    </div>
+
+</div>
  </div>
  
  <div class="tabcontent" id="reports">

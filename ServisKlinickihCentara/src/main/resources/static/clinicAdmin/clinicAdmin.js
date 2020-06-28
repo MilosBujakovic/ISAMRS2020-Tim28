@@ -5,6 +5,12 @@ if (token == null){
 };
 
 $(document).ready(
+function()
+{
+	getClinicData();
+	getTypeOfExams();
+	
+});
 function getClinicData()
 {
 
@@ -17,7 +23,6 @@ function getClinicData()
 		data: JSON.stringify(localStorage.getItem("email")),
 		headers: { "Authorization": "Bearer " + token},
 		success : function(clinic) {
-			console.log(clinic.name);
 			document.getElementById("clinicId").value = clinic.id;
 			document.getElementById("clinicName").value = clinic.name;
 			document.getElementById("clinicAddress").value = clinic.address;
@@ -27,9 +32,31 @@ function getClinicData()
 			alert(errorThrown);
 		}
 	})
-	
-	
-});
+}
+
+function getTypeOfExams(){
+    var token = localStorage.getItem("token");
+	$.ajax({
+    		type : 'GET',
+    		url : "../typeOfExam/getTypeOfExamsWithoutOperations",
+    		cache: false,
+    		dataType: "json",
+           headers: { "Authorization": "Bearer " + token},
+    		success : function(types) {
+    			$("#examTypes").find('optionl:gt(0)').remove();
+    			$.each(
+    					types,
+    					function(index,type){
+    						$("#examTypes").append('<option value=\"' + type + '\">' + type + '</option>');
+    						//$("#typeOfExams").append('<option value=\"' + type + '\">' + type + '</option>');
+    					}
+    			)
+    		},
+    		error : function(errorThrown) {
+    			alert(errorThrown);
+    		}
+    	});
+}
 
 $(document).on("click", "#editClinicSubmitButton", function updateClinicBasics()
 {
@@ -80,3 +107,19 @@ $(document).on('click',"#logout",function(e){
 	}
 
 })
+
+$(document).on('submit', "#makePredefinedAppointment", function(e)
+	{
+		e.preventDefault();
+		//console.log(document.getElementById("dateOfCheckup").value);
+		localStorage.setItem("dateOfCheckup", document.getElementById("dateOfCheckup").value);
+		localStorage.setItem("typeOfExam", document.getElementById("examTypes").value);
+		//window.open("./../index.html", "currentWindow", "");
+		window.location.replace("./../index.html");
+
+	})
+	
+	
+	
+	
+	
