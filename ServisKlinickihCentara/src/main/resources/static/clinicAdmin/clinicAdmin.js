@@ -9,6 +9,7 @@ function()
 {
 	getClinicData();
 	getTypeOfExams();
+	localStorage.setItem("clinicAdminTabs", document.getElementsByClassName("tabcontent"));
 	
 });
 function getClinicData()
@@ -24,6 +25,7 @@ function getClinicData()
 		headers: { "Authorization": "Bearer " + token},
 		success : function(clinic) {
 			document.getElementById("clinicId").value = clinic.id;
+			localStorage.setItem("clinicId", clinic.id);
 			document.getElementById("clinicName").value = clinic.name;
 			document.getElementById("clinicAddress").value = clinic.address;
 			document.getElementById("clinicDescription").value = clinic.description;
@@ -115,7 +117,8 @@ $(document).on('submit', "#makePredefinedAppointment", function(e)
 		localStorage.setItem("dateOfCheckup", document.getElementById("dateOfCheckup").value);
 		localStorage.setItem("typeOfExam", document.getElementById("examTypes").value);
 		//window.open("./../index.html", "currentWindow", "");
-		window.location.replace("./../index.html");
+		//window.location.replace("./../index.html");
+		window.location.replace("doctorsFreeTerms.html");
 
 	})
 	

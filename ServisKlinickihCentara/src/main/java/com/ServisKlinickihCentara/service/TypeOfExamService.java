@@ -26,5 +26,10 @@ public class TypeOfExamService {
                 .filter(typeOfExam -> !typeOfExam.getName().toLowerCase().contains("operacija"))
                 .map(typeOfExam -> typeOfExam.getName()).collect(Collectors.toCollection(ArrayList::new));
     }
+    
+    public TypeOfExam getExamType(String name)
+    {
+    	return typeOfExamRepository.findByName(name);
+    }
 
 }

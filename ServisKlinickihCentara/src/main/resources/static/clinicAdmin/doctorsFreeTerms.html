@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Make predefined appointment - Clinic Admin</title>
+
+    <script type="text/javascript" src="./../jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./../bootstrap.min.css">
+	<link rel="stylesheet" href="./../styles/pagestyling.css">
+
+    <script type="text/javascript" src="doctorsFreeTerms.js"></script>
+
+</head>
+
+<body>
+	 <div class="tab">
+	 	<button class="tablinks" id="editClinicButton" onclick="openTab(event, 'editClinic')">My Clinic</button>
+	 	<button class="tablinks" id="appointmentsButton" onclick="openTab(event, 'makeAppointments')">Make Predefined Appointments</button>
+	 	<button class="tablinks" id="reportsButton" onclick="openTab(event, 'reports')">Business Reports</button>
+	 	<button class="tablinks" id="roomsButton" onclick="openTab(event, 'clinicRooms')">Clinic Rooms</button>
+	 	<button class="tablinks" id="pricelistButton" onclick="openTab(event, 'clinicPricelist')">Clinic Pricelist</button>
+	 	<button class="tablinks" id="appointmentTypesButton" onclick="openTab(event, 'appointmentTypes')">Clinic Appointment types</button>
+	 	<button class="tablinks" id="staffButton" onclick="openTab(event, 'staff')">My staff</button>
+	 	<button class="tablinks" id="profileButton" onclick="openTab(event, 'profile')">My Profile</button>
+	 	<button class="tablinks" onclick="openTab(event, 'logout')" id="logout">Log out</button>
+	 </div>
+	<table id="searchParametersTable">
+	    <tr>
+	        <td>Name of doctor:<input type="text" id="nameDoctorDTO"/></td>
+	        <td>Surname of doctor:<input type="text" id="surnameDoctorDTO"/></td>
+	        <td>Rating:<input type="number" id="ratingDoctorDTO" min="1" max="5"/></td>
+	        <!--<td>Date of exam:<input type="date" id="dateOfExamDTO"/></td>
+	        <td>Type of exam:<select name="optionsExam" id="typeOfExam"><option value="" selected></option></select></td>
+	        -->
+	    </tr>
+	</table>
+	<table id="doctorTermsTable"></table>
+	
+	<script>
+		function openTab(evt, tabName) {
+		  window.location.replace("clinicAdmin.html");
+		 }
+	 </script>
+
+</body>
+</html>
