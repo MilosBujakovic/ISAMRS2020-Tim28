@@ -107,14 +107,14 @@ insert into servisklinickihcentara.room (id, number, clinic_id) values (5, 'opst
 insert into servisklinickihcentara.room (id, number, clinic_id) values (6, 'opsta 2',5);
 
 --za predefinisane oftamoloske termini
-insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (1, 1, '2020-07-06 14:30:00.000', '2020-07-03 14:50:00.000');
+insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (1, 1, '2020-07-03 14:30:00.000', '2020-07-03 14:50:00.000');
 insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (2, 1, '2020-07-01 11:10:00.000', '2020-07-01 11:30:00.000');
-insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (3, 1, '2020-07-02 09:30:00.000', '2020-07-03 09:50:00.000');
+insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (3, 1, '2020-07-03 09:30:00.000', '2020-07-03 09:50:00.000');
 
 --za predefinisane opste termini
 insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (4, 5, '2020-07-03 14:30:00.000', '2020-07-03 14:40:00.000');
 insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (5, 5, '2020-07-01 11:10:00.000', '2020-07-01 11:20:00.000');
-insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (6, 6, '2020-07-02 09:30:00.000', '2020-07-03 09:40:00.000');
+insert into servisklinickihcentara.term (id, room_id, start_time,end_time) values (6, 6, '2020-07-02 09:30:00.000', '2020-07-02 09:40:00.000');
 
 insert into servisklinickihcentara.medical_record (id, age,height,weight,diopter,alergies, bloodtype, rhfactor) values (1,23,183,75,'-0.75','Alergija na ambroziju i polen.',1,1);
 update servisklinickihcentara.user set medical_record_id = 1 where id = 1;

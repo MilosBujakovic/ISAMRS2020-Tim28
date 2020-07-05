@@ -27,17 +27,18 @@ public class PredefinedAppointmentService
 		Time startTime = Time.valueOf(appointmentSlot.getStartTime() );
 		Time finalTime = Time.valueOf(appointmentSlot.getEndTime() );
 		int i = 0;
-		AppointmentTermDTO term = new AppointmentTermDTO();
+		AppointmentTermDTO term;
 		TypeOfExam te = examsService.getExamType(appointmentSlot.getTypeOfExam());
 		do
 		{
+			term = new AppointmentTermDTO();
 			term.setStartTime(startTime.toString());
 			startTime.setMinutes(startTime.getMinutes()+te.getDuration());
 			term.setEndTime(startTime.toString());
 			term.setTypeOfExam(appointmentSlot.getTypeOfExam());
 			terms.add(term);
-			System.out.println(terms.get(i).getStartTime() + "|" + terms.get(i).getEndTime() + "|" + terms.get(i).getTypeOfExam());
-			i++;
+			//System.out.println(terms.get(i).getStartTime() + "|" + terms.get(i).getEndTime() + "|" + terms.get(i).getTypeOfExam());
+			//i++;
 			
 		}
 		while(startTime.before(finalTime));

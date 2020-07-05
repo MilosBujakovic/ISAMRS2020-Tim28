@@ -99,10 +99,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/clinic/getClinicNameAddressRating/**").hasAuthority("PATIENT")
                     .antMatchers("/clinic/checkClinicHasFreeDoctorsForSpecificDateAndTypeOfExam/**").hasAuthority("PATIENT")
                     .antMatchers("/appointment/customAppointmentReservation").hasAuthority("PATIENT")
-                    .antMatchers("/clinicEdit/updateBasics").hasAuthority("CLINIC_ADMIN")
-                    .antMatchers("/predefinedAppointment/getTerms").hasAnyAuthority("CLINIC_ADMIN", "DOCTOR")
                     .antMatchers("/auth/logout").permitAll()
                     .antMatchers("/auth/refresh").permitAll()
+                    .antMatchers("/clinicEdit/updateBasics").hasAuthority("CLINIC_ADMIN")
+                    .antMatchers("/predefinedAppointment/getTerms").hasAnyAuthority("CLINIC_ADMIN", "DOCTOR")
+                    .antMatchers("/roomAdmin/findFreeRooms").hasAnyAuthority("CLINIC_ADMIN", "DOCTOR")
 
                 //svaki zahtev mora biti autorizovan
                 .anyRequest().authenticated().and()

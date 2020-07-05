@@ -1,10 +1,10 @@
 package com.ServisKlinickihCentara.repository;
 
-import com.ServisKlinickihCentara.model.clinics.TypeOfExam;
+import java.util.ArrayList;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-
-import java.util.ArrayList;
+import com.ServisKlinickihCentara.model.clinics.TypeOfExam;
 
 public interface TypeOfExamRepository extends JpaRepository<TypeOfExam,Long> {
 

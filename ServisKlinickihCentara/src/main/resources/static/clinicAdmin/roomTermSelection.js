@@ -24,23 +24,63 @@ $(document).ready(function(){
 		data: JSON.stringify({"startTime": startTime, "endTime": endTime, "typeOfExam": typeOfExam}),
 		headers: { "Authorization": "Bearer " + token},
 		success : function(retVal) {
-			alert(retVal.message);
+			//console.log(retVal);
+			var i;
+			//var table = $("#freeTermSelection");
+			for(i=0; i< retVal.length; i++)
+			{
+				var row = $("<tr></tr>");
+				row.append("<td>"+retVal[i].startTime+"</td><td>"+retVal[i].endTime+"</td><td>"
+						+"<input type=\"radio\" class=\"chooseTerm\" name=\"term\" value=\""+retVal[i].startTime+" "+retVal[i].endTime+"\"></td>");
+				$("#freeTermSelection").append(row);
+				//console.log(i);
+			}
+			
+			//localStorage.setItem("terms", retVal);
+			
+			//document.getElementById("freeTermSelection").innerHTML = table;
+			//alert(retVal.message);
 		},
 		error : function(errorThrown) {
 			alert(errorThrown);
 		}
 	})
-	
-	
-    displayFreeTermPicker();
-
 });
 
-function displayFreeTermPicker()
+$(document).on('click',"input[name=term]",function(e)
+		{
+					var startTerm, endTerm;
+					var termDuration = $(this).attr("value").split(" ");
+					
+					//console.log(i);
+					startTerm = termDuration[0];
+					endTerm = termDuration[1];
+					
+					displayFreeRoomPicker(startTerm, endTerm);
+					//console.log("displayRooms");
+					
+		});
+
+function displayFreeRoomPicker(startTerm, endTerm)
 {
-	/*TODO: na bekend posaljem odabrani slot i izgenerisem sve termine 
-	 koje posaljem kao listu koju poslije prikažem
-	 	*/
+	var dateOfCheckup = localStorage.getItem("dateOfCheckup");
+	var clinicId = localStorage.getItem("clinicId");
+	$.ajax({
+		method: "POST",
+		url: "roomAdmin/findFreeRooms",
+		dataType : "json",
+		cache: false,
+		contentType : 'application/json',
+		data: JSON.stringify({"startTime": startTerm, "endTime": endTerm, "clinicId": clinicId, "date": dateOfCheckup}),
+		headers: { "Authorization": "Bearer " + token},
+		success : function(retVal) {
+			
+			
+		},
+		error : function(errorThrown) {
+			alert("No free rooms found! Please select another term!");
+		}
+	});
 	var table = $("<table></table>");
 	var startTime = localStorage.getItem("startTime");
 	var finalTime = localStorage.getItem("endTime");

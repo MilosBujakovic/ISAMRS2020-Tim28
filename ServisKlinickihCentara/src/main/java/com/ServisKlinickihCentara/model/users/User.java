@@ -42,7 +42,7 @@ public class User implements UserDetails {
     private boolean active;*/
 
     @Column
-    private Timestamp lastPasswordResetDate;
+    private Timestamp lastPasswordResetDate;//TODO: SET TO NULL WHEN REGISTERING DOCTORS AND CLINIC ADMINS
 
     @Column
     private boolean enabled;
