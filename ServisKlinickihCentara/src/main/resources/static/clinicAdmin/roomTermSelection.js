@@ -68,7 +68,7 @@ function displayFreeRoomPicker(startTerm, endTerm)
 	var clinicId = localStorage.getItem("clinicId");
 	$.ajax({
 		method: "POST",
-		url: "roomAdmin/findFreeRooms",
+		url: "roomAdmin/findFreeClinicRooms",
 		dataType : "json",
 		cache: false,
 		contentType : 'application/json',

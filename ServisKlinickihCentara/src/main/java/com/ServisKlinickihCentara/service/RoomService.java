@@ -29,9 +29,20 @@ public class RoomService {
 	@Autowired
 	ClinicRepository clinicRepository;
 
-	public List<FreeRoomDTO> findFreeRooms(RoomAppointmentBookingDTO appointmentSlot) {
+	public List<FreeRoomDTO> findFreeClinicRooms(RoomAppointmentBookingDTO appointmentSlot) {
 		Clinic clinic = clinicRepository.findById(Long.parseLong(appointmentSlot.getClinicId() ) );
 		List<Room> rooms = roomRepository.findAll();
+		int j=0;
+		do
+		{
+			if(rooms.get(j).getClinic().getId()!=clinic.getId())
+			{
+				rooms.remove(j);
+			}
+			else j++;
+		}
+		while(j<rooms.size());
+		
 		List<Appointment> appointments = clinic.getAppointments();
 		List<Term> terms = new ArrayList<Term>();
 		for(int i = 0; i < appointments.size(); i++)
@@ -59,7 +70,7 @@ public class RoomService {
 				/*TODO: Granice odabranog i termina istovremene*/
 			{
 				System.out.println("Overlapping discovered!");
-				for(int j = 0; j < rooms.size(); j++)
+				for(j = 0; j < rooms.size(); j++)
 				{
 					if(terms.get(i).getRoom().equals(rooms.get(j) ) )
 					{
