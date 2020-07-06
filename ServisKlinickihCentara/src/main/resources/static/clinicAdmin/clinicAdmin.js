@@ -121,7 +121,7 @@ $(document).on('submit', "#makePredefinedAppointment", function(e)
 		if(document.getElementById("examTypes").value=="")
 		{
 			alert("Please choose a type of exam!");
-			
+				
 		}
 		else
 		{

@@ -1,5 +1,8 @@
 package com.ServisKlinickihCentara.service;
 
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import com.ServisKlinickihCentara.dto.MessageDTO;
 import com.ServisKlinickihCentara.dto.typeOfExamDTO.TypeOfExamDTO;
 import com.ServisKlinickihCentara.model.clinics.PriceItem;
