@@ -1,6 +1,7 @@
 package com.ServisKlinickihCentara.dto.typeOfExamDTO;
 
 public class TypeOfExamDTO {
+    private String clinicId;
     private String name;
     private String specialty;
     private String duration;
@@ -12,14 +13,35 @@ public class TypeOfExamDTO {
         super();
     }
 
-    public TypeOfExamDTO(String name, String specialty, String duration, String appointmentType, String price, String discount) {
-        super();
+    public TypeOfExamDTO(String clinicId, String name, String specialty, String duration, String appointmentType, String price, String discount) {
+        this.clinicId = clinicId;
         this.name = name;
         this.specialty = specialty;
         this.duration = duration;
         this.appointmentType = appointmentType;
         this.price = price;
         this.discount = discount;
+    }
+
+    public TypeOfExamDTO(String clinicId, String name, String duration, String price, String discount) {
+        this.clinicId = clinicId;
+        this.name = name;
+        this.duration = duration;
+        this.price = price;
+        this.discount = discount;
+    }
+
+    public TypeOfExamDTO(String clinicId, String name) {
+        this.clinicId = clinicId;
+        this.name = name;
+    }
+
+    public String getClinicId() {
+        return clinicId;
+    }
+
+    public void setClinicId(String clinicId) {
+        this.clinicId = clinicId;
     }
 
     public String getName() {

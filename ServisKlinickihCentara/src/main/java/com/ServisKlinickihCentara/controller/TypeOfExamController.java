@@ -49,7 +49,24 @@ public class TypeOfExamController {
 
     @RequestMapping(value = "/addNewTypeOfExam", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MessageDTO> addNewTypeOfExam(@RequestBody TypeOfExamDTO typeOfExamDTO){
+        System.out.println("addNewTypeOfExam");
         MessageDTO messageDTO = typeOfExamService.addNewTypeOfExam(typeOfExamDTO);
+        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/editTypeOfExam", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageDTO> editTypeOfExam(@RequestBody TypeOfExamDTO typeOfExamDTO){
+        System.out.println("editTypeOfExam");
+        MessageDTO messageDTO = typeOfExamService.editTypeOfExam(typeOfExamDTO);
+        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/deleteTypeOfExam", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageDTO> deleteTypeOfExam(@RequestBody TypeOfExamDTO typeOfExamDTO){
+        System.out.println("deleteTypeOfExam");
+        MessageDTO messageDTO = typeOfExamService.deleteTypeOfExam(typeOfExamDTO);
         return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
 
     }
