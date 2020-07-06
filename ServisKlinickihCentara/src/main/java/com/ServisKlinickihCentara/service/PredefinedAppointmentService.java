@@ -96,6 +96,10 @@ public class PredefinedAppointmentService
 		{	
 			appointmentRepository.save(appointment);
 			doctor.getWorkingCalendar().add(appointment);
+			for(int i= 0; i<doctor.getWorkingCalendar().size(); i++)
+			{
+				System.out.println(doctor.getWorkingCalendar().get(i));
+			}
 			doctorRepository.save(doctor);
 			clinic.getFreeTerms();//TODO: da li i ovdje nesto treba?
 			System.out.println("Predefined appointment Saved!");

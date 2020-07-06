@@ -33,5 +33,14 @@ public class TypeOfExamController {
         return new ResponseEntity<ArrayList<String>>(names, HttpStatus.OK);
 
     }
+    
+    @RequestMapping(value = "/getTypeOfExamsForClinic", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ArrayList<String>> getTypeOfExamsForClinic(@RequestParam long clinicId){
+    	
+    	System.out.println("_"+clinicId+"_");
+        ArrayList<String> names = typeOfExamService.getTypeOfExamsForClinic(clinicId);
+        return new ResponseEntity<ArrayList<String>>(names, HttpStatus.OK);
+
+    }
 
 }

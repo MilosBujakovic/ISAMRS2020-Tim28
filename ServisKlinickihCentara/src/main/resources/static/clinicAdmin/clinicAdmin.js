@@ -8,7 +8,11 @@ $(document).ready(
 function()
 {
 	getClinicData();
-	getTypeOfExams();
+	setTimeout(function() {
+        
+        getTypeOfExams();
+	}, 500);
+	
 	localStorage.setItem("clinicAdminTabs", document.getElementsByClassName("tabcontent"));
 	
 });
@@ -38,9 +42,10 @@ function getClinicData()
 
 function getTypeOfExams(){
     var token = localStorage.getItem("token");
+    var clinicId = localStorage.getItem("clinicId");
 	$.ajax({
     		type : 'GET',
-    		url : "../typeOfExam/getTypeOfExamsWithoutOperations",
+    		url : "../typeOfExam/getTypeOfExamsForClinic?clinicId=" + clinicId,
     		cache: false,
     		dataType: "json",
            headers: { "Authorization": "Bearer " + token},
@@ -113,12 +118,20 @@ $(document).on('click',"#logout",function(e){
 $(document).on('submit', "#makePredefinedAppointment", function(e)
 	{
 		e.preventDefault();
-		//console.log(document.getElementById("dateOfCheckup").value);
-		localStorage.setItem("dateOfCheckup", document.getElementById("dateOfCheckup").value);
-		localStorage.setItem("typeOfExam", document.getElementById("examTypes").value);
-		//window.open("./../index.html", "currentWindow", "");
-		//window.location.replace("./../index.html");
-		window.location.replace("doctorsFreeTerms.html");
+		if(document.getElementById("examTypes").value=="")
+		{
+			alert("Please choose a type of exam!");
+			
+		}
+		else
+		{
+			//console.log(document.getElementById("dateOfCheckup").value);
+			localStorage.setItem("dateOfCheckup", document.getElementById("dateOfCheckup").value);
+			localStorage.setItem("typeOfExam", document.getElementById("examTypes").value);
+			//window.open("./../index.html", "currentWindow", "");
+			//window.location.replace("./../index.html");
+			window.location.replace("doctorsFreeTerms.html");
+		}
 
 	})
 	

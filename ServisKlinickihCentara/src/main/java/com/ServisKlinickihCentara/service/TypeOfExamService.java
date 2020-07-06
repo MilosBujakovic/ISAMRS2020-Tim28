@@ -1,18 +1,23 @@
 package com.ServisKlinickihCentara.service;
 
-import com.ServisKlinickihCentara.model.clinics.TypeOfExam;
-import com.ServisKlinickihCentara.repository.TypeOfExamRepository;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.stream.Collectors;
+import com.ServisKlinickihCentara.model.clinics.Clinic;
+import com.ServisKlinickihCentara.model.clinics.TypeOfExam;
+import com.ServisKlinickihCentara.repository.ClinicRepository;
+import com.ServisKlinickihCentara.repository.TypeOfExamRepository;
 
 @Service
 public class TypeOfExamService {
 
     @Autowired
     private TypeOfExamRepository typeOfExamRepository;
+    @Autowired
+    private ClinicRepository clinicRepository;
 
 
     public ArrayList<String> getTypeOfExams(){
@@ -31,5 +36,15 @@ public class TypeOfExamService {
     {
     	return typeOfExamRepository.findByName(name);
     }
+
+	public ArrayList<String> getTypeOfExamsForClinic(long clinicId) {
+		Clinic clinic = clinicRepository.findById(clinicId);
+		ArrayList<String> types = new ArrayList<String>();
+		for(int i = 0; i < clinic.getTypeOfExams().size(); i++)
+		{
+			types.add(clinic.getTypeOfExams().get(i).getName() );
+		}
+		return types;
+	}
 
 }
