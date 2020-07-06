@@ -18,7 +18,7 @@
 <body>
 	 <div class="tab">
 	 	<button class="tablinks" id="editClinicButton" onclick="openTab(event, 'editClinic')">My Clinic</button>
-	 	<button class="tablinks" id="appointmentsButton" onclick="openTab(event, 'makeAppointments')">Make Predefined Appointments</button>
+	 	<button class="tablinks active" id="appointmentsButton"  disabled">Make Predefined Appointments</button>
 	 	<button class="tablinks" id="reportsButton" onclick="openTab(event, 'reports')">Business Reports</button>
 	 	<button class="tablinks" id="roomsButton" onclick="openTab(event, 'clinicRooms')">Clinic Rooms</button>
 	 	<button class="tablinks" id="pricelistButton" onclick="openTab(event, 'clinicPricelist')">Clinic Pricelist</button>
@@ -41,8 +41,9 @@
 	<table id="doctorTermsTable"></table>
 
 	<script>
-		function openTab(evt, tabName) {
-		  window.location.replace("clinicAdmin.html");
+		function openTab(evt, tabName) {	  
+		  //window.location.replace("clinicAdmin.html");
+		  window.location.href = "clinicAdmin.html";
 		 }
 	 </script>
 

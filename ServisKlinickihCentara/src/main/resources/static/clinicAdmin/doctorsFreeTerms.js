@@ -12,6 +12,7 @@ if (token == null){
 }
 
 $(document).ready(function(){
+    //evt.currentTarget.className += " active";
     readFreeDoctorsTerms();
 
 });

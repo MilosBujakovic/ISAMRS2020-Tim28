@@ -43,6 +43,14 @@ public class Term
 		this.startTime = startTime;
 		this.endTime = endTime;
 	}
+	
+	public Term(Room room, Timestamp startTime, Timestamp endTime)
+	{
+		super();
+		this.room = room;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
 
 	public Long getId()
 	{

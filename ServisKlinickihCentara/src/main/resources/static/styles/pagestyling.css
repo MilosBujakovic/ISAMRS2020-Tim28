@@ -12,6 +12,12 @@
 			background-color: lightgray;
 			border: 1px solid white;
 		}
+		
+		.table-align-left
+		{
+			position: relative;
+  			left: 5%;
+		}
 
 		.td-centered
 		{
