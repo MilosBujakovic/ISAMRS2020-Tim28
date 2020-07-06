@@ -11,7 +11,7 @@ function()
 	setTimeout(function() {
         
         getTypeOfExams();
-	}, 500);
+	}, 1000);
 	
 	localStorage.setItem("clinicAdminTabs", document.getElementsByClassName("tabcontent"));
 	

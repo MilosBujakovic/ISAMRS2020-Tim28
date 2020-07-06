@@ -106,7 +106,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/predefinedAppointment/getTerms").hasAnyAuthority("CLINIC_ADMIN", "DOCTOR")
                     .antMatchers("/roomAdmin/findFreeRooms").hasAnyAuthority("CLINIC_ADMIN", "DOCTOR")
                     .antMatchers("/predefinedAppointment/makeAppointment").hasAuthority("CLINIC_ADMIN")
-
+                    .antMatchers("/typeOfExam/getTypeOfExamsForClinic").hasAuthority("CLINIC_ADMIN")
                 //svaki zahtev mora biti autorizovan
                 .anyRequest().authenticated().and()
                 //presretni svaki zahtev filterom
