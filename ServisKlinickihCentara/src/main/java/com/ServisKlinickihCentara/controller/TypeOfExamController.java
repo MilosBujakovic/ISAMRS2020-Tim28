@@ -1,15 +1,14 @@
 package com.ServisKlinickihCentara.controller;
 
 
+import com.ServisKlinickihCentara.dto.MessageDTO;
+import com.ServisKlinickihCentara.dto.typeOfExamDTO.TypeOfExamDTO;
 import com.ServisKlinickihCentara.service.TypeOfExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -31,6 +30,13 @@ public class TypeOfExamController {
     public ResponseEntity<ArrayList<String>> getTypeOfExamsWithoutOperations(){
         ArrayList<String> names = typeOfExamService.getTypeOfExamsWithoutOperations();
         return new ResponseEntity<ArrayList<String>>(names, HttpStatus.OK);
+
+    }
+
+    @RequestMapping(value = "/addNewTypeOfExam", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageDTO> addNewTypeOfExam(@RequestBody TypeOfExamDTO typeOfExamDTO){
+        MessageDTO messageDTO = typeOfExamService.addNewTypeOfExam(typeOfExamDTO);
+        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
 
     }
 
