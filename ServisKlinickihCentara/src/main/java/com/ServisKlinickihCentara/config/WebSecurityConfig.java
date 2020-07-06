@@ -99,6 +99,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/clinic/getClinicNameAddressRating/**").hasAuthority("PATIENT")
                     .antMatchers("/clinic/checkClinicHasFreeDoctorsForSpecificDateAndTypeOfExam/**").hasAuthority("PATIENT")
                     .antMatchers("/appointment/customAppointmentReservation").hasAuthority("PATIENT")
+                    .antMatchers("/typeOfExam/addNewTypeOfExam").hasAnyAuthority("CLINIC_ADMIN")
                     .antMatchers("/auth/logout").permitAll()
                     .antMatchers("/auth/refresh").permitAll()
                     .antMatchers("/clinicEdit/updateBasics").hasAuthority("CLINIC_ADMIN")

@@ -25,7 +25,7 @@ public class TypeOfExam {
     @Column
     private int duration; //in minutes
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonBackReference
     private PriceItem priceItem;
 
