@@ -1,6 +1,5 @@
 package com.ServisKlinickihCentara.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +23,11 @@ public class RoomAdminController
 	@Autowired
 	RoomService roomService;
 	
-	@RequestMapping(value="/findFreeRooms", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<FreeRoomDTO>> findFreeRooms(@RequestBody RoomAppointmentBookingDTO appointmentSlot) throws NullPointerException
+	@RequestMapping(value="/findFreeClinicRooms", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<FreeRoomDTO>> findFreeClinicRooms(@RequestBody RoomAppointmentBookingDTO appointmentSlot) throws NullPointerException
 	{
 		
-		List<FreeRoomDTO> freeRooms = roomService.findFreeRooms(appointmentSlot);
+		List<FreeRoomDTO> freeRooms = roomService.findFreeClinicRooms(appointmentSlot);
 		if(freeRooms==null || freeRooms.isEmpty())
 		{
 			//freeRooms = new ArrayList<FreeRoomDTO>();
