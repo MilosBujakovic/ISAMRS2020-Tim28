@@ -1,11 +1,11 @@
 package com.ServisKlinickihCentara.repository;
 
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ServisKlinickihCentara.model.users.User;
-
-import java.util.List;
 
 
 public interface UserRepository extends JpaRepository<User,Long> {

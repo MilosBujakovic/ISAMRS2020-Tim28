@@ -89,10 +89,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/medicalRecord/getMedicalRecord").hasAuthority("PATIENT")
                     .antMatchers("/appointment/getPatientsHistory").hasAuthority("PATIENT")
                     .antMatchers("/appointment/filterSortingPatientsHistory").hasAuthority("PATIENT")
-                    .antMatchers("/doctor/getForClinicDoctorsFreeSlots").hasAuthority("PATIENT")
+                    .antMatchers("/doctor/getForClinicDoctorsFreeSlots").hasAnyAuthority("PATIENT", "CLINIC_ADMIN")
                     .antMatchers("/clinicRating/evaluateClinicByPatient").hasAuthority("PATIENT")
                     .antMatchers("/doctorRating/evaluateDoctorByPatient").hasAuthority("PATIENT")
-                    .antMatchers("/doctor/filterExistingDoctors").hasAuthority("PATIENT")
+                    .antMatchers("/doctor/filterExistingDoctors").hasAnyAuthority("PATIENT", "CLINIC_ADMIN")
                     .antMatchers("/doctor/getClinicAndDoctor").hasAuthority("PATIENT")
                     .antMatchers("/typeOfExam/getTypeOfExams").permitAll()
                     .antMatchers("/typeOfExam/getTypeOfExamsWithoutOperations").permitAll()
@@ -102,7 +102,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/typeOfExam/addNewTypeOfExam").hasAnyAuthority("CLINIC_ADMIN")
                     .antMatchers("/auth/logout").permitAll()
                     .antMatchers("/auth/refresh").permitAll()
-
+                    .antMatchers("/clinicEdit/updateBasics").hasAuthority("CLINIC_ADMIN")
+                    .antMatchers("/predefinedAppointment/getTerms").hasAnyAuthority("CLINIC_ADMIN", "DOCTOR")
+                    .antMatchers("/roomAdmin/findFreeRooms").hasAnyAuthority("CLINIC_ADMIN", "DOCTOR")
+                    .antMatchers("/predefinedAppointment/makeAppointment").hasAuthority("CLINIC_ADMIN")
+                    .antMatchers("/typeOfExam/getTypeOfExamsForClinic").hasAuthority("CLINIC_ADMIN")
                 //svaki zahtev mora biti autorizovan
                 .anyRequest().authenticated().and()
                 //presretni svaki zahtev filterom

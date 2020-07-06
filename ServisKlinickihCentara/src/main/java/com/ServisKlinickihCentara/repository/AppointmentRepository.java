@@ -1,9 +1,10 @@
 package com.ServisKlinickihCentara.repository;
 
-import com.ServisKlinickihCentara.model.patients.Appointment;
+import java.util.ArrayList;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.ArrayList;
+import com.ServisKlinickihCentara.model.patients.Appointment;
 
 public interface AppointmentRepository extends JpaRepository<Appointment,Long> {
 

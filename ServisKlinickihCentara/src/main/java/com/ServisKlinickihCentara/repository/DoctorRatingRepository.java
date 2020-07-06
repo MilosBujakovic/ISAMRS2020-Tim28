@@ -1,7 +1,8 @@
 package com.ServisKlinickihCentara.repository;
 
-import com.ServisKlinickihCentara.model.employees.DoctorRating;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.ServisKlinickihCentara.model.employees.DoctorRating;
 
 public interface DoctorRatingRepository extends JpaRepository<DoctorRating,Long> {
 

@@ -102,5 +102,14 @@ public class AppointmentController {
         return new ResponseEntity<ArrayList<HistoryVisitDTO>>(historyVisitDTOS, HttpStatus.OK);
     }
 
-
+    
+    /*TODO: Start here
+    @RequestMapping(value = "/predefinedAppointmentsBooking", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MessageDTO> predefinedAppointmentsBooking(@RequestBody CustomAppointmentDTO customAppointmentDTO){
+        System.out.println("customAppointmentReservation");
+        System.out.println(customAppointmentDTO);
+        MessageDTO messageDTO = appointmentService.predefinedAppointmentBooking(customAppointmentDTO);
+        return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+    }
+    */
 }

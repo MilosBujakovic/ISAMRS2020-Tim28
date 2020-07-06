@@ -87,6 +87,8 @@ public class DoctorService {
         Time doctorShiftStart = doctor.getShiftStart();
         Time doctorShiftEnd = doctor.getShiftEnd();
 
+        appointments.sort((Appointment a1, Appointment a2)->a1.getTerm().getStartTime().compareTo(a2.getTerm().getStartTime()));
+        
         ArrayList<TimeShift> takenSlots = appointments.stream()
                 .filter(a->a.getTerm().getStartTime().toLocalDateTime().toLocalDate().equals(localDate))
                 .map(a -> new TimeShift(Time.valueOf(a.getTerm().getStartTime().toLocalDateTime().toLocalTime()),
