@@ -85,9 +85,11 @@ function displayFreeRoomPicker(startTerm, endTerm)
 			
 			for(i=0; i< retVal.length; i++)
 			{
+				console.log(retVal[i].id);
+				var value = retVal[i].id;
 				var row = $("<tr class=\"roomTableRow\"></tr>");
 				row.append("<td>"+retVal[i].number+"</td><td><button " +
-						"class=\"chooseRoom\" name=\"roomId\" value=\""+retVal[i].Id+"\">Reserve</button></td>");
+						"class=\"chooseRoom\" name=\"roomId\" value=\""+value+"\">Reserve</button></td>");
 				$("#roomSelection").append(row);
 				//console.log(i);
 			}
@@ -106,6 +108,7 @@ $(document).on('click',"button[name=roomId]",function(e)
 		{
 			//Term:
 			var roomId = $(this).attr("value");
+			console.log(roomId);
 			var startTime = localStorage.getItem("startTerm");
 			var endTime = localStorage.getItem("endTerm");
 			var dateOfCheckup = localStorage.getItem("dateOfCheckup");
@@ -126,7 +129,7 @@ $(document).on('click',"button[name=roomId]",function(e)
 				contentType : 'application/json',
 				data: JSON.stringify({"startTime": startTime, "endTime": endTime, 
 					"clinicId": clinicId, "dateOfCheckup": dateOfCheckup, "doctorId" : doctorId,
-					"typeOfExam" : typeOfExam}),
+					"typeOfExam" : typeOfExam, "roomId": roomId}),
 				headers: { "Authorization": "Bearer " + token},
 				success : function(response) {
 					alert(response.message);

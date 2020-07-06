@@ -74,6 +74,7 @@ public class PredefinedAppointmentService
 		Timestamp startTime = createTimestamp(predefinedAppointment.getDateOfCheckup() , predefinedAppointment.getStartTime());
 		Timestamp endTime = createTimestamp(predefinedAppointment.getDateOfCheckup() , predefinedAppointment.getEndTime());
 		Room room = roomRepository.findById(predefinedAppointment.getRoomId() );
+		System.out.println(room.getId());
 		Term term = new Term(room, startTime, endTime);
 		termRepository.save(term);//TODO: U Term ne upisuje RoomId
 		
@@ -83,6 +84,10 @@ public class PredefinedAppointmentService
 		
 		TypeOfExam typeOfExam = typeOfExamRepository.findByName(predefinedAppointment.getTypeOfExam() );
 		
+		/*
+		appointment = new Appointment(null, term, doctor, AppointmentType.CHECKUP, 
+				null, clinic, true, true, false);
+		*/
 		appointment.setTerm(term);
 		appointment.setClinic(clinic);
 		appointment.setEmployee(doctor);
@@ -92,18 +97,27 @@ public class PredefinedAppointmentService
 		appointment.setActive(true);//Can be taken by a pacient
 		appointment.setCancelled(false);//Patient hasn't cancelled yet
 		
+		int i;
 		try
-		{	
+		{
 			appointmentRepository.save(appointment);
+			System.out.println("appointment saved");
 			doctor.getWorkingCalendar().add(appointment);
-			for(int i= 0; i<doctor.getWorkingCalendar().size(); i++)
-			{
-				System.out.println(doctor.getWorkingCalendar().get(i));
-			}
+			System.out.println("working calendar added");
+			
 			doctorRepository.save(doctor);
+			System.out.println("Doctor saved!");
+			
+			clinic.getAppointments().add(appointment);
+			clinicRepository.save(clinic);
+			for(i= 0; i<doctor.getWorkingCalendar().size(); i++)
+			{
+				System.out.println(doctor.getWorkingCalendar().get(i).getTerm().getStartTime()+"|"+doctor.getWorkingCalendar().get(i).getTerm().getId());
+			}
 			clinic.getFreeTerms();//TODO: da li i ovdje nesto treba?
 			System.out.println("Predefined appointment Saved!");
 			return true;
+			
 		}
 		catch(Exception e)
 		{
