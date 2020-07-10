@@ -33,6 +33,10 @@ $(document).on("submit", ".login-form", function(e) {
             {
             	window.location.href = "/clinicAdmin/clinicAdmin.html";
             }
+            else if(results.authority == "DOCTOR")
+            {
+            	window.location.href = "/doctor/doctorHomepage.html";
+            }
 
 
 		},

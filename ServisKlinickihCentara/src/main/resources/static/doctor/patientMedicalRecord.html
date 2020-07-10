@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Make predefined appointment - Clinic Admin</title>
+
+    <script type="text/javascript" src="./../jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./../bootstrap.min.css">
+	<link rel="stylesheet" href="./../styles/pagestyling.css">
+
+    <script type="text/javascript" src="patientMedicalRecord.js"></script>
+
+</head>
+
+<body>
+	 <div class="tab">
+	 	
+	<button class="tablinks active" id="patientsButton" onclick="openTab(event, 'patients')" disabled>Clinic's patients</button>
+ 	<button class="tablinks" id="appointmentReportsButton" onclick="openTab(event, 'appointmentReports')">Start appointment</button>
+ 	<button class="tablinks" id="calendarButton" onclick="openTab(event, 'calendar')">Working calendar</button>
+ 	<button class="tablinks" id="appointmentsButton" onclick="openTab(event, 'makeAppointments')">Book an appointment for patient</button>
+ 	<button class="tablinks" id="leaveFormButton" onclick="openTab(event, 'leaveForm')">Ask for a leave</button>
+ 	<button class="tablinks" id="profileButton" onclick="openTab(event, 'profile')">My Profile</button>
+ 	<button class="tablinks" onclick="openTab(event, 'logout')" id="logout">Log out</button>
+	 </div>
+	 <h2>Patient's medical record:</h2>
+	<table  align=center class="table table-bordered table-hover table-fit2 td-centered" id="patientsMedicalRecord">
+		<thead><th colspan=2> Patient's full treatment record:</th></thead>
+	    <!-- tr><td>Full name:<input type="text" id="nameDoctorDTO"/></td-->
+	        <!--<td>Date of exam:<input type="date" id="dateOfExamDTO"/></td>
+	        <td>Type of exam:<select name="optionsExam" id="typeOfExam"><option value="" selected></option></select></td>
+	    </tr>    -->
+	</table>
+	<table id="doctorTermsTable"></table>
+
+	<script>
+		function openTab(evt, tabName) {	  
+		  //window.location.replace("clinicAdmin.html");
+		  window.location.href = "clinicAdmin.html";
+		 }
+	 </script>
+
+</body>
+</html>

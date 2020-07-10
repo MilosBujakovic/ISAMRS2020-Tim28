@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Doctor homepage</title>
+
+    <script type="text/javascript" src="./../jquery.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <link rel="stylesheet" href="./../bootstrap.min.css">
+	<link rel="stylesheet" href="./../styles/pagestyling.css">
+
+    <script type="text/javascript" src="doctorHomepage.js"></script>
+
+</head>
+
+<body>
+
+ <div class="tab">
+ 	<button class="tablinks" id="patientsButton" onclick="openTab(event, 'patients')">Clinic's patients</button>
+ 	<button class="tablinks" id="appointmentReportsButton" onclick="openTab(event, 'appointmentReports')">Start appointment</button>
+ 	<button class="tablinks" id="calendarButton" onclick="openTab(event, 'calendar')">Working calendar</button>
+ 	<button class="tablinks" id="appointmentsButton" onclick="openTab(event, 'makeAppointments')">Book an appointment for patient</button>
+ 	<button class="tablinks" id="leaveFormButton" onclick="openTab(event, 'leaveForm')">Ask for a leave</button>
+ 	<button class="tablinks" id="profileButton" onclick="openTab(event, 'profile')">My Profile</button>
+ 	<button class="tablinks" onclick="openTab(event, 'logout')" id="logout">Log out</button>
+ </div>
+ 
+ <!-- built-in edit of contents? -->
+ <div class="tabcontent" id="patients">
+ 	<h2>Patient's list:</h2>
+ 	
+ 	<table id="searchParametersTable">
+	    <tr>
+	        <td>Name of patient:<input type="text" id="patientName" /></td>
+	        <td>Surname of patient:<input type="text" id="patientSurname" /></td>
+	        <td>Patient ID:<input type="text" id="insuranceNumber" /></td>
+	        <!-- td>Patient's Address:<input type="date" id="addressPatientDTO" /></td-->
+	        <td>Patient's City:<input type="text" id="patientCity" /></td>
+	    </tr>
+	</table>
+	<br>
+	<table id="filterPatientsTable"  class="table table-bordered table-hover table-fit2 td-centered">
+	</table>
+ 	<h3 id="messageNoPatients"> No patients with this criteria found!</h3>
+ </div>
+ 
+ <div class="tabcontent" id="appointmentReports">
+ 	<h2>Start an appointment</h2>
+ </div>
+ 
+
+ <div class="tabcontent" id="calendar">
+ 	<h2>My working calendar</h2>
+ </div>
+ 
+ <div class="tabcontent" id="leaveForm">
+ 	<h2>Submit a leave form</h2>
+ 	<table align="center" class="table table-bordered table-hover table-fit2 td-centered">
+ 		<tr >
+ 			<td colspan="2"><h4>Patients list:</h4> <input type="hidden" id="clinicId"></td>
+ 		<tr>
+ 			<td> Name: </td>
+ 			
+ 			<td> Surname: </td>
+ 			
+ 			<td> Patient ID: </td>
+ 			<td> Patient's info: </td>
+ 		</tr>
+ 		<tr>
+ 		<td> <input type="text" id="sad"></td>
+ 		<td> <input type="text" id="dsdasd"></td>
+ 		<td> <textArea rows="3" id="dsadsadsa"></textArea></td>
+ 		<td><button id="editClinicSubmitButton">Save changes</button></td>
+ 		</tr>
+ 	</table>
+ </div>
+ 
+  <div class="tabcontent" id="makeAppointments">
+ 	<h2>Make Predefined Appointments</h2>
+ 	<form id="makePredefinedAppointment">
+ 	<table align=center class="table table-bordered table-hover table-fit2 td-centered" id="datePredefinedChoose">
+ 		<tr>
+ 			<td><h5 align=center> Choose a date of appointment: </h5></td>
+ 			
+ 			<td>
+ 			<input type="date" required id="dateOfCheckup" 
+ 			placeholder="Choose date of checkup" required>
+ 			</td>
+ 		</tr>
+ 		<tr>
+ 			<td><h5 align=center>Choose a Type of exam:</h5></td>
+ 			<td><select id="examTypes">
+ 				<option value=""></option> </select> </td>
+ 		</tr>
+ 		<tr>
+ 			<td colspan="2"><input type="submit" id="predefinedDoctorButton" value="Choose a Doctor"/></td>
+  		</tr>
+ 		
+ 	</table>
+ 	</form>
+ </div>
+ 
+ <div class="tabcontent" id="profile">
+ 	<h2>My Profile</h2>
+ </div>
+ 
+
+ <script>
+	function openTab(evt, tabName) {
+	  var i, tabcontent, tablinks;
+	  tabcontent = document.getElementsByClassName("tabcontent");
+	  for (i = 0; i < tabcontent.length; i++) {
+	    tabcontent[i].style.display = "none";//hide all others
+	  }
+	  tablinks = document.getElementsByClassName("tablinks");
+	  for (i = 0; i < tablinks.length; i++) {
+	    tablinks[i].className = tablinks[i].className.replace(" active", "");
+	  }
+	  document.getElementById(tabName).style.display = "block";
+	  evt.currentTarget.className += " active";
+	}
+ </script>
+
+</body>
+</html>

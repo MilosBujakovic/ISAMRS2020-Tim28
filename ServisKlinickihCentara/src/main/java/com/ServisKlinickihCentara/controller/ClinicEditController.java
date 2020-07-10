@@ -28,10 +28,10 @@ public class ClinicEditController
 		
 	}
 	
-	@RequestMapping(value="/getClinicData", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value="/getClinicDataDoctor", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<EditClinicDTO> getClinicData(@RequestBody EmailDTO email)
 	{
-		 EditClinicDTO clinic = clinicService.getClinicBasics(email.getEmail());
+		 EditClinicDTO clinic = clinicService.getClinicBasicsDoctor(email.getEmail());
 		 System.out.println("Admin's clinic found!");
 		 return new ResponseEntity<EditClinicDTO>(clinic, HttpStatus.OK);
 	}

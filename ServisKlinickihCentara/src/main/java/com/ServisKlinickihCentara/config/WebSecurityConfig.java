@@ -102,6 +102,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/typeOfExam/addNewTypeOfExam").hasAnyAuthority("CLINIC_ADMIN")
                     .antMatchers("/auth/logout").permitAll()
                     .antMatchers("/auth/refresh").permitAll()
+                    .antMatchers("/clinicEdit/getClinicData").hasAnyAuthority("CLINIC_ADMIN")
+                    .antMatchers("/clinicEdit/getClinicDataDoctor").hasAnyAuthority("DOCTOR")
                     .antMatchers("/clinicEdit/updateBasics").hasAuthority("CLINIC_ADMIN")
                     .antMatchers("/predefinedAppointment/getTerms").hasAnyAuthority("CLINIC_ADMIN", "DOCTOR")
                     .antMatchers("/roomAdmin/findFreeRooms").hasAnyAuthority("CLINIC_ADMIN", "DOCTOR")
@@ -109,6 +111,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/typeOfExam/getTypeOfExamsForClinic").hasAnyAuthority("CLINIC_ADMIN")
                     .antMatchers("/typeOfExam/editTypeOfExam").hasAnyAuthority("CLINIC_ADMIN")
                     .antMatchers("/typeOfExam/deleteTypeOfExam").hasAnyAuthority("CLINIC_ADMIN")
+                    .antMatchers("/doctor/filterClinicPatients").hasAnyAuthority("DOCTOR", "CLINIC_ADMIN")
+                    .antMatchers("/patient/getMedicalRecords").hasAuthority("DOCTOR")
                 //svaki zahtev mora biti autorizovan
                 .anyRequest().authenticated().and()
                 //presretni svaki zahtev filterom
