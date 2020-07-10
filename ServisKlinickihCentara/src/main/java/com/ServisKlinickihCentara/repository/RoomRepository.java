@@ -9,6 +9,8 @@ import com.ServisKlinickihCentara.model.clinics.Room;
 public interface RoomRepository extends JpaRepository<Room,Long> {
     Room findById(long id);
 
+    Room findByNumber(String number);
+
     ArrayList<Room> findAll();
 
 }

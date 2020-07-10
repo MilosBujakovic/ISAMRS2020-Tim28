@@ -109,6 +109,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/typeOfExam/getTypeOfExamsForClinic").hasAnyAuthority("CLINIC_ADMIN")
                     .antMatchers("/typeOfExam/editTypeOfExam").hasAnyAuthority("CLINIC_ADMIN")
                     .antMatchers("/typeOfExam/deleteTypeOfExam").hasAnyAuthority("CLINIC_ADMIN")
+                    .antMatchers("/clinicAdmin/roomAdmin/createNewRoom").hasAnyAuthority("CLINIC_ADMIN")
+                    .antMatchers("/clinicAdmin/roomAdmin/editRoom").hasAnyAuthority("CLINIC_ADMIN")
+                    .antMatchers("/clinicAdmin/roomAdmin/removeRoom/**").hasAnyAuthority("CLINIC_ADMIN")
+
                 //svaki zahtev mora biti autorizovan
                 .anyRequest().authenticated().and()
                 //presretni svaki zahtev filterom

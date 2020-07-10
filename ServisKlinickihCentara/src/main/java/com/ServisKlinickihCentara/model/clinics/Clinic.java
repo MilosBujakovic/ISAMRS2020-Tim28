@@ -41,7 +41,7 @@ public class Clinic
 	@JsonBackReference
 	private List<Nurse> assistingStaff;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "clinic", orphanRemoval = true)
 	@JsonBackReference
 	private List<Room> rooms;
 

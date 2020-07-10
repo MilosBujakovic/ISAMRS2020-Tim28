@@ -3,7 +3,11 @@ package com.ServisKlinickihCentara.service;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.ServisKlinickihCentara.dto.MessageDTO;
+import com.ServisKlinickihCentara.dto.clinicsDTO.RoomDTO;
+import org.apache.tomcat.jni.Time;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,6 +96,65 @@ public class RoomService {
 			freeRooms.add(freeRoom);
 		}
 		return freeRooms;
+	}
+
+	public MessageDTO createNewRoom(RoomDTO roomDTO)
+	{
+		Room room = roomRepository.findByNumber(roomDTO.getNumber());
+
+		if (room != null){
+			if (room.getClinic().getId() == Long.parseLong(roomDTO.getClinicId())) {
+				return new MessageDTO("Room with this name already exists in this clinic!!!", false);
+			}
+		}
+
+		Clinic clinic = clinicRepository.findById(Long.parseLong(roomDTO.getClinicId()));
+		Room r = new Room(roomDTO.getNumber(), clinic);
+		clinic.getRooms().add(r);
+
+		clinicRepository.save(clinic);
+		//roomRepository.save(r);
+		return new MessageDTO("You successfully created new room :)", true);
+
+	}
+
+	public MessageDTO editRoom(RoomDTO roomDTO)
+	{
+		Room room = roomRepository.findById(Long.parseLong(roomDTO.getId()));
+		Room r = roomRepository.findByNumber(roomDTO.getNumber());
+
+		if (r != null){
+			if (r.getId() != room.getId()){
+				return new MessageDTO("Room with this name already exists in this clinic!!!", false);
+			}
+		}
+
+		room.setNumber(roomDTO.getNumber());
+		roomRepository.save(r);
+		return new MessageDTO("You successfully edited room :)", true);
+
+	}
+
+	public MessageDTO removeRoom(String clinicId, String roomId)
+	{
+		Clinic clinic = clinicRepository.findById(Long.parseLong(clinicId));
+		Room room = roomRepository.findById(Long.parseLong(roomId));
+
+		ArrayList<Appointment> appointments = clinic.getAppointments()
+				.stream().filter(a -> a.getTerm().getRoom().getId() == room.getId()
+						&& a.getTerm().getStartTime().after(new Timestamp(System.currentTimeMillis())))
+				.collect(Collectors.toCollection(ArrayList::new));
+
+		if(appointments.size() > 0){
+			return new MessageDTO("You cannot delete room because it will be appointment in the future :)", false);
+		}
+
+		clinic.getRooms().remove(room);
+		clinicRepository.save(clinic);
+
+		//roomRepository.delete(room);
+		return new MessageDTO("You successfully deleted room :)", true);
+
 	}
 	
 	

@@ -2,18 +2,19 @@ package com.ServisKlinickihCentara.controller;
 
 import java.util.List;
 
+import com.ServisKlinickihCentara.dto.MessageDTO;
+import com.ServisKlinickihCentara.dto.clinicsDTO.RoomDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ServisKlinickihCentara.dto.appointmentsDTO.RoomAppointmentBookingDTO;
 import com.ServisKlinickihCentara.dto.clinicsDTO.FreeRoomDTO;
 import com.ServisKlinickihCentara.service.RoomService;
+
+import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping( value = "/clinicAdmin/roomAdmin")
@@ -39,5 +40,27 @@ public class RoomAdminController
 			System.out.println("Free rooms found!");
 			return new ResponseEntity<List<FreeRoomDTO>>(freeRooms, HttpStatus.OK);
 		}
+	}
+
+	@RequestMapping(value="/createNewRoom", method=RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<MessageDTO> createNewRoom(@RequestBody RoomDTO roomDTO)
+	{
+		MessageDTO messageDTO = roomService.createNewRoom(roomDTO);
+		return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value="/editRoom", method=RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<MessageDTO> editRoom(@RequestBody RoomDTO roomDTO)
+	{
+		MessageDTO messageDTO = roomService.editRoom(roomDTO);
+		return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
+	}
+
+	@RequestMapping(value="/removeRoom/{clinicId}/{roomId}", method=RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<MessageDTO> removeRoom(@PathVariable("clinicId") String clinicId, @PathVariable("roomId") String roomId)
+	{
+		MessageDTO messageDTO = roomService.removeRoom(clinicId, roomId);
+		return new ResponseEntity<MessageDTO>(messageDTO, HttpStatus.OK);
 	}
 }

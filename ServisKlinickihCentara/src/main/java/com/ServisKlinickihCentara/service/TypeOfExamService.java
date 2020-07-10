@@ -154,7 +154,8 @@ public class TypeOfExamService {
             return new MessageDTO("Type of exam with this name has requests for appointment in this clinic!!!", false);
         }
 
-
+        clinic.getTypeOfExams().remove(typeOfExam);
+        clinicRepository.save(clinic);
         typeOfExamRepository.delete(typeOfExam);
 
         System.out.println(clinic.getTypeOfExams().size());

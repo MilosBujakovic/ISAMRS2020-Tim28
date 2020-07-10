@@ -49,6 +49,11 @@ public class Room
 		this.clinic = clinic;
 	}
 
+	public Room(String number, Clinic clinic) {
+		this.number = number;
+		this.clinic = clinic;
+	}
+
 	public Long getId() {
 		return id;
 	}
