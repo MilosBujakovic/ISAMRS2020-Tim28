@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ServisKlinickihCentara.dto.EmailDTO;
 import com.ServisKlinickihCentara.dto.doctorDTO.ClinicDoctorNameDTO;
 import com.ServisKlinickihCentara.dto.doctorDTO.DoctorFreeSlotsViewDTO;
 import com.ServisKlinickihCentara.dto.doctorDTO.DoctorSearchDTO;
 import com.ServisKlinickihCentara.dto.patientsDTO.PatientFilterViewDTO;
+import com.ServisKlinickihCentara.model.employees.Doctor;
 import com.ServisKlinickihCentara.service.DoctorService;
 import com.ServisKlinickihCentara.service.PatientService;
 
@@ -61,6 +63,13 @@ public class DoctorController {
         List<PatientFilterViewDTO> clinicDoctorNameDTO = patientService.filterPatients(clinicId,name,surname, insuranceNumber, city);
         System.out.println("Patients criteria successfully filtered!");
         return new ResponseEntity<List<PatientFilterViewDTO>>(clinicDoctorNameDTO, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/getDoctorData", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Doctor> getDoctorData(@RequestBody EmailDTO doctormail)
+    {
+    	System.out.println("Getting Doctor's data");
+    	return null;
     }
     
     

@@ -12,7 +12,7 @@ function()
 	setTimeout(function() {
         
         filterPatients();
-	}, 1000);
+	}, 2000);
 	
 	//localStorage.setItem("clinicAdminTabs", document.getElementsByClassName("tabcontent"));
 	
@@ -184,7 +184,7 @@ $(document).on('click',"button[name=patientMedicalRecord]",function(e)
 	         		alert(errorThrown);
 	         	}
 			});
-			*/
+			
 					
 	});
 
